@@ -1,3 +1,3 @@
 # SMW4
 
-Vitanje Lukna
+Loče Lukna
