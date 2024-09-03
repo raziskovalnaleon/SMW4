@@ -1,3 +1,3 @@
 # SMW4
 
-Loče Lukna
+Loče Metropola
