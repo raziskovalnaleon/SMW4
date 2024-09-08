@@ -161,9 +161,12 @@
     align-items: center;
     cursor: pointer;
     height: auto;
+    transition: 0.2s ease-in-out;
 }
 
-
+.PrikazNaloge:hover{
+    border-color: rgb(134, 130, 130);
+}
 
 @media (max-width: 1200px) {
     .DisplayPredmetov {
