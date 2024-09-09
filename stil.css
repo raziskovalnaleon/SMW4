@@ -70,8 +70,6 @@
     padding-top: 4%; 
 }
 
-
-
 .DisplayPredmetov {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(252px, 1fr));
@@ -141,7 +139,6 @@
     background-color: white;
     border: solid #dedfde 1px;
     width: 80%;
-    
     padding: 20px;
     box-sizing: border-box;
 }
@@ -168,9 +165,89 @@
     border-color: rgb(134, 130, 130);
 }
 
+.PodatkiPredmetu{
+    background-color: white;
+    font-family: Font2;
+    border: solid #dedfde 1px;
+    margin-top: 5%;
+    margin-left: 2.5%;
+    margin-right: 22.5%;
+    width: 60%;
+}
+
+.ImeInfo {
+    font-family: Font1;
+    font-size: 20px;
+}
+
+.InfoBesedilo {
+    margin: 20px;
+}
+
+.InfoText {
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.NalogePredmeta {
+    margin: 2.5%;
+    background-color: white;
+    border: solid #dedfde 1px;
+    width: 95%;
+}
+
+.collapsible {
+    background-color:white;
+    border: solid #dedfde 1px;
+    color: black;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    outline: none;
+    font-size: 18px;
+    margin-top: 20px;
+    font-family: Font2;
+    font-weight: bold;
+}
+
+.content {
+    color: black;
+    font-family: Font2;
+    padding: 0 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    background-color: white;
+    border: solid #dedfde 1px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.TaskSlika {
+    width: 30px;
+}
+
+.task-align {
+    display: flex;
+    align-items: center;
+}
+
+.DodatenInfo {
+    margin: 20px;
+    display: grid;
+    grid-template-columns: 20% 20% auto;
+}
+
 @media (max-width: 1200px) {
     .DisplayPredmetov {
         grid-template-columns: repeat(3, 1fr);
+    }
+
+    .PodatkiPredmetu, .NalogePredmeta {
+        width: 90%;
+        margin-left: 5%;
+        margin-right: 5%;
     }
 }
 
@@ -178,6 +255,7 @@
     .DisplayPredmetov {
         grid-template-columns: repeat(2, 1fr);
     }
+
     .main {
         width: 85%;
     }
@@ -185,6 +263,14 @@
     .naloge, .Predmeti {
         width: 85%;
     }
+
+    /* .navbar .nav-links {
+        flex-direction: column;
+    }
+
+    .navbar .nav-links a {
+        padding: 10px 0;
+    } */
 }
 
 @media (max-width: 600px) {
@@ -206,5 +292,30 @@
 
     .besedilo {
         font-size: 1rem;
+    }
+
+    /* .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar .logo {
+        margin-bottom: 10px;
+    }
+
+    .navbar .nav-links {
+        width: 100%;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    } */
+
+    .PodatkiPredmetu, .NalogePredmeta {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .InfoBesedilo, .DodatenInfo {
+        grid-template-columns: 1fr;
     }
 }
