@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarion</title>
+    <link rel="stylesheet" href="stil.css">
+</head>
+<body class="background">
+    <div class="navbar">
+        <a href="#home" class="logo">ŠC Celje</a>
+    
+        <div class="nav-links">
+            <a href="#home">Domov</a>
+        </div> 
+        
+        
+    </div>
+    <div>
+        <form method="post" id="registration">
+            <div class="RegistrationData">
+                <div class="createracun">
+                    Ustvari račun
+                </div>
+               <div style="margin: 20px;">
+                <div class="PrikazPodatkov">Name: </div><input type="text" name="RegistratioName" class="input"><br>
+                <div class="PrikazPodatkov">Surname: </div> <input type="text" name="surname" class="input"><br>
+                <div class="PrikazPodatkov">Email: </div><input type="email" name="email" class="input"><br>
+                <div class="PrikazPodatkov">Username: </div> <input type="text" name="RegistrationUsername" class="input"><br>
+                <div class="PrikazPodatkov">Password: </div> <input type="password" name="RegistrationPassword" class="input"><br>
+                <div class="PrikazPodatkov">Retype password: </div> <input type="password" name="ReTypePassword" class="input"><br>
+                <div style="font-family:FontBesedilo;">
+
+                </div>
+                <input type="submit" name="RegistrationButton" class="submitbutton" value="REGISTER">
+
+                <div style="margin-top: 10px;"></div>
+                    Si že registriran? <br> <a href="#" onclick="Hide()">Klikni tukaj!</a>
+                </div>
+               </div>
+            </div>
+
+           
+            
+        </form>
+        <form method="post" id="login">
+            <div class="RegistrationData">
+                <div class="createracun">
+                    Prijavi se!
+                </div>
+                <div style="margin: 20px;">
+                    <div class="PrikazPodatkov">Username </div> <input type="text" name="username"  class="input"><br>
+                    <div class="PrikazPodatkov">  Password: </div> <input type="password" name="password"  class="input"><br>
+                        
+                    <input type="submit" name="LoginButton" class="submitbutton" value="LOGIN">
+                    <div ></div>
+                    <div>
+                       Še nimaš računa?<br> <a href="#" onclick="Hide()">Klikni tukaj!</a>
+                    </div>  
+                
+        
+                </div>
+           
+            </div>
+
+            
+          
+        </form>
+        
+
+    </div>
+</body>
+
+<script>
+    function Hide() {
+      var element = document.getElementById("registration");
+      var element1 = document.getElementById("login");
+      if (element.style.display === "none") {
+        element.style.display = "block";
+        element1.style.display ="none";
+      } else {
+        element.style.display = "none";
+        element1.style.display ="block";
+      }
+    } 
+    </script>
+</html>
