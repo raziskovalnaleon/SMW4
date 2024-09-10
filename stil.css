@@ -246,8 +246,6 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
-    width: 21em;
-    height: 35em;
 }
 .input{
     background-color: white;
@@ -287,6 +285,11 @@
 }
 #login{
     display: none;
+    
+}
+
+.PrikazPodatkov{
+    margin-top: 10px;
 }
 @media (max-width: 1200px) {
     .DisplayPredmetov {

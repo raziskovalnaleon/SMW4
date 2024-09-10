@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="stil.css">
 </head>
 <body class="background">
+    <div class="navbar">
+        <a href="#home" class="logo">ŠC Celje</a>
+    
+        <div class="nav-links">
+            <a href="#home">Domov</a>
+        </div> 
+        
+        
+    </div>
     <div>
         <form method="post" id="registration">
             <div class="RegistrationData">
@@ -25,8 +34,8 @@
                 </div>
                 <input type="submit" name="RegistrationButton" class="submitbutton" value="REGISTER">
 
-                <div >
-                    Already a user? <br> <a href="#" onclick="Hide()">Click Here!</a>
+                <div style="margin-top: 10px;"></div>
+                    Si že registriran? <br> <a href="#" onclick="Hide()">Klikni tukaj!</a>
                 </div>
                </div>
             </div>
@@ -36,15 +45,22 @@
         </form>
         <form method="post" id="login">
             <div class="RegistrationData">
-                <div class="PrikazPodatkov">Username </div> <input type="text" name="username"  class="input"><br>
-                <div class="PrikazPodatkov">  Password: </div> <input type="password" name="password"  class="input"><br>
-                <input type="submit" name="LoginButton" class="submitbutton" value="LOGIN">
-                <div style="font-family:FontBesedilo;margin-top:2%">
+                <div class="createracun">
+                    Prijavi se!
+                </div>
+                <div style="margin: 20px;">
+                    <div class="PrikazPodatkov">Username </div> <input type="text" name="username"  class="input"><br>
+                    <div class="PrikazPodatkov">  Password: </div> <input type="password" name="password"  class="input"><br>
+                        
+                    <input type="submit" name="LoginButton" class="submitbutton" value="LOGIN">
+                    <div ></div>
+                    <div>
+                       Še nimaš računa?<br> <a href="#" onclick="Hide()">Klikni tukaj!</a>
+                    </div>  
+                
         
                 </div>
-                <div style="Color:white; font-family:FontBesedilo1; margin-top: 5%;">
-                Dont't have a account yet?<br> <a href="#" onclick="Hide()">Click here!</a>
-                </div>  
+           
             </div>
 
             
