@@ -319,3 +319,41 @@
         grid-template-columns: 1fr;
     }
 }
+/*----------------------ZACETNA STRAN---------------------------*/
+.mainZ {
+    width: 100%;
+    height: 100%;
+    margin-top: 5%;
+    margin-right: 50%;
+    margin-left: 0;
+}
+.naslovMain {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+}
+.cardZ {
+    width: 232px;
+    height: 305px;
+    background: white;
+    border-radius: 5px;
+    transition: 0.2s ease-in-out;
+    margin: 15px;
+}
+
+.cardZ:hover {
+    cursor: pointer;
+    border-color: rgb(134, 130, 130);
+    border-style: solid;
+}
+.imgZ {
+    width: 100%;
+    height: 72%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.textZ {
+    margin: 7%;
+    text-align: center;
+}
