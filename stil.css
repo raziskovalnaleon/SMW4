@@ -238,7 +238,56 @@
     display: grid;
     grid-template-columns: 20% 20% auto;
 }
+.RegistrationData{
+    font-family: Font2;
+    background-color: white;
+    border: solid #dedfde 1px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 21em;
+    height: 35em;
+}
+.input{
+    background-color: white;
+    border: solid #dedfde 1px;
+    width: 300px;
+    height: 30px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+.submitbutton{
+    font-family: Font2;
+    font-weight: bold;
+    background-color: #318CE7;
+    color: white;
+    border: solid #dedfde 1px;
+    height: 40px;
+    width: 150px;
+    border-radius: 5px;
+    margin-top: 2%;
+    font-size: 15px;
+    transition: all 0.2s;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    
+}
+.createracun{
+    margin-left: 20px;
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 18px;
 
+}
+.submitbutton:hover{
+    background-color: white;
+    color: black;
+    cursor: pointer;
+}
+#login{
+    display: none;
+}
 @media (max-width: 1200px) {
     .DisplayPredmetov {
         grid-template-columns: repeat(3, 1fr);
