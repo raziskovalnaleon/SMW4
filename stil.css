@@ -345,7 +345,10 @@
 .cardZ:hover {
     cursor: pointer;
     border-color: rgb(134, 130, 130);
-    border-style: solid;
+    border-style: solid, 2px;
+    transform: scale(1.05,1.05);
+    z-index: 1;
+    
 }
 .imgZ {
     width: 100%;
