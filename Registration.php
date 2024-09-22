@@ -7,6 +7,7 @@
     $dbname = "smw";
     $mysqli = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
     $id;
+    $DbId;
     $ProfilePicture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
     session_start();
     if (isset($_SESSION["uname"]) && $_SESSION["pass"]){
@@ -32,14 +33,14 @@
                     exit();
                 } else {
                     
-                    $sql = "SELECT Username FROM smw.uporabnik WHERE Username = '" . $conn->real_escape_string($RegistrationUsername) . "'";
+                    $sql = "SELECT Username FROM smw.users WHERE Username = '" . $conn->real_escape_string($RegistrationUsername) . "'";
                     $result = mysqli_query($conn, $sql);
 
                     if ($result && mysqli_num_rows($result) > 0) {
                         $loginerror = "User already exists!";
                     } else {
                       
-                        $sql = "SELECT Email FROM smw.uporabnik WHERE Email = '" . $conn->real_escape_string($Email) . "'";
+                        $sql = "SELECT Email FROM smw.users WHERE Email = '" . $conn->real_escape_string($Email) . "'";
                         $result = mysqli_query($conn, $sql);
 
                         if ($result && mysqli_num_rows($result) > 0) {
@@ -48,7 +49,7 @@
                            
                             if (trim($RegistrationPassword) == trim($ReTypePassword)) {
                                 $hashedPassword = password_hash($RegistrationPassword, PASSWORD_DEFAULT);
-                                $sql = "INSERT INTO smw.uporabnik (ime_uporabnika, priimek_uporabnika, Username, password, Email) VALUES ('" . $conn->real_escape_string($RegistrationName) . "', '" . $conn->real_escape_string($Surname) . "', '" . $conn->real_escape_string($RegistrationUsername) . "', '" . $hashedPassword . "', '" . $conn->real_escape_string($Email) . "')";
+                                $sql = "INSERT INTO smw.users (ime_uporabnika, priimek_uporbnika, Username, password, Email,UserType) VALUES ('" . $conn->real_escape_string($RegistrationName) . "', '" . $conn->real_escape_string($Surname) . "', '" . $conn->real_escape_string($RegistrationUsername) . "', '" . $hashedPassword . "', '" . $conn->real_escape_string($Email) . "', 'ucenec')";
 
                                 if (mysqli_query($conn, $sql)) {
                                     $loginerror = "User successfully created!";
@@ -71,7 +72,7 @@
                 echo "Failed to connect to MySQL: " . $conn->connect_error;
                 exit();
             } else {
-                $sql = "SELECT Username, password FROM smw.uporabnik WHERE Username = '" . $conn->real_escape_string($username) . "'";
+                $sql = "SELECT UserID, Username, password FROM smw.users WHERE Username = '" . $conn->real_escape_string($username) . "'";
                 $result = mysqli_query($conn, $sql);
 
                 if ($result && mysqli_num_rows($result) > 0) {
@@ -81,6 +82,7 @@
                     if (password_verify($password, $hashedPassword)) {
                         $_SESSION["uname"] = $username;
                         $_SESSION["pass"] = $password;
+                        $_SESSION["DbID"] = $row["UserID"];
                         header('Location: Dashboard.php');
                         exit();
                     } else {
