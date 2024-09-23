@@ -360,3 +360,66 @@
     margin: 7%;
     text-align: center;
 }
+/*-----------------Footer---------------*/
+footer{
+    background: #9f53b6;
+    padding-top: 50px;
+}
+.container{
+    width: 1140px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+}
+.footer{
+    width: 33.3%;
+}
+h3{
+    font-size: 28px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+.footer-content{
+    width: 190px;
+    margin: auto;
+    text-align: center;
+    list-style-type: none;
+    padding: 7px;
+    position: relative;
+}
+.list{
+    padding: 0%;
+}
+.list li::before{
+    content: '';
+    position: absolute;
+    transform: translate(-50%,-50%);
+    left:50%;
+    top:100%;
+    width: 0;
+    height: 2px;
+    background: orange;
+    transition-duration: .5;
+
+}
+.list li:hover::before{
+    width: 70px;
+}
+a{
+    text-decoration: none;
+}
+a:hover{
+    color:blue;
+}
+.bottom-bar{
+    background: #22afa8;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: 50px;
+}
+.bottom-bar p{
+    color: #9f53b6;
+    margin: 0%;
+    font-size: 16px;
+    padding: 7px;
+}
