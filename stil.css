@@ -327,7 +327,40 @@
     margin-top: 10px;
     margin-left: 20px;
 }
-
+.ucitelji{
+    background-color: white;
+    width: 90%;
+    margin: 5%;
+    border: solid #dedfde 1px;
+    border-radius: 5px ;
+}
+.UciteljiText{
+    font-family: font1;
+    font-size: 18px;
+    margin: 10px;
+}
+.UciteljName{
+    font-family: font2;
+    font-weight: bold;
+    font-size: 22px;
+    margin-left: 20px ;
+    transition: all 0.2s;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.linkName{
+    color: black;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+.linkName:hover{
+    color:#1967b4;
+}
+.NiUCiteljev{
+    margin:20px;
+    font-family:font2;
+    font-size:20px;
+}
 @media (max-width: 1200px) {
     .DisplayPredmetov {
         grid-template-columns: repeat(3, 1fr);
@@ -337,6 +370,7 @@
         width: 90%;
         margin-left: 5%;
         margin-right: 5%;
+        
     }
 }
 

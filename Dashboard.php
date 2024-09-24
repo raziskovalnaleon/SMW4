@@ -141,7 +141,7 @@
     </div>
 
     <div class="besedilo" >
-        <a href="">Poglej vse predmete</a>
+        <a href="Predmeti.php">Poglej vse predmete</a>
     </div>
   </div>
 </div>
