@@ -106,7 +106,7 @@
 
                                 }
 
-                                echo "<a href='predmet.php?subject_id=$id' style='  text-decoration: none;color: black;'>
+                                echo "<a href='Predmet.php?subject_id=$id' style='  text-decoration: none;color: black;'>
                                     <div class='card'>
                                         <div class='img'>
                                         </div>
@@ -174,7 +174,7 @@
                            $daysLeft = $interval->format('%a');
                             
                             echo "  
-                            <a href='predmet.php?subject_id=$AssSubjectID' style='color:black;text-decoration:none'>
+                            <a href='Predmet.php?subject_id=$AssSubjectID' style='color:black;text-decoration:none'>
                                 <div class='PrikazNaloge'>
                                         <div>
                                             Naloga: $assTitle
