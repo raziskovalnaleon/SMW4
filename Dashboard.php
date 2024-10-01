@@ -22,7 +22,16 @@
          header("location:Registration.php");
          exit();
      }
-
+     $username = $_SESSION["uname"];
+     $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
+     $sql = "SELECT UserType FROM smw.users WHERE Username = '$username'";
+     $result = mysqli_query($conn, $sql);
+     if (mysqli_num_rows($result) > 0){
+        while ($row = mysqli_fetch_assoc($result)){
+            $userType = $row["UserType"];
+        }
+        
+     }
     
      function logout() {
         session_destroy();
@@ -78,210 +87,158 @@
 </div>
 
 <div class="main">
-    <div class="Predmeti">
-      <div class="besedilo">
-        <?php if($jeUcitelj != true){
-             echo " Tvoji Predmeti:";
-        }else{
-            echo "Predmeti, ki jih učiš:";
-        } 
-        ?>
-      </div>
-        <div class="DisplayPredmetov">
-
+<div class="Predmeti">
+        <div class="besedilo">
             <?php
-            $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
-            if($jeUcitelj != true){
-               
-            
-                if ($conn->connect_errno) {
-                    echo "Failed to connect to MySQL: " . $conn->connect_error;
-                    exit();
-                }
-                else{
-                    $sql = "SELECT SubjectID from smw.student_subjects WHERE UserID ="."'".$_SESSION["DbID"]."'";
-                    $result = mysqli_query($conn, $sql);
-                    if (mysqli_num_rows($result) > 0) {
-    
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            $id = $row["SubjectID"];
-                            $sql = "SELECT SubjectName from smw.subjects WHERE SubjectID ="."'".$id."'";
-                            $result1 = mysqli_query($conn, $sql);
-                            if (mysqli_num_rows($result1) > 0) {
-                                while($row1 = mysqli_fetch_assoc($result1)){
-                                    $subjectName = $row1["SubjectName"];
-    
-                                    $sql = "SELECT UserID from teacher_subjects WHERE SubjectID = "."'".$id."'";
-                                    $result2 = mysqli_query($conn, $sql);
-                                    while($row2 = mysqli_fetch_assoc($result2))
-                                    {
-                                        $teacherID = $row2["UserID"];
-    
-                                    }
-                                    $sql = "SELECT  ime_uporabnika, priimek_uporbnika from users WHERE UserID = "."'".$teacherID."'";
-                                    $result3 = mysqli_query($conn, $sql);
-                                    while($row3 = mysqli_fetch_assoc($result3))
-                                    {
-                                        $teacherFirstName = $row3["ime_uporabnika"];
-                                        $teacherLastName = $row3["priimek_uporbnika"];
-    
-                                    }
-    
-                                    echo "<a href='Predmet.php?subject_id=$id' style='  text-decoration: none;color: black;'>
-                                        <div class='card'>
-                                            <div class='img'>
-                                            </div>
-                                            <div class='text'>
-                                                <div class='naslov'>
-                                                    $subjectName  
-                                                </div>
-                                                <div class='ucitelj'>
-                                                    $teacherFirstName $teacherLastName
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>";
-                                                            }
-                            }
-                          
-                        }
-                    }
-                    else{
-                        echo "<div style='font-family:font2;background-color:white; border: solid #dedfde 1px; width:400px;'> Nisi se vpisan v noben predmet! </div> ";
-                    }
-                }
-                
-            }else if ($jeUcitelj == true){
-                
-                if ($conn->connect_errno) {
-                    echo "Failed to connect to MySQL: " . $conn->connect_error;
-                    exit();
-                }
-                else{
-                    $sql = "SELECT SubjectID from smw.teacher_subjects WHERE UserID ="."'".$_SESSION["DbID"]."'";
-                    $result = mysqli_query($conn, $sql);
-                    if (mysqli_num_rows($result) > 0) {
-    
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            $id = $row["SubjectID"];
-                            $sql = "SELECT SubjectName from smw.subjects WHERE SubjectID ="."'".$id."'";
-                            $result1 = mysqli_query($conn, $sql);
-                            if (mysqli_num_rows($result1) > 0) {
-                                while($row1 = mysqli_fetch_assoc($result1)){
-                                    $subjectName = $row1["SubjectName"];
-    
-                                    $sql = "SELECT UserID from teacher_subjects WHERE SubjectID = "."'".$id."'";
-                                    $result2 = mysqli_query($conn, $sql);
-                                    while($row2 = mysqli_fetch_assoc($result2))
-                                    {
-                                        $teacherID = $row2["UserID"];
-    
-                                    }
-                                    $sql = "SELECT  ime_uporabnika, priimek_uporbnika from users WHERE UserID = "."'".$teacherID."'";
-                                    $result3 = mysqli_query($conn, $sql);
-                                    while($row3 = mysqli_fetch_assoc($result3))
-                                    {
-                                        $teacherFirstName = $row3["ime_uporabnika"];
-                                        $teacherLastName = $row3["priimek_uporbnika"];
-    
-                                    }
-    
-                                    echo "<a href='Predmet.php?subject_id=$id' style='  text-decoration: none;color: black;'>
-                                        <div class='card'>
-                                            <div class='img'>
-                                            </div>
-                                            <div class='text'>
-                                                <div class='naslov'>
-                                                    $subjectName  
-                                                </div>
-                                                <div class='ucitelj'>
-                                                    $teacherFirstName $teacherLastName
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>";
-                                                            }
-                            }
-                          
-                        }
-                    }
-                    else{
-                        echo "<div style='font-family:font2;background-color:white; border: solid #dedfde 1px; width:400px;'> Nisi se vpisan v noben predmet! </div> ";
-                    }
-                }
+            if ($userType == "ucitelj") {
+                echo "Predmeti, ki jih učiš:";
+            } else {
+                echo "Tvoji Predmeti:";
+            }
+            ?>
+        </div>
+        <div class="DisplayPredmetov">
+            <?php
+            if ($userType != "ucitelj") {
+                $sql = "SELECT SubjectID FROM smw.student_subjects WHERE UserID = '" . $_SESSION["DbID"] . "'";
+            } else {
+                $sql = "SELECT SubjectID FROM smw.teacher_subjects WHERE UserID = '" . $_SESSION["DbID"] . "'";
             }
             
-          
-            ?>
-       
-        
+            $result = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $id = $row["SubjectID"];
+                    $sql = "SELECT SubjectName FROM smw.subjects WHERE SubjectID = '$id'";
+                    $result1 = mysqli_query($conn, $sql);
+                    if (mysqli_num_rows($result1) > 0) {
+                        while ($row1 = mysqli_fetch_assoc($result1)) {
+                            $subjectName = $row1["SubjectName"];
+                            $sql = "SELECT UserID FROM teacher_subjects WHERE SubjectID = '$id'";
+                            $result2 = mysqli_query($conn, $sql);
+                            $teacherID = null;
+                            if (mysqli_num_rows($result2) > 0) {
+                                while ($row2 = mysqli_fetch_assoc($result2)) {
+                                    $teacherID = $row2["UserID"];
+                                }
+                                $sql = "SELECT ime_uporabnika, priimek_uporbnika FROM users WHERE UserID = '$teacherID'";
+                                $result3 = mysqli_query($conn, $sql);
+                                if (mysqli_num_rows($result3) > 0) {
+                                    while ($row3 = mysqli_fetch_assoc($result3)) {
+                                        $teacherFirstName = $row3["ime_uporabnika"];
+                                        $teacherLastName = $row3["priimek_uporbnika"];
+                                    }
+                                }
+                            }
 
-        
+                            echo "<a href='Predmet.php?subject_id=$id' style='text-decoration: none;color: black;'>
+                                <div class='card'>
+                                    <div class='img'></div>
+                                    <div class='text'>
+                                        <div class='naslov'>$subjectName</div>
+                                        <div class='ucitelj'>$teacherFirstName $teacherLastName</div>
+                                    </div>
+                                </div>
+                            </a>";
+                        }
+                    }
+                }
+            } else {
+                echo "<div style='font-family:font2;background-color:white; border: solid #dedfde 1px; width:400px;'> Nisi se vpisan v noben predmet!</div>";
+            }
+            ?>
         </div>
-        
-          
-  
     </div>
   </div>
 </div>
 
-<?php if ($jeUcitelj != true): ?>
-<div class="naloge">
-    <div class="besedilo">
-        Naloge:
-    </div>
+<?php if ($userType == "ucenec") : ?>
+    <div class="naloge">
+        <div class="besedilo">
+            Naloge:
+        </div>
 
-    <?php
+        <?php
         $sql = "SELECT AssignmentID FROM smw.student_assignments WHERE UserID="."'".$_SESSION["DbID"]."'";
         $result = mysqli_query($conn, $sql);
         if (mysqli_num_rows($result) > 0) {
-            while ($row = mysqli_fetch_assoc($result)){
+            while ($row = mysqli_fetch_assoc($result)) {
                 $AssignmentID = $row["AssignmentID"];
                 
-                $sql = "SELECT Title,DueDate,SubjectID FROM smw.assignments WHERE AssignmentID="."'".$AssignmentID."'";
+                $sql = "SELECT Title, DueDate, SubjectID FROM smw.assignments WHERE AssignmentID='" . $AssignmentID . "'";
                 $result1 = mysqli_query($conn, $sql);
                 if (mysqli_num_rows($result1) > 0) {
-                    while ($row1 = mysqli_fetch_assoc($result1)){
-                       $assTitle = $row1["Title"];
-                       $DueDate = $row1["DueDate"];
-                       $AssSubjectID = $row1["SubjectID"];
-                       $targetDate = new DateTime($DueDate);
-                       $currentDate = new DateTime();
-                       $interval = $currentDate->diff($targetDate);
-                       $daysLeft = $interval->format('%a');
+                    while ($row1 = mysqli_fetch_assoc($result1)) {
+                        $assTitle = $row1["Title"];
+                        $DueDate = $row1["DueDate"];
+                        $AssSubjectID = $row1["SubjectID"];
+                        $targetDate = new DateTime($DueDate);
+                        $currentDate = new DateTime();
+                        $interval = $currentDate->diff($targetDate);
+                        $daysLeft = $interval->format('%a');
                         
                         echo "  
                         <a href='Predmet.php?subject_id=$AssSubjectID' style='color:black;text-decoration:none'>
                             <div class='PrikazNaloge'>
-                                    <div>
-                                        Naloga: $assTitle
-                                    </div>
-                                
-                                    <div>
-                                        Datum: $DueDate
-                                    </div>
-                                    <div>
-                                        Preostalo: $daysLeft dni
-                                    </div>
+                                <div>
+                                    Naloga: $assTitle
+                                </div>
+                                <div>
+                                    Datum: $DueDate
+                                </div>
+                                <div>
+                                    Preostalo: $daysLeft dni
+                                </div>
                             </div>
-                        </a>
-                        ";
-                        
+                        </a>";
                     }
                 }
                 
             }
-        }
-        else {
+        } else {
             echo "<div style='font-family:font2;'> Trenutno nimas nalog!</div>";
         }
-    ?>
-</div>
-<?php else: ?>
-    <div>
-        <p> You are a teacher! </p>
+        ?>
     </div>
+<?php else : ?>
+    <?php echo "<div class ='uciteljDisplay'>
+    <div class='create'>
+        <div>
+            <img src='Slike/create1.png' class='createimg' />
+        </div>
+        <div class='predmetCreate'>
+            Ustvari Predmet!
+        </div>
+    </div>
+    <div class='create'>
+        <div>
+            <img src='Slike/create1.png' class='createimg' />
+        </div>
+        <div class='predmetCreate'>
+            Ustvari Predmet!
+        </div>
+    </div>
+    <div class='create'>
+        <div>
+            <img src='Slike/create1.png' class='createimg' />
+        </div>
+        <div class='predmetCreate'>
+            Ustvari Predmet!
+        </div>
+    </div>
+    <div class='create'>
+        <div>
+            <img src='Slike/create1.png' class='createimg' />
+        </div>
+        <div class='predmetCreate'>
+            Ustvari Predmet!
+        </div>
+    </div>
+</div>
+"; ?>
 <?php endif; ?>
+
+
 <script>
     function getRandomColor() {
         const letters = '0123456789ABCDEF';
