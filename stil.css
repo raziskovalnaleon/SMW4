@@ -361,6 +361,49 @@
     font-family:font2;
     font-size:20px;
 }
+.uciteljDisplay {
+    margin-top: 2%;
+    margin-left: 5%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background-color: white;
+    border: solid #dedfde 1px;
+    border-radius: 5px ;    
+    width: 90% ;
+}
+
+.createimg {
+    width: 85px;
+}
+
+.predmetCreate {
+    font-family: 'font2';
+    font-size: 18px;
+}
+
+.create {
+    background-color: white;
+    border: solid #dedfde 1px;
+    border-radius: 5px;
+    width: 60%;
+    height: 150px;
+    text-align: center;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.create:hover {
+    cursor: pointer;
+    border-color: rgb(134, 130, 130);
+    border-width: 2px;
+    border-style: solid;
+}
+
+
+
 @media (max-width: 1200px) {
     .DisplayPredmetov {
         grid-template-columns: repeat(3, 1fr);

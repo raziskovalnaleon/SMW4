@@ -21,6 +21,16 @@ if (isset($_GET['subject_id'])) {
 
 
 $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
+$username = $_SESSION["uname"];
+$conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
+$sql = "SELECT UserType FROM smw.users WHERE Username = '$username'";
+$result = mysqli_query($conn, $sql);
+if (mysqli_num_rows($result) > 0){
+   while ($row = mysqli_fetch_assoc($result)){
+       $userType = $row["UserType"];
+   }
+   
+}
 
 
 $sql = "SELECT SubjectName, Description FROM smw.subjects WHERE SubjectID='$subjectID'";
@@ -93,6 +103,13 @@ $taskCount = mysqli_num_rows($result);
             </div>
         </div>
     </div>
+    <div class="besedilo" >
+        <?php if($userType == "ucitelj"){
+            echo " <a href='#' style='font-size:17px;'>Dodaj Nalogo |</a>
+                <a href='#' style='font-size:17px;'> Dodaj Razred</a>";
+        } ?>
+ 
+    </div>
 
     <div class="NalogePredmeta">
         <div class="InfoBesedilo">
@@ -111,6 +128,7 @@ $taskCount = mysqli_num_rows($result);
                             <button class='collapsible task-align'>
                                 <img src='Slike/TaskIcon.png'  class='TaskSlika'>
                                 <span style='margin-left: 10px;'>$naslovNaloge</span>
+                              
                             </button>
                             <div class='content'>
                                 <div class='DodatenInfo'>
@@ -124,6 +142,12 @@ $taskCount = mysqli_num_rows($result);
                                     </div>
                                     <div>
                                         <a href=''>Več podatkov</a>
+                                    </div>
+                                    <div class='naloga'>
+                                        <a href'> Izbriši nalogo</a>
+                                    </div>
+                                     <div>
+                                        <a href> Uredi nalogo</a>
                                     </div>
                                 </div>
                             </div>
