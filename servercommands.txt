@@ -15,3 +15,7 @@
    15  ipconfig
    16  sudo apt install net-tools
    17  ifconfig
+   
+   debian-sys-maint
+   lIxT6C68gaxXvVTk
+
