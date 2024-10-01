@@ -362,8 +362,9 @@
 }
 /*-----------------Footer---------------*/
 footer{
-    background: #9f53b6;
+    background: #d9e3ee;
     padding-top: 50px;
+    font-family: Font2;
 }
 .container{
     width: 1140px;
