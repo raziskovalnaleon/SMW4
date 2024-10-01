@@ -4,8 +4,8 @@ $Serverusername = "projekt";
 $Serverpassword = "gesloprojekta";
 $dbname = "smw";
 session_start();
-
-
+$dbID = $_SESSION["DbID"];
+$jeVPredmetu = false;
 if (!isset($_SESSION["uname"]) || !isset($_SESSION["pass"])) {
     header("location:Registration.php");
     exit();
@@ -21,6 +21,21 @@ if (isset($_GET['subject_id'])) {
 
 
 $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
+
+$sql = "SELECT SubjectID from student_subjects WHERE UserID  ='$dbID'";
+$result = mysqli_query($conn, $sql);
+if (mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)){
+       if($row["SubjectID"] == $subjectID ){
+            $jeVPredmetu = true;
+       }
+    }
+}
+if($jeVPredmetu == false)
+{
+    header("location:dashboard.php");
+    exit();
+}
 
 
 $sql = "SELECT SubjectName, Description FROM smw.subjects WHERE SubjectID='$subjectID'";
