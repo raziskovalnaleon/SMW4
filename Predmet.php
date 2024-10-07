@@ -41,6 +41,17 @@ if (mysqli_num_rows($result) > 0) {
        }
     }
 }
+
+$sql = "SELECT SubjectID from teacher_subjects WHERE UserID  ='$dbID'";
+$result = mysqli_query($conn, $sql);
+if (mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)){
+       if($row["SubjectID"] == $subjectID ){
+            $jeVPredmetu = true;
+       }
+    }
+}
+
 if($jeVPredmetu == false)
 {
     header("location:dashboard.php");
@@ -120,7 +131,7 @@ $taskCount = mysqli_num_rows($result);
     </div>
     <div class="besedilo" >
         <?php if($userType == "ucitelj"){
-            echo " <a href='#' style='font-size:17px;'>Dodaj Nalogo |</a>
+            echo " <a href='DodajNalogo.php?subject_id=$subjectID'' style='font-size:17px;'>Dodaj Nalogo |</a>
                 <a href='#' style='font-size:17px;'> Dodaj Razred</a>";
         } ?>
  
