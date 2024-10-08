@@ -4,8 +4,8 @@ $Serverusername = "projekt";
 $Serverpassword = "gesloprojekta";
 $dbname = "smw";
 session_start();
-
-
+$dbID = $_SESSION["DbID"];
+$jeVPredmetu = false;
 if (!isset($_SESSION["uname"]) || !isset($_SESSION["pass"])) {
     header("location:Registration.php");
     exit();
@@ -21,6 +21,42 @@ if (isset($_GET['subject_id'])) {
 
 
 $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
+$username = $_SESSION["uname"];
+$conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
+$sql = "SELECT UserType FROM smw.users WHERE Username = '$username'";
+$result = mysqli_query($conn, $sql);
+if (mysqli_num_rows($result) > 0){
+   while ($row = mysqli_fetch_assoc($result)){
+       $userType = $row["UserType"];
+   }
+   
+}
+
+$sql = "SELECT SubjectID from student_subjects WHERE UserID  ='$dbID'";
+$result = mysqli_query($conn, $sql);
+if (mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)){
+       if($row["SubjectID"] == $subjectID ){
+            $jeVPredmetu = true;
+       }
+    }
+}
+
+$sql = "SELECT SubjectID from teacher_subjects WHERE UserID  ='$dbID'";
+$result = mysqli_query($conn, $sql);
+if (mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)){
+       if($row["SubjectID"] == $subjectID ){
+            $jeVPredmetu = true;
+       }
+    }
+}
+
+if($jeVPredmetu == false)
+{
+    header("location:dashboard.php");
+    exit();
+}
 
 
 $sql = "SELECT SubjectName, Description FROM smw.subjects WHERE SubjectID='$subjectID'";
@@ -93,6 +129,13 @@ $taskCount = mysqli_num_rows($result);
             </div>
         </div>
     </div>
+    <div class="besedilo" >
+        <?php if($userType == "ucitelj"){
+            echo " <a href='DodajNalogo.php?subject_id=$subjectID'' style='font-size:17px;'>Dodaj Nalogo |</a>
+                <a href='#' style='font-size:17px;'> Dodaj Razred</a>";
+        } ?>
+ 
+    </div>
 
     <div class="NalogePredmeta">
         <div class="InfoBesedilo">
@@ -111,6 +154,7 @@ $taskCount = mysqli_num_rows($result);
                             <button class='collapsible task-align'>
                                 <img src='Slike/TaskIcon.png'  class='TaskSlika'>
                                 <span style='margin-left: 10px;'>$naslovNaloge</span>
+                              
                             </button>
                             <div class='content'>
                                 <div class='DodatenInfo'>
@@ -124,6 +168,12 @@ $taskCount = mysqli_num_rows($result);
                                     </div>
                                     <div>
                                         <a href=''>Več podatkov</a>
+                                    </div>
+                                    <div class='naloga'>
+                                        <a href'> Izbriši nalogo</a>
+                                    </div>
+                                     <div>
+                                        <a href> Uredi nalogo</a>
                                     </div>
                                 </div>
                             </div>

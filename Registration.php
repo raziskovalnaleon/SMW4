@@ -122,12 +122,12 @@
                     Ustvari račun
                 </div>
                <div style="margin: 20px;">
-                <div class="PrikazPodatkov">Name: </div><input type="text" name="RegistratioName" class="input"><br>
-                <div class="PrikazPodatkov">Surname: </div> <input type="text" name="surname" class="input"><br>
-                <div class="PrikazPodatkov">Email: </div><input type="email" name="email" class="input"><br>
-                <div class="PrikazPodatkov">Username: </div> <input type="text" name="RegistrationUsername" class="input"><br>
-                <div class="PrikazPodatkov">Password: </div> <input type="password" name="RegistrationPassword" class="input"><br>
-                <div class="PrikazPodatkov">Retype password: </div> <input type="password" name="ReTypePassword" class="input"><br>
+                <div class="PrikazPodatkov">Name: </div><input type="text" name="RegistratioName" class="input" autocomplete="off"><br>
+                <div class="PrikazPodatkov">Surname: </div> <input type="text" name="surname" class="input" autocomplete="off"><br>
+                <div class="PrikazPodatkov">Email: </div><input type="email" name="email" class="input" autocomplete="off"><br>
+                <div class="PrikazPodatkov">Username: </div> <input type="text" name="RegistrationUsername" class="input" autocomplete="off"><br>
+                <div class="PrikazPodatkov">Password: </div> <input type="password" name="RegistrationPassword" class="input" autocomplete="off"><br>
+                <div class="PrikazPodatkov">Retype password: </div> <input type="password" name="ReTypePassword" class="input" autocomplete="off"><br>
                 <div style="font-family:FontBesedilo;">
 
                 </div>
@@ -148,8 +148,8 @@
                     Prijavi se!
                 </div>
                 <div style="margin: 20px;">
-                    <div class="PrikazPodatkov">Username </div> <input type="text" name="username"  class="input"><br>
-                    <div class="PrikazPodatkov">  Password: </div> <input type="password" name="password"  class="input"><br>
+                    <div class="PrikazPodatkov">Username </div> <input type="text" name="username"  class="input" autocomplete="off"><br>
+                    <div class="PrikazPodatkov">  Password: </div> <input type="password" name="password"  class="input" autocomplete="off"><br>
                         
                     <input type="submit" name="LoginButton" class="submitbutton" value="LOGIN">
                     <div ></div>
