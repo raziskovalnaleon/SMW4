@@ -3,6 +3,7 @@ $servername = "localhost";
 $Serverusername = "projekt";
 $Serverusername = "gesloprojekta";
 $dbname = "smw";
+
 session_start();
 
 
@@ -11,15 +12,30 @@ if (!isset($_SESSION["uname"]) || !isset($_SESSION["pass"])) {
     exit();
 }
 
+$dbId = $_SESSION['dbID'];
+
+$sql = "SELECT userType from  users where UserID = $dbId";
+
+$imeUser = $_SESSION['ime_uporabnika'];
+
+$priimekUser = $_SESSION['priimek_uporbnika'];
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $response = [];
     if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = 'uploads/'; // Directory where files will be saved
+        if($sql  == 'ucenec'){
+
+            $uploadDir = 'uploads/Ucenec/'; // Directory where files will be saved
+        }
+        else{
+
+            $uploadDir= 'uploads/Ucitelj/';
+        }
+        
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true); // Create directory if it doesn't exist
         }
-
         $fileTmpPath = $_FILES['file']['tmp_name'];
         $fileName = $_FILES['file']['name'];
         $fileSize = $_FILES['file']['size'];
@@ -28,9 +44,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fileExtension = strtolower(end($fileNameCmps));
 
         // Sanitize file name
-        $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
+        $newFileName = md5(time() . $fileName). $imeUser . $priimekUser.'.' . $fileExtension;
 
-        $allowedfileExtensions = array('jpg', 'gif', 'png', 'txt', 'pdf'); // Allowed extensions
+        $allowedfileExtensions = array('jpg', 'gif', 'png', 'txt', 'pdf', 'docx', 'pptx', 'doc'); // Allowed extensions
 
         if (in_array($fileExtension, $allowedfileExtensions)) {
             $uploadFileDir = $uploadDir . $newFileName;
