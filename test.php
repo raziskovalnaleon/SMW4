@@ -1,5 +1,17 @@
 <?php
-// Handle file upload if request method is POST
+$servername = "localhost";
+$Serverusername = "projekt";
+$Serverusername = "gesloprojekta";
+$dbname = "smw";
+session_start();
+
+
+if (!isset($_SESSION["uname"]) || !isset($_SESSION["pass"])) {
+    header("location:Registration.php");
+    exit();
+}
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $response = [];
     if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
