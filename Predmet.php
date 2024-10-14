@@ -7,6 +7,8 @@ session_start();
 $dbID = $_SESSION["DbID"];
 $jeVPredmetu = false;
 
+$dodanirazred = array();
+
 if (!isset($_SESSION["uname"]) || !isset($_SESSION["pass"])) {
     header("location:Registration.php");
     exit();
@@ -17,9 +19,44 @@ $taskID = "";
 if (isset($_GET['subject_id'])) {
     $subjectID = $_GET['subject_id'];
 } else {
-    header("location:dashboard.php");
+  
+    if(isset($_POST['subject_id'])){
+        $subjectID = $_GET['subject_id'];
+       
+    }
+    else{
+        header("location:dashboard.php");
+    }
+ 
+   
     exit();
 }
+
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+    if((isset($_POST['addclassbttn']))){
+        if (isset($_POST['divData'])) {
+            $divData = $_POST['divData'];
+            echo $divData;
+            
+            echo strlen($divData);
+            // $beseda ="";
+            // $zadnjacrka ="";
+            // for($i = 0; $i<strlen($divData); $i++){
+            //     if($divData[$i] != " "){
+            //         $beseda = $beseda.$divData[$i];
+            //     }
+            //     else{
+            //         array_push($dodanirazred,$beseda);
+            //     }
+                
+            // }
+
+        } 
+    }
+   
+}
+// echo "razredi:";
+// print_r($dodanirazred);
 
 $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
 $username = $_SESSION["uname"];
@@ -189,7 +226,7 @@ $taskCount = mysqli_num_rows($result);
         }
 
         .izberirazred {
-            display: none; /* Hidden by default */
+            display: none; 
             position: fixed;
             z-index: 1;
             left: 0;
@@ -197,7 +234,7 @@ $taskCount = mysqli_num_rows($result);
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+            background-color: rgba(0, 0, 0, 0.4); 
             font-family: font2;
         }
 
@@ -228,7 +265,7 @@ $taskCount = mysqli_num_rows($result);
     </style>
 </head>
 <body class="background">
-<div class="navbar">
+<!-- <div class="navbar">
     <a href="#home" class="logo">ŠC Celje</a>
 
     <div class="nav-links">
@@ -236,7 +273,7 @@ $taskCount = mysqli_num_rows($result);
         <a href="#"><?php echo $_SESSION["uname"] ?></a>
         <img src="Slike/ProfilnaSlika.png" alt="" class="profilnaslika">
     </div> 
-</div>
+</div> -->
 
 <div class="PodatkiPredmetu">
     <div class="InfoBesedilo">
@@ -257,7 +294,7 @@ $taskCount = mysqli_num_rows($result);
 <div class="besedilo">
     <?php if($userType == "ucitelj"){
         echo " <a href='DodajNalogo.php?subject_id=$subjectID'' style='font-size:17px;'>Dodaj Nalogo |</a>
-            <a href='#' style='font-size:17px;' onclick='showClassPopup()'> Dodaj Razred</a>";
+            <a href='#'  style='font-size:17px;' onclick='showClassPopup()'> Dodaj Razred</a>";
     } ?>
 </div>
 
@@ -355,10 +392,11 @@ $taskCount = mysqli_num_rows($result);
         <div style="margin-left:5%;margin-top: 5px;">
             Dodani razredi:
         </div>
-        <div class="dodanirazredi" id="addedclasses" style="min-height:20px;">  
-           
+        <div type="text" class="dodanirazredi" id="addedclasses" style="min-height:20px;">
+            
         </div>
-
+           
+       
         <div style="margin-left:5%;margin-top: 5px;">
             Vsi razredi:
         </div>
@@ -369,24 +407,34 @@ $taskCount = mysqli_num_rows($result);
             if (mysqli_num_rows($result) > 0) {
                while ($row = mysqli_fetch_assoc($result)) {
                    $razred = $row["razred"];
-                   echo "<div class='razredblock'>$razred</div>";
+                   echo "<pre class='razredblock' style=' font-family: font2;'> $razred </pre>";
                }
             }
             ?>
         </div>
-        <input type="button" class="bttnaddclass1" value="Potrdi">
+
+    <form method="post" id="addclass" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?subject_id=" . $subjectID; ?>" onsubmit="setDivData()">
+        <input type="hidden" id="divDataInput" name="divData" value="">
+        <button type="submit" class="bttnaddclass1" id="addclassbttn" value="Potrdi" name="addclassbttn">Potrdi</button>
+    </form>
+
+     
     </div>
 </div>
 
 
 
  <script>
+    function setDivData() {
+        document.getElementById('divDataInput').value = document.getElementById('addedclasses').innerText ;
+    }
+
     function showClassPopup() {
-        document.getElementById("classPopup").style.display = "block"; // Show the popup
+        document.getElementById("classPopup").style.display = "block"; 
     }
 
     function closeClassPopup() {
-        document.getElementById("classPopup").style.display = "none"; // Hide the popup
+        document.getElementById("classPopup").style.display = "none";
     }
   
     function showDeleteModal(taskID) {
