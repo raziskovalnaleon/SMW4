@@ -68,7 +68,6 @@
     </div> 
     
 </div>
-
 <div class="profile-main">
     <div class="profile-data">
         <div class="profile-data-title">

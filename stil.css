@@ -650,9 +650,11 @@ a:hover{
 
 .profile-data-title{
     text-align: right;
+
+    font-weight: 500;
 }
 
 .profile-data-info{
     text-align: left;
-    padding-left: 1vw;
+    padding-left: 0.5vw;
 }
