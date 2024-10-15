@@ -75,6 +75,7 @@
 
     <div class="nav-links">
         <a href="#home">Domov</a>
+        <a href="test.php">Test</a>
         <a href="#"><?php echo $_SESSION["uname"] ?></a>
         <img src="Slike/ProfilnaSlika.png" alt="" class="profilnaslika">
         <form method="post" style="display:inline;">

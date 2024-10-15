@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
 $Serverusername = "projekt";
-$Serverusername = "gesloprojekta";
+$Serverpassword = "gesloprojekta";
 $dbname = "smw";
 
 session_start();
@@ -12,19 +12,25 @@ if (!isset($_SESSION["uname"]) || !isset($_SESSION["pass"])) {
     exit();
 }
 
-$dbId = $_SESSION['dbID'];
+$dbId = $_SESSION['DbID'];
 
 $sql = "SELECT userType from  users where UserID = $dbId";
-
-$imeUser = $_SESSION['ime_uporabnika'];
-
-$priimekUser = $_SESSION['priimek_uporbnika'];
-
+$username = $_SESSION["uname"];
+$conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
+$sql = "SELECT * FROM smw.users WHERE Username = '$username'";
+$result = mysqli_query($conn, $sql);
+if (mysqli_num_rows($result) > 0){
+    while ($row = mysqli_fetch_assoc($result)){
+        $imeUser = $row["ime_uporabnika"];
+        $priimekUser = $row["priimek_uporbnika"];
+        $status = $row["UserType"];
+    }
+ }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $response = [];
     if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
-        if($sql  == 'ucenec'){
+        if($status  == 'ucenec'){
 
             $uploadDir = 'uploads/Ucenec/'; // Directory where files will be saved
         }
