@@ -7,7 +7,7 @@ session_start();
 $dbID = $_SESSION["DbID"];
 $jeVPredmetu = false;
 
-$dodanirazred = array();
+$dodanirazred = [];
 
 if (!isset($_SESSION["uname"]) || !isset($_SESSION["pass"])) {
     header("location:Registration.php");
@@ -31,32 +31,61 @@ if (isset($_GET['subject_id'])) {
    
     exit();
 }
-
+$conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     if((isset($_POST['addclassbttn']))){
         if (isset($_POST['divData'])) {
             $divData = $_POST['divData'];
-            echo $divData;
-            
-            echo strlen($divData);
-            // $beseda ="";
-            // $zadnjacrka ="";
-            // for($i = 0; $i<strlen($divData); $i++){
-            //     if($divData[$i] != " "){
-            //         $beseda = $beseda.$divData[$i];
-            //     }
-            //     else{
-            //         array_push($dodanirazred,$beseda);
-            //     }
-                
-            // }
+            $prejsnacrka="";
+            $beseda = "";
+            for($i = 0;$i<strlen($divData);$i++)
+            {
+              if(($prejsnacrka == " " || $prejsnacrka =="" ) && $divData[$i] != " "){
+                $beseda  =$beseda.$divData[$i];
+                $prejsnacrka=$divData[$i];
+              }
+              else if ($prejsnacrka != " " && $divData[$i] !=" "){
+                $beseda  =$beseda.$divData[$i];
+                $prejsnacrka=$divData[$i];
+              }
+              else if($prejsnacrka != " " && $divData[$i] ==" ")
+              {
+                array_push($dodanirazred,$beseda);
+                $prejsnacrka = $divData[$i];
+                $beseda ="";
+              }
 
+            }
         } 
     }
    
 }
-// echo "razredi:";
-// print_r($dodanirazred);
+
+for($i=0;$i<sizeof($dodanirazred);$i++){
+    if($dodanirazred[$i]!=""){
+        $class =$dodanirazred[$i];
+        $sql ="SELECT UserID FROM smw.users WHERE razred='$class'";
+
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)){
+                $Userid=$row["UserID"];
+                $sql = "INSERT INTO smw.student_subjects(UserID,SubjectID) values ('$Userid','$subjectID')";
+                if (mysqli_query($conn, $sql)) {
+                    $loginerror = "User successfully created!";
+                    header("Location:Predmet.php?subject_id=" . "$subject_id");
+                } else {
+                    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+                }
+            }
+        }
+    }
+   
+}
+
+
+    
+
 
 $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
 $username = $_SESSION["uname"];
@@ -265,7 +294,7 @@ $taskCount = mysqli_num_rows($result);
     </style>
 </head>
 <body class="background">
-<!-- <div class="navbar">
+<div class="navbar">
     <a href="#home" class="logo">ŠC Celje</a>
 
     <div class="nav-links">
@@ -273,7 +302,7 @@ $taskCount = mysqli_num_rows($result);
         <a href="#"><?php echo $_SESSION["uname"] ?></a>
         <img src="Slike/ProfilnaSlika.png" alt="" class="profilnaslika">
     </div> 
-</div> -->
+</div>
 
 <div class="PodatkiPredmetu">
     <div class="InfoBesedilo">
@@ -393,7 +422,17 @@ $taskCount = mysqli_num_rows($result);
             Dodani razredi:
         </div>
         <div type="text" class="dodanirazredi" id="addedclasses" style="min-height:20px;">
-            
+            <?php
+                $sql ="razred from smw.users JOIN smw.student_subjects ON smw.users.UserID = smw.student_subjects.UserID ";
+                $result = mysqli_query($conn, $sql);
+                if (mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)){
+                        $zedodani = $row["razred"];
+                        echo "<pre class='razredblock' style=' font-family: font2;'>$zedodani  </pre>";
+                    }
+                }
+
+            ?>
         </div>
            
        
