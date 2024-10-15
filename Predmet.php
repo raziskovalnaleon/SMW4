@@ -6,7 +6,7 @@ $dbname = "smw";
 session_start();
 $dbID = $_SESSION["DbID"];
 $jeVPredmetu = false;
-
+$error="";
 $dodanirazred = [];
 
 if (!isset($_SESSION["uname"]) || !isset($_SESSION["pass"])) {
@@ -57,25 +57,40 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
             }
         } 
-    }
-   
-}
+        $sql = "DELETE from smw.student_subjects WHERE  SubjectID ='$subjectID'";
+                if ($conn->query($sql) === TRUE) {
+                    echo "Record deleted successfully";
+                  } else {
+                    echo "Error deleting record: " . $conn->error;
+                  }
+        for ($i = 0; $i < sizeof($dodanirazred); $i++) {
+            if ($dodanirazred[$i] != "") {
 
-for($i=0;$i<sizeof($dodanirazred);$i++){
-    if($dodanirazred[$i]!=""){
-        $class =$dodanirazred[$i];
-        $sql ="SELECT UserID FROM smw.users WHERE razred='$class'";
-
-        $result = mysqli_query($conn, $sql);
-        if (mysqli_num_rows($result) > 0) {
-            while ($row = mysqli_fetch_assoc($result)){
-                $Userid=$row["UserID"];
-                $sql = "INSERT INTO smw.student_subjects(UserID,SubjectID) values ('$Userid','$subjectID')";
-                if (mysqli_query($conn, $sql)) {
-                    $loginerror = "User successfully created!";
-                    header("Location:Predmet.php?subject_id=" . "$subject_id");
-                } else {
-                    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+                
+                $class = $dodanirazred[$i];
+                $sql = "SELECT UserID FROM smw.users WHERE razred='$class'";
+                
+                $result = mysqli_query($conn, $sql);
+                if (mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $Userid = $row["UserID"];
+                        
+                
+                        $checkSql = "SELECT * FROM smw.student_subjects WHERE UserID='$Userid' AND SubjectID='$subjectID'";
+                        $checkResult = mysqli_query($conn, $checkSql);
+                        
+                        if (mysqli_num_rows($checkResult) == 0) {
+                            
+                            $sql = "INSERT INTO smw.student_subjects(UserID, SubjectID) VALUES ('$Userid', '$subjectID')";
+                            if (mysqli_query($conn, $sql)) {
+                               
+                            } else {
+                                $error = "Error: " . mysqli_error($conn);
+                            }
+                        } else {
+                            $error = "Razred je že v predmetu";
+                        }
+                    }
                 }
             }
         }
@@ -295,16 +310,16 @@ $taskCount = mysqli_num_rows($result);
 </head>
 <body class="background">
 <div class="navbar">
-    <a href="#home" class="logo">ŠC Celje</a>
-
-    <div class="nav-links">
-        <a href="#home">Domov</a>
-        <a href="#"><?php echo $_SESSION["uname"] ?></a>
-        <img src="Slike/ProfilnaSlika.png" alt="" class="profilnaslika">
-    </div> 
+        <a href="Dashboard.php" class="logo">ŠC Celje</a>
+        <div class="nav-links">
+            <a href="#home">Domov</a>
+            <a href="#"><?php echo $_SESSION["uname"] ?></a>
+            <img src="Slike/ProfilnaSlika.png" alt="" class="profilnaslika">
+        </div> 
 </div>
 
 <div class="PodatkiPredmetu">
+    
     <div class="InfoBesedilo">
         <div class="ImeInfo"><?php echo $name ?></div>
         <hr style="margin-top: 10px;margin-bottom: 10px;">
@@ -317,6 +332,10 @@ $taskCount = mysqli_num_rows($result);
         <div class="InfoText">
             <b>Število nalog</b> : <?php echo $taskCount ?>
         </div>
+    </div>
+
+    <div style="margin-left:20px;margin-bottom:20px;color:red;">
+        <?php echo $error;?>
     </div>
 </div>
 
@@ -421,18 +440,22 @@ $taskCount = mysqli_num_rows($result);
         <div style="margin-left:5%;margin-top: 5px;">
             Dodani razredi:
         </div>
-        <div type="text" class="dodanirazredi" id="addedclasses" style="min-height:20px;">
-            <?php
-                $sql ="razred from smw.users JOIN smw.student_subjects ON smw.users.UserID = smw.student_subjects.UserID ";
-                $result = mysqli_query($conn, $sql);
-                if (mysqli_num_rows($result) > 0) {
-                    while ($row = mysqli_fetch_assoc($result)){
-                        $zedodani = $row["razred"];
-                        echo "<pre class='razredblock' style=' font-family: font2;'>$zedodani  </pre>";
-                    }
-                }
-
-            ?>
+        <?php
+        $addedClasses = [];
+        $sql = "SELECT razred from smw.users JOIN smw.student_subjects ON smw.users.UserID = smw.student_subjects.UserID
+        WHERE smw.student_subjects.SubjectID = '$subjectID' AND smw.student_subjects.UserID = smw.users.UserID";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $addedClasses[] = $row["razred"];
+            }
+        } ?>
+       <div type="text" class="dodanirazredi" id="addedclasses" style="min-height:20px;">
+        <?php
+        foreach ($addedClasses as $class) {
+            echo "<pre class='razredblock' style='font-family: font2;'> $class </pre>";
+        }
+        ?>
         </div>
            
        

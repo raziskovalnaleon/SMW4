@@ -30,14 +30,12 @@ if (!isset($_SESSION["uname"]) || !isset($_SESSION["pass"])) {
     <title>Oddaja</title>
     <link rel="stylesheet" href="stil.css">
 <body class="background">
-    <div class="navbar">
-        <a href="#home" class="logo">ŠC Celje</a>
+<div class="navbar">
+        <a href="Dashboard.php" class="logo">ŠC Celje</a>
         <div class="nav-links">
             <a href="#home">Domov</a>
             <a href="#"><?php echo $_SESSION["uname"] ?></a>
             <img src="Slike/ProfilnaSlika.png" alt="" class="profilnaslika">
-        
-            
         </div> 
     </div>
 

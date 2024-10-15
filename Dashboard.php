@@ -71,7 +71,7 @@
 <body class="background">
 
 <div class="navbar">
-    <a href="#home" class="logo">ŠC Celje</a>
+    <a href="Dashobard.php" class="logo">ŠC Celje</a>
 
     <div class="nav-links">
         <a href="#home">Domov</a>
