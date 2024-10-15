@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fileExtension = strtolower(end($fileNameCmps));
 
         // Sanitize file name
-        $newFileName = md5(time() . $fileName). $imeUser . $priimekUser.'.' . $fileExtension;
+        $newFileName = $fileName. $imeUser . $priimekUser.'.' . $fileExtension;
 
         $allowedfileExtensions = array('jpg', 'gif', 'png', 'txt', 'pdf', 'docx', 'pptx', 'doc'); // Allowed extensions
 
