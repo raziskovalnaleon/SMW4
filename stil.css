@@ -627,3 +627,32 @@ a:hover{
     font-size: 16px;
     padding: 7px;
 }
+
+/*----------------------PROFILE-----------------------------*/
+.profile-main{
+    width: 50vw;
+    border: rgb(177, 176, 176) 1px solid;
+    border-radius: 30px;
+
+    margin-left: 25vw;
+    margin-top: 15vh;
+    display: grid;
+    grid-template-columns: auto;
+}
+
+.profile-data{
+    margin-top: 4vh;
+    margin-bottom: 4vh;
+    text-align: center;
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.profile-data-title{
+    text-align: right;
+}
+
+.profile-data-info{
+    text-align: left;
+    padding-left: 1vw;
+}

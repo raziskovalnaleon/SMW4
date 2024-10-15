@@ -74,9 +74,9 @@
     <a href="#home" class="logo">ŠC Celje</a>
 
     <div class="nav-links">
-        <a href="#home">Domov</a>
-        <a href="<?php include($_SERVER["DOCUMENT_ROOT"] . '/Profile.php');?>"><?php echo $_SESSION["uname"] ?></a>
-        <a href="<?php include($_SERVER["DOCUMENT_ROOT"] . '/Profile.php');?>">
+        <a href="Dashboard.php">Domov</a>
+        <a href=""><?php echo $_SESSION["uname"] ?></a>
+        <a href="Profile.php">
             <img src="Slike/ProfilnaSlika.png" alt="" class="profilnaslika">
         </a>
         <form method="post" style="display:inline;">
