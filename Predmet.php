@@ -92,6 +92,33 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         }
                     }
                 }
+
+                $sql = "SELECT AssignmentID FROM smw.assignments WHERE SubjectID='$subjectID'";
+                
+                $result = mysqli_query($conn, $sql);
+                if (mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $assID = $row["AssignmentID"];
+                        
+                  
+                        $sql = "SELECT UserID from smw.users WHERE razred = '$class'";
+                        $result = mysqli_query($conn, $sql);
+                        if (mysqli_num_rows($result) > 0) {
+                            while ($row = mysqli_fetch_assoc($result)) {
+                               
+                                $uID = $row["UserID"];
+                                $sql = "INSERT INTO smw.student_assignments(UserID, AssignmentID) VALUES ('$uID', '$assID')";
+                                if (mysqli_query($conn, $sql)) {
+                               
+                                } else {
+                                    $error = "Error: " . mysqli_error($conn);
+                                }
+                            }
+                        }
+                    }
+                }
+
+
             }
         }
     }
@@ -309,14 +336,14 @@ $taskCount = mysqli_num_rows($result);
     </style>
 </head>
 <body class="background">
-<div class="navbar">
+<!-- <div class="navbar">
         <a href="Dashboard.php" class="logo">ŠC Celje</a>
         <div class="nav-links">
             <a href="#home">Domov</a>
             <a href="#"><?php echo $_SESSION["uname"] ?></a>
             <img src="Slike/ProfilnaSlika.png" alt="" class="profilnaslika">
         </div> 
-</div>
+</div> -->
 
 <div class="PodatkiPredmetu">
     

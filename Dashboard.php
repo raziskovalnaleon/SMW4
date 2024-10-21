@@ -162,39 +162,57 @@
         $sql = "SELECT AssignmentID FROM smw.student_assignments WHERE UserID="."'".$_SESSION["DbID"]."'";
         $result = mysqli_query($conn, $sql);
         if (mysqli_num_rows($result) > 0) {
-            while ($row = mysqli_fetch_assoc($result)) {
-                $AssignmentID = $row["AssignmentID"];
-                
-                $sql = "SELECT Title, DueDate, SubjectID FROM smw.assignments WHERE AssignmentID='" . $AssignmentID . "'";
-                $result1 = mysqli_query($conn, $sql);
-                if (mysqli_num_rows($result1) > 0) {
-                    while ($row1 = mysqli_fetch_assoc($result1)) {
-                        $assTitle = $row1["Title"];
-                        $DueDate = $row1["DueDate"];
-                        $AssSubjectID = $row1["SubjectID"];
-                        $targetDate = new DateTime($DueDate);
-                        $currentDate = new DateTime();
-                        $interval = $currentDate->diff($targetDate);
-                        $daysLeft = $interval->format('%a');
-                        
-                        echo "  
-                        <a href='Predmet.php?subject_id=$AssSubjectID' style='color:black;text-decoration:none'>
-                            <div class='PrikazNaloge'>
-                                <div>
-                                    Naloga: $assTitle
+            $sql = "SELECT AssignmentID FROM smw.student_assignments WHERE UserID="."'".$_SESSION["DbID"]."'";
+            $result = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $AssignmentID = $row["AssignmentID"];
+                    
+                    $sql = "SELECT Title, DueDate, SubjectID FROM smw.assignments WHERE AssignmentID='" . $AssignmentID . "'";
+                    $result1 = mysqli_query($conn, $sql);
+                    if (mysqli_num_rows($result1) > 0) {
+                        while ($row1 = mysqli_fetch_assoc($result1)) {
+                            $assTitle = $row1["Title"];
+                            $DueDate = $row1["DueDate"];
+                            $AssSubjectID = $row1["SubjectID"];
+                            $targetDate = new DateTime($DueDate);
+                            $currentDate = new DateTime();
+                            $interval = $currentDate->diff($targetDate);
+                            $daysLeft = $interval->format('%a');
+
+                            $sql="SELECT SubjectName FROM smw.subjects WHERE SubjectID='$AssSubjectID' ";
+                            $result2 = mysqli_query($conn, $sql);
+                            if (mysqli_num_rows($result1) > 0) {
+                                while ($row2 = mysqli_fetch_assoc($result2)) {
+                                    $subjectime = $row2["SubjectName"];
+                                }
+                            }
+
+                            
+                            echo "  
+                            <a href='Predmet.php?subject_id=$AssSubjectID' style='color:black;text-decoration:none'>
+                                <div class='PrikazNaloge'>
+                                    <div>
+                                        Predmet: $subjectime
+                                    </div>
+                                    <div>
+                                        Naloga: $assTitle
+                                    </div>
+                                    <div>
+                                        Datum: $DueDate
+                                    </div>
+                                    <div>
+                                        Preostalo: $daysLeft dni
+                                    </div>
                                 </div>
-                                <div>
-                                    Datum: $DueDate
-                                </div>
-                                <div>
-                                    Preostalo: $daysLeft dni
-                                </div>
-                            </div>
-                        </a>";
+                            </a>";
+                        }
                     }
+                    
                 }
-                
             }
+                
+            
         } else {
             echo "<div style='font-family:font2;'> Trenutno nimas nalog!</div>";
         }
