@@ -59,10 +59,24 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         } 
         $sql = "DELETE from smw.student_subjects WHERE  SubjectID ='$subjectID'";
                 if ($conn->query($sql) === TRUE) {
-                    echo "Record deleted successfully";
+                   
                   } else {
-                    echo "Error deleting record: " . $conn->error;
+                   
                   }
+
+        $sql = "SELECT AssignmentID from smw.assignments WHERE SubjectID ='$subjectID'";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0){
+        while ($row = mysqli_fetch_assoc($result)){
+            $nalogaid = $row["AssignmentID"];
+            $sql1 = "DELETE from smw.student_assignments WHERE  AssignmentID ='$nalogaid'";
+            if ($conn->query($sql1) === TRUE) {
+              
+              } else {
+          
+              }
+        }
+        }
         for ($i = 0; $i < sizeof($dodanirazred); $i++) {
             if ($dodanirazred[$i] != "") {
 
@@ -93,22 +107,24 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     }
                 }
 
-                $sql = "SELECT AssignmentID FROM smw.assignments WHERE SubjectID='$subjectID'";
+                    
+               
                 
+
+                $sql = "SELECT AssignmentID FROM smw.assignments WHERE SubjectID='$subjectID'";
                 $result = mysqli_query($conn, $sql);
                 if (mysqli_num_rows($result) > 0) {
                     while ($row = mysqli_fetch_assoc($result)) {
                         $assID = $row["AssignmentID"];
-                        
                   
-                        $sql = "SELECT UserID from smw.users WHERE razred = '$class'";
-                        $result = mysqli_query($conn, $sql);
-                        if (mysqli_num_rows($result) > 0) {
-                            while ($row = mysqli_fetch_assoc($result)) {
+                        $sql1 = "SELECT UserID from smw.users WHERE razred = '$class'";
+                        $result1 = mysqli_query($conn, $sql1);
+                        if (mysqli_num_rows($result1) > 0) {
+                            while ($row1 = mysqli_fetch_assoc($result1)) {
                                
-                                $uID = $row["UserID"];
-                                $sql = "INSERT INTO smw.student_assignments(UserID, AssignmentID) VALUES ('$uID', '$assID')";
-                                if (mysqli_query($conn, $sql)) {
+                                $uID = $row1["UserID"];
+                                $sql2 = "INSERT INTO smw.student_assignments(UserID, AssignmentID) VALUES ('$uID', '$assID')";
+                                if (mysqli_query($conn, $sql2)) {
                                
                                 } else {
                                     $error = "Error: " . mysqli_error($conn);
@@ -336,14 +352,14 @@ $taskCount = mysqli_num_rows($result);
     </style>
 </head>
 <body class="background">
-<!-- <div class="navbar">
+<div class="navbar">
         <a href="Dashboard.php" class="logo">ŠC Celje</a>
         <div class="nav-links">
-            <a href="#home">Domov</a>
+            <a href="Dashboard.php">Domov</a>
             <a href="#"><?php echo $_SESSION["uname"] ?></a>
             <img src="Slike/ProfilnaSlika.png" alt="" class="profilnaslika">
         </div> 
-</div> -->
+</div>
 
 <div class="PodatkiPredmetu">
     
@@ -359,6 +375,7 @@ $taskCount = mysqli_num_rows($result);
         <div class="InfoText">
             <b>Število nalog</b> : <?php echo $taskCount ?>
         </div>
+      
     </div>
 
     <div style="margin-left:20px;margin-bottom:20px;color:red;">

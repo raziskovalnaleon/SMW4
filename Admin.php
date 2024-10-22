@@ -60,13 +60,17 @@
     <link rel="stylesheet" href="stil.css">
 </head>
 <body>
-<div class="navbar">
-        <a href="Dashboard.php" class="logo">ŠC Celje</a>
-        <div class="nav-links">
-            <a href="#home">Domov</a>
-            <a href="#"><?php echo $_SESSION["uname"] ?></a>
-            <img src="Slike/ProfilnaSlika.png" alt="" class="profilnaslika">
-        </div> 
+    <div class="navbar">
+            <a href="Dashboard.php" class="logo">ŠC Celje</a>
+            <div class="nav-links">
+                <a href="Dashboard.php">Domov</a>
+                <a href="#"><?php echo $_SESSION["uname"] ?></a>
+                <img src="Slike/ProfilnaSlika.png" alt="" class="profilnaslika">
+            </div> 
+    </div>
+
+    <div style="margin-top:20%;">
+         <h1>si admin</h1>
     </div>
 </body>
 </html>

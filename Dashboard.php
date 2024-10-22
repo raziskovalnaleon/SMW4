@@ -94,6 +94,7 @@
                 echo "Predmeti, ki jih učiš:";
             } else {
                 echo "Tvoji Predmeti:";
+               
             }
             ?>
         </div>

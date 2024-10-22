@@ -72,7 +72,7 @@
                 echo "Failed to connect to MySQL: " . $conn->connect_error;
                 exit();
             } else {
-                $sql = "SELECT UserID, Username, password FROM smw.users WHERE Username = '" . $conn->real_escape_string($username) . "'";
+                $sql = "SELECT UserID, Username, password , UserType FROM smw.users WHERE Username = '" . $conn->real_escape_string($username) . "'";
                 $result = mysqli_query($conn, $sql);
 
                 if ($result && mysqli_num_rows($result) > 0) {
@@ -83,7 +83,14 @@
                         $_SESSION["uname"] = $username;
                         $_SESSION["pass"] = $password;
                         $_SESSION["DbID"] = $row["UserID"];
-                        header('Location: Dashboard.php');
+                        $_SESSION["usertype"] = $row["UserType"];
+                        if($_SESSION["usertype"] == "admin"){
+                            header('Location: Admin.php');
+                        }
+                        else{
+                            header('Location: dashboard.php');
+                        }
+                       
                         exit();
                     } else {
                         $error = "Wrong Username or Password!";
