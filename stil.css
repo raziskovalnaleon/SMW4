@@ -676,17 +676,30 @@ a:hover{
     margin-left: 40%;
     margin-top: 20vh;
     width: 30vh;
+    height: 15vh;
+    display: grid;
+    grid-template-columns: auto;
+    justify-content: center;
 
-    background-color: blue;
+    background-color: rgb(214, 214, 214);
+    border: rgb(177, 176, 176) 1px solid;
+    border-radius: 30px;
 }
 
 .check-main{
     display: grid;
     grid-template-columns: auto;
+    margin-top: 3vh;
 }
 
 .check-main > *{
 
+}
+
+.check-main > input{
+    height: 5vh;
+    border-radius: 10px;
+    margin-bottom: 1vh;
 }
 
 .check-button{
@@ -697,4 +710,12 @@ a:hover{
  
     transition: all 0.5s ease-in;
     cursor: pointer;
+}
+
+.error-type{
+    width: 100%;
+    margin-top: 5%;
+    text-align: center;
+    color: red;
+    font-weight: 500;
 }
