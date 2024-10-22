@@ -630,11 +630,11 @@ a:hover{
 
 /*----------------------PROFILE-----------------------------*/
 .profile-main{
-    width: 50vw;
+    width: 30vw;
     border: rgb(177, 176, 176) 1px solid;
     border-radius: 30px;
 
-    margin-left: 25vw;
+    margin-left: 35vw;
     margin-top: 15vh;
     display: grid;
     grid-template-columns: auto;
@@ -645,7 +645,7 @@ a:hover{
     margin-bottom: 4vh;
     text-align: center;
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: 25% 25% 50%;
 }
 
 .profile-data-title{
@@ -657,4 +657,44 @@ a:hover{
 .profile-data-info{
     text-align: left;
     padding-left: 0.5vw;
+}
+
+.profile-data-button{
+    background-color: #318CE7;
+    color: white;
+    border-radius: 5px;
+    border: black 2px solid;
+
+    padding: 3% 5%;
+    margin-right: 1vw;
+    transition: all 0.5s ease-in;
+    cursor: pointer;
+}
+
+/*----------------------CHECK-----------------------------*/
+.check-box{
+    margin-left: 40%;
+    margin-top: 20vh;
+    width: 30vh;
+
+    background-color: blue;
+}
+
+.check-main{
+    display: grid;
+    grid-template-columns: auto;
+}
+
+.check-main > *{
+
+}
+
+.check-button{
+    background-color: #318CE7;
+    color: white;
+    border-radius: 5px;
+    border: black 2px solid;
+ 
+    transition: all 0.5s ease-in;
+    cursor: pointer;
 }

@@ -1,20 +1,9 @@
 <?php
-     $loginerror = "";
-     $error = "";
      $servername = "localhost";
      $Serverusername = "projekt";
      $Serverpassword = "gesloprojekta";
      $dbname = "smw";
-     $name ="";
-     $subjectName ="";
-     $teacherFirstName ="";
-     $teacherLastName = "";
-     $id;
-     $subjectName ="";
      $mysqli = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
-     $usertype="";
-     $jeUcitelj = false;
-     $teacherID = null;
      session_start();
 
     
@@ -41,6 +30,17 @@
      if (isset($_POST['logout'])) {
          logout();
      }
+
+     if (isset($_POST['check_load_email'])) {
+        $_SESSION["change_data"] = 0;
+        header("location:Check.php");
+        exit();
+    }
+    if (isset($_POST['check_load_user'])) {
+        $_SESSION["change_data"] = 1;
+        header("location:Check.php");
+        exit();
+    }
    
 ?>
 <!DOCTYPE html>
@@ -86,6 +86,34 @@
              }
         ?>           
         </div>
+        <form method="post" style="display:inline;" >
+            <button type="submit" name="check_load_user" class="profile-data-button">
+                Spremeni podatek 
+            </button>
+        </form>
+    </div>
+    <div class="profile-data">
+        <div class="profile-data-title">
+            EMAIL:
+        </div>
+        <div class="profile-data-info">
+        <?php 
+            $username = $_SESSION["uname"];
+            $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
+            $sql = "SELECT * FROM smw.users WHERE Username = '$username'";
+            $result = mysqli_query($conn, $sql);        
+            if (mysqli_num_rows($result) > 0){
+                while ($row = mysqli_fetch_assoc($result)){
+                    echo $row["Email"];
+                }
+             }
+        ?>            
+        </div>
+        <form method="post" style="display:inline;" >
+            <button type="submit" name="check_load_email" class="profile-data-button">
+                Spremeni podatek 
+            </button>
+        </form>
     </div>
     <div class="profile-data">
         <div class="profile-data-title">
@@ -118,24 +146,6 @@
             if (mysqli_num_rows($result) > 0){
                 while ($row = mysqli_fetch_assoc($result)){
                     echo $row["priimek_uporbnika"];
-                }
-             }
-        ?>            
-        </div>
-    </div>
-    <div class="profile-data">
-        <div class="profile-data-title">
-            EMAIL:
-        </div>
-        <div class="profile-data-info">
-        <?php 
-            $username = $_SESSION["uname"];
-            $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
-            $sql = "SELECT * FROM smw.users WHERE Username = '$username'";
-            $result = mysqli_query($conn, $sql);        
-            if (mysqli_num_rows($result) > 0){
-                while ($row = mysqli_fetch_assoc($result)){
-                    echo $row["Email"];
                 }
              }
         ?>            
