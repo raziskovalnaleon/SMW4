@@ -48,6 +48,8 @@
          logout();
      }
 
+     
+
 
    
 ?>
@@ -71,8 +73,7 @@
                 <button type="submit" name="logout" class="logout-button" style="    font-family: font2;color: white;background-color: #318CE7;border: solid black 2px; border-radius :5px; width:5em;height:2em; font-size:15px;cursor:pointer;">Izpis</button>
             </form> 
         </div> 
-        
-        
-    </div>
+    
+</div>
 </body>
 </html>
