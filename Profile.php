@@ -11,15 +11,6 @@
          header("location:Registration.php");
          exit();
      }
-     $username = $_SESSION["uname"];
-     $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
-     $sql = "SELECT UserType FROM smw.users WHERE Username = '$username'";
-     $result = mysqli_query($conn, $sql);
-     if (mysqli_num_rows($result) > 0){
-        while ($row = mysqli_fetch_assoc($result)){
-            $userType = $row["UserType"];
-        }
-     }
     
      function logout() {
         session_destroy();

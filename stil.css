@@ -692,14 +692,17 @@ a:hover{
     margin-top: 3vh;
 }
 
-.check-main > *{
-
-}
-
 .check-main > input{
     height: 5vh;
     border-radius: 10px;
     margin-bottom: 1vh;
+}
+
+.check-main > button{
+    text-align: center;
+    width: 5vw;
+    border-radius: 10px;
+    margin-left: 3vw;
 }
 
 .check-button{
@@ -718,4 +721,27 @@ a:hover{
     text-align: center;
     color: red;
     font-weight: 500;
+}
+/*----------------------CHANGE_DATA-----------------------------*/
+.changedata-main{
+    width: 100%;
+    height: 50vh;
+    text-align: center;
+}
+
+.changedata-form{
+    border: rgb(177, 176, 176) 1px solid;
+    border-radius: 30px;
+
+    margin-top: 30vh;
+    margin-left: 40vw;
+    margin-right: 40vw;
+}
+
+.changedata-podatki{
+    margin-top: 3vh;
+    margin-bottom: 3vh;
+    height: 5vh;
+    padding: 1%;
+    border-radius: 5px;
 }
