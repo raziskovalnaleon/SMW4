@@ -57,12 +57,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
             }
         } 
+        $serialized_array = serialize($dodanirazred); 
+        $sql = "UPDATE smw.subjects SET razredi = '$serialized_array'WHERE SubjectID='$subjectID'";
+        if (mysqli_query($conn, $sql)) {   
+        } else {
+            $error = "Error: " . mysqli_error($conn);
+        }
+        
         $sql = "DELETE from smw.student_subjects WHERE  SubjectID ='$subjectID'";
-                if ($conn->query($sql) === TRUE) {
+        if ($conn->query($sql) === TRUE) {
                    
-                  } else {
+        } else {
                    
-                  }
+        }
 
         $sql = "SELECT AssignmentID from smw.assignments WHERE SubjectID ='$subjectID'";
         $result = mysqli_query($conn, $sql);
@@ -465,6 +472,7 @@ $taskCount = mysqli_num_rows($result);
         ?>
     </div>
 </div>
+
 
 
 <div id="deleteModal" class="modal">

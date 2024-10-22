@@ -24,7 +24,15 @@ if(!isset($_GET['subject_id'])){
 else{
     $subjectID = $_GET['subject_id'];
 }
-
+$conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
+$sql ="SELECT razredi from smw.subjects WHERE SubjectID='$subjectID'";
+$result = mysqli_query($conn, $sql);
+if (mysqli_num_rows($result) > 0){
+while ($row = mysqli_fetch_assoc($result)){
+    $classes = $row["razredi"];
+}
+}
+$unserialized_array = unserialize($classes); 
 if (!isset($_SESSION["uname"]) || !isset($_SESSION["pass"])) {
     header("location:Registration.php");
     exit();
@@ -38,7 +46,7 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (empty($TaskName) || empty($predmet) || empty($opis) || empty($DueDate)) {
             $error = "Fill all fields!";
         } else {
-            $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
+          
 
             if ($conn->connect_errno) {
                 echo "Failed to connect to MySQL: " . $conn->connect_error;
@@ -61,6 +69,11 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
         }
+
+    
+
+        
+    
     }
     else if(isset($_POST['updatetask'])){
        
@@ -87,6 +100,7 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
+
 
 
 
@@ -189,6 +203,7 @@ $formattedDate = $date->format('Y-m-d\H:i');
                 
                 <div style="font-family:FontBesedilo;"></div>
                 <input type="submit" name="submittaskbttn" class="submitbutton" value="Ustvari nalogo">
+                <?php print_r($unserialized_array);?>
             </div>
         </div>
     </form> 

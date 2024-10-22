@@ -229,31 +229,8 @@
             Ustvari Predmet!
         </div>
     </div>
-    <div class='create'>
-        <div>
-            <img src='Slike/create1.png' class='createimg' />
-        </div>
-        <div class='predmetCreate'>
-            Ustvari Predmet!
-        </div>
+   
     </div>
-    <div class='create'>
-        <div>
-            <img src='Slike/create1.png' class='createimg' />
-        </div>
-        <div class='predmetCreate'>
-            Ustvari Predmet!
-        </div>
-    </div>
-    <div class='create'>
-        <div>
-            <img src='Slike/create1.png' class='createimg' />
-        </div>
-        <div class='predmetCreate'>
-            Ustvari Predmet!
-        </div>
-    </div>
-</div>
 "; ?>
 <?php endif; ?>
 
