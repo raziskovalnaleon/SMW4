@@ -19,17 +19,12 @@ $taskID = "";
 if (isset($_GET['subject_id'])) {
     $subjectID = $_GET['subject_id'];
 } else {
-  
     if(isset($_POST['subject_id'])){
-        $subjectID = $_GET['subject_id'];
-       
-    }
-    else{
+        $subjectID = $_POST['subject_id']; 
+    } else {
         header("location:dashboard.php");
+        exit();
     }
- 
-   
-    exit();
 }
 $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
 if($_SERVER["REQUEST_METHOD"] == "POST"){

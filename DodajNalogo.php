@@ -32,11 +32,12 @@ while ($row = mysqli_fetch_assoc($result)){
     $classes = $row["razredi"];
 }
 }
-$unserialized_array = unserialize($classes); 
+
 if (!isset($_SESSION["uname"]) || !isset($_SESSION["pass"])) {
     header("location:Registration.php");
     exit();
 }
+
 else if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['submittaskbttn'])){
         $TaskName = $_POST['TaskName'];
@@ -63,11 +64,36 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST") {
                
                 if (mysqli_query($conn, $sql)) {
                     $loginerror = "User successfully created!";
-                    header("Location:Predmet.php?subject_id=" . "$subject_id");
+                    $last_id = mysqli_insert_id($conn); 
+                    header("Location:Predmet.php?subject_id=" . urlencode($predmetID));
                 } else {
                     echo "Error: " . $sql . "<br>" . mysqli_error($conn);
                 }
+                
             }
+
+            $unserialized_array = unserialize($classes); 
+            for($i = 0 ; $i< count($unserialized_array); $i++){
+                if($unserialized_array[$i] != ""){
+                    $uid=$unserialized_array[$i];
+                    $sql = "SELECT UserID FROM smw.users WHERE razred = '$uid'";
+                    $result = mysqli_query($conn, $sql);
+                    if (mysqli_num_rows($result) > 0){
+                        while ($row = mysqli_fetch_assoc($result)){
+                            $userID = $row["UserID"];
+                            $sql1 = "INSERT INTO smw.student_assignments(AssignmentID,UserID) values ('$last_id','$userID')";
+                            if (mysqli_query($conn, $sql1)) {
+                                $loginerror = "User successfully created!";
+                                header("Location:Predmet.php?subject_id=" . "$subject_id");
+                            } else {
+                                echo "Error: " . $sql1 . "<br>" . mysqli_error($conn);
+                            }
+                        }
+                }
+               
+            }
+        }
+         
         }
 
     
@@ -203,7 +229,10 @@ $formattedDate = $date->format('Y-m-d\H:i');
                 
                 <div style="font-family:FontBesedilo;"></div>
                 <input type="submit" name="submittaskbttn" class="submitbutton" value="Ustvari nalogo">
-                <?php print_r($unserialized_array);?>
+                <?php if (!empty($error)) : ?>
+                    <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
+                <?php endif; ?>
+                
             </div>
         </div>
     </form> 
@@ -273,7 +302,6 @@ $formattedDate = $date->format('Y-m-d\H:i');
                 <div style="font-family:FontBesedilo;"></div>
                 <input type="submit" name="updatetask" class="submitbutton" value="Ustvari nalogo">
       
-                <?php echo $error ?>
             </div>
         </div>
     </form> 
