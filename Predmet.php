@@ -377,8 +377,13 @@ $taskCount = mysqli_num_rows($result);
         <div class="InfoText">
             <b>Število nalog</b> : <?php echo $taskCount ?>
         </div>
+
+        <?php if($userType == "ucitelj"){
+        echo " <b><a href='UstvariPredmet.php?subject_id=$subjectID'' style='font-size:17px;'>Uredi podatke o predmetu</a></b>";
+    } ?>
       
     </div>
+
 
     <div style="margin-left:20px;margin-bottom:20px;color:red;">
         <?php echo $error;?>

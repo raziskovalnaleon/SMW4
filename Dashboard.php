@@ -220,17 +220,23 @@
         ?>
     </div>
 <?php else : ?>
-    <?php echo "<div class ='uciteljDisplay'>
-    <div class='create'>
-        <div>
-            <img src='Slike/create1.png' class='createimg' />
-        </div>
-        <div class='predmetCreate'>
-            Ustvari Predmet!
-        </div>
+    <?php echo "
+    <div class='besedilo' style='margin-left:16%'>Dodatne možnosti:</div>
+    <div class='dodatneMoznosti'>
+        <a href='UstvariPredmet.php' style='text-decoration:none;'>
+            <div class='MoznostiUstvariNalogo moznost'>
+                <div class='moznost-text'>Ustvari Nalogo</div>
+            </div>
+        </a>
+        <a href='UstvariPredmet.php' style='text-decoration:none;'>
+            <div class='MoznostiUstvariPredmet moznost'>
+                <div class='moznost-text'>Ustvari Predmet</div>
+            </div>
+        </a>
+       
     </div>
-   
-    </div>
+
+ 
 "; ?>
 <?php endif; ?>
 

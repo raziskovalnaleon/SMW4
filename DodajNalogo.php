@@ -293,12 +293,12 @@ $formattedDate = $date->format('Y-m-d\H:i');
                     ?>
                 </select><br>
                 <input type="hidden" name="predmet" value="<?php echo htmlspecialchars($subjectOption); ?>" />
-                <div class="PrikazPodatkov">Naslov Naloge: </div><input type="text" name="TaskName" class="input1" autocomplete="off" style="height:30px;" value="<?php echo htmlspecialchars($title); ?>">
+                <div class="PrikazPodatkov">Naslov Naloge: </div><input required type="text" name="TaskName" class="input1" autocomplete="off" style="height:30px;" value="<?php echo htmlspecialchars($title); ?>">
                 <br>
                 <div class="PrikazPodatkov">Opis: </div> 
                 <textarea name="opis" class="input1" autocomplete="off" style="height: 230px;"><?php echo htmlspecialchars($Description); ?></textarea><br>
                 <div class="PrikazPodatkov">Datum oddaje: </div>
-                <input class="input1" style="height: 30px;" type="datetime-local" id="DueDate" name="DueDate" value="<?php echo htmlspecialchars($DueDate); ?>"/><br>                
+                <input required class="input1" style="height: 30px;" type="datetime-local" id="DueDate" name="DueDate" value="<?php echo htmlspecialchars($DueDate); ?>"/><br>                
                 <div style="font-family:FontBesedilo;"></div>
                 <input type="submit" name="updatetask" class="submitbutton" value="Ustvari nalogo">
       
