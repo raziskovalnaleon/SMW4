@@ -5,23 +5,25 @@ $Serverpassword = "gesloprojekta";
 $dbname = "smw";
 session_start();
 
-
+$filename = "";
 if (!isset($_SESSION["uname"]) || !isset($_SESSION["pass"])) {
     header("location:Registration.php");
     exit();
 }
+if(!isset($_GET['naloga_id'])){
+    $nalogaID = null;
+    header("location:Dashboard.php");
+}
+else{
+    $nalogaID = $_GET['naloga_id'];
+}
+$filepath = 'uploads/theacher/';
 
 
-// if (isset($_GET['subject_id'])) {
-//     $subjectID = $_GET['subject_id'];
-// } else {
-//     header("location:dashboard.php");
-//     exit();
-// }
+
 
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,7 +39,7 @@ if (!isset($_SESSION["uname"]) || !isset($_SESSION["pass"])) {
             <a href="#"><?php echo $_SESSION["uname"] ?></a>
             <img src="Slike/ProfilnaSlika.png" alt="" class="profilnaslika">
         </div> 
-    </div>
+</div>
 
     <div class ="oddajaMain">
         <div class="oddajaNaslov">
@@ -60,6 +62,44 @@ if (!isset($_SESSION["uname"]) || !isset($_SESSION["pass"])) {
         Ustvarite bližnjico za samoedjni zagon vieda po tem ko se operacijski sistem naloži. Video datoteko izberite poljubno ali jo prenesite nekje s spleta. 
         Ustvarite mapo v skupni rabi z windows računalnikom
         </pre>
+        <hr style="margin-left: 10px;margin-right: 10px;">
+        <div class="OddajaPodatki" style="margin-bottom:10px;">
+            <b>Priloga:</b>
+            <?php
+            $sql = "SELECT id, file_name FROM smw.task_files WHERE task_id = '$nalogaID'";
+            $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
+            $result = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $filename = $row['file_name'];
+                    $uid = $row['id'];
+            
+                    if (is_dir($filepath)) {
+                
+                        $files = scandir($filepath);
+            
+                        foreach ($files as $file) {
+                        
+                            $file_without_extension = pathinfo($file, PATHINFO_FILENAME);
+                            if ($file !== '.' && $file !== '..' && $file_without_extension === $uid) {
+                                $custom_name = $filename; 
+                                echo "<a href='download.php?file=" . urlencode($file) . "&name=" . urlencode($custom_name) . "' target='_blank'>$custom_name</a>";
+                            }
+                            else{
+                                
+                            }
+                        }
+                       
+                    } else {
+                        echo "Directory does not exist.";
+                    }
+                }
+            }
+            else{
+                echo "Ni prilog";
+            }
+             ?>
+        </div>
         <hr style="margin-left: 10px;margin-right: 10px;">
         <div class="OddajaPodatki">
             <div style="margin-top:5px">

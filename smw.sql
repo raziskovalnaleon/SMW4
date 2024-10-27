@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gostitelj: 127.0.0.1
--- Čas nastanka: 22. okt 2024 ob 11.27
+-- Čas nastanka: 27. okt 2024 ob 15.44
 -- Različica strežnika: 10.4.32-MariaDB
--- Različica PHP: 8.2.12
+-- Različica PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -40,11 +40,14 @@ CREATE TABLE `assignments` (
 --
 
 INSERT INTO `assignments` (`AssignmentID`, `SubjectID`, `Title`, `Description`, `DueDate`) VALUES
-(43, 7, 'prva naloga', '1', '2222-02-22 22:22:00'),
-(44, 10, 'druga naloga', '1', '2222-02-22 11:11:00'),
-(46, 10, 'jaša', '1', '2222-02-22 22:22:00'),
-(47, 7, 'kotaking', '1', '2222-02-22 22:22:00'),
-(48, 7, 'kotaking2', 'kotaking', '2222-02-22 22:22:00');
+(59, 7, 'Prva naloga', '123', '2222-02-22 22:22:00'),
+(61, 10, 'a dela1', '123', '2222-02-22 22:22:00'),
+(63, 10, 'bomo vidild', '121323', '2222-02-22 22:22:00'),
+(73, 9, 'datoteka', '11', '2222-02-22 22:22:00'),
+(85, 9, 'wrwqewqerqwr', 'wqeqw', '2222-02-22 22:22:00'),
+(86, 9, 'wrwqewqerqwr', 'wqeqw', '2222-02-22 22:22:00'),
+(92, 8, 'asdasdas', 'asdasdasd', '2222-02-22 22:22:00'),
+(93, 9, 'nova', '1234', '2222-02-22 22:22:00');
 
 -- --------------------------------------------------------
 
@@ -76,15 +79,30 @@ CREATE TABLE `student_assignments` (
 --
 
 INSERT INTO `student_assignments` (`UserID`, `AssignmentID`) VALUES
-(2, 43),
-(2, 44),
-(2, 46),
-(8, 43),
-(8, 44),
-(8, 46),
-(9, 43),
-(9, 44),
-(9, 46);
+(2, 59),
+(2, 61),
+(2, 63),
+(2, 73),
+(2, 85),
+(2, 86),
+(2, 92),
+(2, 93),
+(8, 59),
+(8, 61),
+(8, 63),
+(8, 73),
+(8, 85),
+(8, 86),
+(8, 92),
+(8, 93),
+(9, 59),
+(9, 61),
+(9, 63),
+(9, 73),
+(9, 85),
+(9, 86),
+(9, 92),
+(9, 93);
 
 -- --------------------------------------------------------
 
@@ -133,10 +151,34 @@ CREATE TABLE `subjects` (
 --
 
 INSERT INTO `subjects` (`SubjectID`, `SubjectName`, `Description`, `razredi`) VALUES
-(7, 'TESTNI PREDMET', 'test', 'a:6:{i:0;s:0:\"\";i:1;s:3:\"R4B\";i:2;s:2:\"\r\n\";i:3;s:3:\"R4A\";i:4;s:2:\"\r\n\";i:5;s:3:\"R1B\";}'),
-(8, 'NRP', 'objektno programiranje', 'a:6:{i:0;s:0:\"\";i:1;s:3:\"R4B\";i:2;s:2:\"\r\n\";i:3;s:3:\"R4A\";i:4;s:2:\"\r\n\";i:5;s:3:\"R1B\";}'),
+(7, 'TESTNI PREDMET2131231', 'test13123', 'a:6:{i:0;s:0:\"\";i:1;s:3:\"R4B\";i:2;s:2:\"\r\n\";i:3;s:3:\"R4A\";i:4;s:2:\"\r\n\";i:5;s:3:\"R1B\";}'),
+(8, 'NRP1', 'objektno programiranje1', 'a:6:{i:0;s:0:\"\";i:1;s:3:\"R4B\";i:2;s:2:\"\r\n\";i:3;s:3:\"R4A\";i:4;s:2:\"\r\n\";i:5;s:3:\"R1B\";}'),
 (9, 'ROB', 'multimedija', 'a:6:{i:0;s:0:\"\";i:1;s:3:\"R4B\";i:2;s:2:\"\r\n\";i:3;s:3:\"R4A\";i:4;s:2:\"\r\n\";i:5;s:3:\"R1B\";}'),
-(10, 'Nov predmet', '123', 'a:6:{i:0;s:0:\"\";i:1;s:3:\"R4B\";i:2;s:2:\"\r\n\";i:3;s:3:\"R4A\";i:4;s:2:\"\r\n\";i:5;s:3:\"R1B\";}');
+(10, 'Nov predmet', '123', 'a:6:{i:0;s:0:\"\";i:1;s:3:\"R4B\";i:2;s:2:\"\r\n\";i:3;s:3:\"R4A\";i:4;s:2:\"\r\n\";i:5;s:3:\"R1B\";}'),
+(12, 'Test', '123', NULL),
+(13, 'Še en', '123', NULL),
+(14, 'TESTNI PREDMET1', 'test1', NULL),
+(15, 'TESTNI PREDMET12', 'test12', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabele `task_files`
+--
+
+CREATE TABLE `task_files` (
+  `id` varchar(255) NOT NULL,
+  `file_name` varchar(255) DEFAULT NULL,
+  `task_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Odloži podatke za tabelo `task_files`
+--
+
+INSERT INTO `task_files` (`id`, `file_name`, `task_id`) VALUES
+('671e42787bcce', 'Slemi 4. test.docx', 92),
+('671e4baaab1ea', '01_Od_nepostavljenega_racunalnika_do_spletne_aplikacije_2021-22.docx', 93);
 
 -- --------------------------------------------------------
 
@@ -157,7 +199,11 @@ INSERT INTO `teacher_subjects` (`UserID`, `SubjectID`) VALUES
 (1, 7),
 (1, 8),
 (1, 9),
-(1, 10);
+(1, 10),
+(1, 12),
+(1, 13),
+(1, 14),
+(1, 15);
 
 -- --------------------------------------------------------
 
@@ -229,6 +275,13 @@ ALTER TABLE `subjects`
   ADD PRIMARY KEY (`SubjectID`);
 
 --
+-- Indeksi tabele `task_files`
+--
+ALTER TABLE `task_files`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `task_id` (`task_id`);
+
+--
 -- Indeksi tabele `teacher_subjects`
 --
 ALTER TABLE `teacher_subjects`
@@ -251,7 +304,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT tabele `assignments`
 --
 ALTER TABLE `assignments`
-  MODIFY `AssignmentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `AssignmentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
 
 --
 -- AUTO_INCREMENT tabele `assignments_submissions`
@@ -263,7 +316,7 @@ ALTER TABLE `assignments_submissions`
 -- AUTO_INCREMENT tabele `subjects`
 --
 ALTER TABLE `subjects`
-  MODIFY `SubjectID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `SubjectID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT tabele `users`
@@ -301,6 +354,12 @@ ALTER TABLE `student_assignments`
 ALTER TABLE `student_subjects`
   ADD CONSTRAINT `student_subjects_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`),
   ADD CONSTRAINT `student_subjects_ibfk_2` FOREIGN KEY (`SubjectID`) REFERENCES `subjects` (`SubjectID`);
+
+--
+-- Omejitve za tabelo `task_files`
+--
+ALTER TABLE `task_files`
+  ADD CONSTRAINT `task_files_ibfk_1` FOREIGN KEY (`task_id`) REFERENCES `assignments` (`AssignmentID`);
 
 --
 -- Omejitve za tabelo `teacher_subjects`

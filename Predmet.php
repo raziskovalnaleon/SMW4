@@ -428,7 +428,7 @@ $taskCount = mysqli_num_rows($result);
                                     <span style='margin-left: 10px;'>Time left : $daysLeft dni</span>
                                 </div>
                                 <div>
-                                    <a href=''>Več podatkov</a>
+                                    <a href='oddajaNaloge.php?naloga_id=$taskID'>Več podatkov</a>
                                 </div>
                                 <div class='naloga'>
                                     <a onclick='showDeleteModal($taskID)'> Izbriši nalogo</a>
@@ -457,7 +457,7 @@ $taskCount = mysqli_num_rows($result);
                                     <span style='margin-left: 10px;'>Time left : $daysLeft dni</span>
                                 </div>
                                 <div>
-                                    <a href=''>Več podatkov</a>
+                                      <a href='oddajaNaloge.php?naloga_id=$taskID'>Več podatkov</a>
                                 </div>
                               
                             </div>

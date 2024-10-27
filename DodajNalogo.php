@@ -65,7 +65,7 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (mysqli_query($conn, $sql)) {
                     $loginerror = "User successfully created!";
                     $last_id = mysqli_insert_id($conn); 
-                    header("Location:Predmet.php?subject_id=" . urlencode($predmetID));
+                    // header("Location:Predmet.php?subject_id=" . urlencode($predmetID));
                 } else {
                     echo "Error: " . $sql . "<br>" . mysqli_error($conn);
                 }
@@ -84,7 +84,7 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $sql1 = "INSERT INTO smw.student_assignments(AssignmentID,UserID) values ('$last_id','$userID')";
                             if (mysqli_query($conn, $sql1)) {
                                 $loginerror = "User successfully created!";
-                                header("Location:Predmet.php?subject_id=" . "$subject_id");
+                                // header("Location:Predmet.php?subject_id=" . "$subject_id");
                             } else {
                                 echo "Error: " . $sql1 . "<br>" . mysqli_error($conn);
                             }
@@ -92,6 +92,27 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                
             }
+          
+        }
+        if(isset($_FILES['DodatnaDat']) && $_FILES['DodatnaDat']['error'] == UPLOAD_ERR_OK) {
+            $originalFilename = $_FILES['DodatnaDat']['name'];
+            $fileTmpPath = $_FILES['DodatnaDat']['tmp_name'];
+            $uniqueID = uniqid();
+            $uploadsDir = 'uploads/theacher/';
+            $fileExtension = pathinfo($originalFilename, PATHINFO_EXTENSION);
+            $newFilename = $uniqueID . '.' . $fileExtension;
+            $newFilePath = $uploadsDir . $newFilename;
+            move_uploaded_file($fileTmpPath, $newFilePath);
+
+            $sql = "INSERT INTO smw.task_files(id,file_name,task_id) values ('$uniqueID','$originalFilename','$last_id')";
+            if(mysqli_query($conn, $sql)){
+                $loginerror = "File successfully uploaded!";
+            } 
+                    
+                
+        
+        } else {
+           
         }
          
         }
@@ -118,7 +139,7 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $sql = "UPDATE smw.assignments SET Title = '$TaskNameUpdate', Description ='$opisUpdate', DueDate='$DueDateUpdate' WHERE AssignmentID ='$nalogaID'";
                 if (mysqli_query($conn, $sql)) {
                     $loginerror = "Task successfully updated!";
-                    header("Location: http://localhost/Predmet.php?subject_id=" . $subject_id);
+                    // header("Location: http://localhost/Predmet.php?subject_id=" . $subject_id);
                 } else {
                     echo "Error: " . $sql . "<br>" . mysqli_error($conn);
                 }
@@ -172,7 +193,7 @@ $formattedDate = $date->format('Y-m-d\H:i');
 ?>
 
 <?php if($nalogaID == null) : ?>
-    <form method="post" id="registration" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?subject_id=" . $subjectID; ?>">
+    <form method="post" id="registration"  enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?subject_id=" . $subjectID; ?>">
         <div class="RegistrationData" style="overflow-y:auto;max-height: 700px;">
             <div class="createracun">Ustvari nalogo</div>
             <div style="margin: 20px;">
@@ -227,7 +248,12 @@ $formattedDate = $date->format('Y-m-d\H:i');
                 <div class="PrikazPodatkov">Datum oddaje: </div>
                 <input class="input1" style="height: 30px;" type="datetime-local" id="DueDate" name="DueDate" /><br>
                 
-                <div style="font-family:FontBesedilo;"></div>
+                <div class="PrikazPodatkov">Dodatne datoteke: </div> 
+                <div class="file-upload">
+                    <label for="DodatnaDat" class="file-upload-label">Izberite datoteko</label>
+                    <input class="file-upload-input" type="file" id="DodatnaDat" name="DodatnaDat" accept=".pdf,.doc,.docx,.txt,.zip,.rar"/>
+                </div>
+                <br>
                 <input type="submit" name="submittaskbttn" class="submitbutton" value="Ustvari nalogo">
                 <?php if (!empty($error)) : ?>
                     <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
@@ -238,7 +264,7 @@ $formattedDate = $date->format('Y-m-d\H:i');
     </form> 
 
 <?php else : ?>
-    <form method="post" id="registration" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?naloga_id=" . $nalogaID; ?>">
+    <form method="post" id="registration"  enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?naloga_id=" . $nalogaID; ?>">
         <div class="RegistrationData" style="overflow-y:auto;max-height: 700px;">
             <div class="createracun">Ustvari nalogo</div>
             <div style="margin: 20px;">
@@ -299,7 +325,8 @@ $formattedDate = $date->format('Y-m-d\H:i');
                 <textarea name="opis" class="input1" autocomplete="off" style="height: 230px;"><?php echo htmlspecialchars($Description); ?></textarea><br>
                 <div class="PrikazPodatkov">Datum oddaje: </div>
                 <input required class="input1" style="height: 30px;" type="datetime-local" id="DueDate" name="DueDate" value="<?php echo htmlspecialchars($DueDate); ?>"/><br>                
-                <div style="font-family:FontBesedilo;"></div>
+                <div class="PrikazPodatkov">Dodatne datoteke: </div> 
+                <input class="input1" style="height: 30px;" type="file" id="DodatnaDat" name="DodatnaDat" accept=".pdf,.doc,.docx,.txt,.zip,.rar"/><br>   
                 <input type="submit" name="updatetask" class="submitbutton" value="Ustvari nalogo">
       
             </div>

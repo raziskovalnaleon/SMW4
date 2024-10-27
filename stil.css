@@ -492,6 +492,35 @@
     border-color: rgb(134, 130, 130);
 }
 
+.file-upload {
+    display: inline-block;
+    position: relative;
+    font-family: Font2;
+    margin-top: 5px;
+}
+
+.file-upload-label {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #318CE7; 
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    border: solid #dedfde 1px;
+    transition: background-color 0.2s;
+}
+
+.file-upload-label:hover {
+    background-color: white;
+    color:black 
+}
+
+.file-upload-input {
+    display: none; 
+}
+
 
 @media (max-width: 1200px) {
     .DisplayPredmetov {

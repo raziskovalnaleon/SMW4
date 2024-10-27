@@ -223,7 +223,7 @@
     <?php echo "
     <div class='besedilo' style='margin-left:16%'>Dodatne možnosti:</div>
     <div class='dodatneMoznosti'>
-        <a href='UstvariPredmet.php' style='text-decoration:none;'>
+        <a href='DodajNalogo.php' style='text-decoration:none;'>
             <div class='MoznostiUstvariNalogo moznost'>
                 <div class='moznost-text'>Ustvari Nalogo</div>
             </div>
