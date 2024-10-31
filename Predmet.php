@@ -140,7 +140,26 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             }
         }
     }
-   
+    else if( (isset($_POST['addUcitelj']))){ 
+        
+        $uciteljID = $_POST['professorSelect'];
+        
+        $sql = "SELECT * FROM smw.teacher_subjects WHERE UserID='$uciteljID' AND SubjectID='$subjectID'";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0) {
+            $error = "Učitelj je že dodan";
+        } else {
+            $sql ="INSERT INTO smw.teacher_subjects(UserID, SubjectID) VALUES ('$uciteljID', '$subjectID')";
+            if (mysqli_query($conn, $sql)) {
+                $error = "Učitelj dodan";
+            } else {
+                $error = "Error: " . mysqli_error($conn);
+            }
+        }
+       
+       
+    }
+    
 }
 
 
@@ -180,6 +199,10 @@ if (mysqli_num_rows($result) > 0) {
     }
 }
 
+if($userType == "admin"){
+    $jeVPredmetu = true;
+}
+
 if($jeVPredmetu == false) {
     header("location:dashboard.php");
     exit();
@@ -194,7 +217,8 @@ if (mysqli_num_rows($result) > 0) {
         $name = $row["SubjectName"];
     }
 }
-
+$imena = array();
+$priimiki = array();
 $sql = "SELECT UserID FROM smw.teacher_subjects WHERE SubjectID='$subjectID'";
 $result = mysqli_query($conn, $sql);
 if (mysqli_num_rows($result) > 0) {
@@ -204,8 +228,11 @@ if (mysqli_num_rows($result) > 0) {
         $result1 = mysqli_query($conn, $sql);
         if (mysqli_num_rows($result1) > 0) {
             while ($row = mysqli_fetch_assoc($result1)){
+            
                 $ime = $row["ime_uporabnika"];
                 $priimek = $row["priimek_uporbnika"];
+                array_push($imena, $ime);
+                array_push($priimiki, $priimek);
             }
         }
     }
@@ -350,7 +377,63 @@ $taskCount = mysqli_num_rows($result);
             color: black;
             text-decoration: none;
             cursor: pointer;
-        }    
+        }  
+        .professor-form-container {
+    display: none;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    width: 95%;
+    margin-left: 2.5%;
+    background-color: white;
+    font-family: font2;
+}
+
+.professor-form-container a {
+    text-decoration: none;
+    color: blue;
+    font-family: font2;
+} 
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    font-family: font2;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #fff;
+    transition: border 0.3s ease;
+    font-family: font2;
+}
+
+select:hover {
+    border-color: #007BFF;
+}
+
+input[type="submit"] {
+    background-color: #007BFF; 
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3; 
+}  
     </style>
 </head>
 <body class="background">
@@ -369,7 +452,16 @@ $taskCount = mysqli_num_rows($result);
         <div class="ImeInfo"><?php echo $name ?></div>
         <hr style="margin-top: 10px;margin-bottom: 10px;">
         <div class="InfoText">
-            <b>Profesor/ica</b> : <?php echo $ime . " " . $priimek ?>
+            <b>Profesor/ica</b> : <?php
+            for($i = 0; $i < sizeof($imena); $i++){
+                if($i == sizeof($imena) - 1){
+                    echo $imena[$i] . " " . $priimiki[$i];
+                } else {
+                echo $imena[$i] . " " . $priimiki[$i] . " , ";
+                }
+            }
+            
+            ?>
         </div>
         <div class="InfoText">
             <b>Opis</b> : <?php echo $opis ?>
@@ -377,10 +469,18 @@ $taskCount = mysqli_num_rows($result);
         <div class="InfoText">
             <b>Število nalog</b> : <?php echo $taskCount ?>
         </div>
-
-        <?php if($userType == "ucitelj"){
-        echo " <b><a href='UstvariPredmet.php?subject_id=$subjectID'' style='font-size:17px;'>Uredi podatke o predmetu</a></b>";
-    } ?>
+        <?php if(($userType == "ucitelj")||($userType == "admin")){
+        echo " <b><a href='UstvariPredmet.php?subject_id=$subjectID'' style='font-size:17px;'>Uredi podatke o predmetu</a></b><br>";
+        echo "<div style='margin-top:5px;'> 
+                <b><a href='#' id='toggleForm' style='font-size:17px;'>Dodaj dodatnega profesorja</a></b>
+            </div>";}
+            
+      
+        if($userType == "admin"){
+            echo "<div style='margin-top:5px;'> <b><a href='#' onclick='showSubjectDeleteModal($subjectID)' style='font-size:17px;'>Izbriši predmet</a></b></div>";
+        }
+        
+          ?>
       
     </div>
 
@@ -391,7 +491,7 @@ $taskCount = mysqli_num_rows($result);
 </div>
 
 <div class="besedilo">
-    <?php if($userType == "ucitelj"){
+    <?php if(($userType == "ucitelj") || ($userType =="admin")){
         echo " <a href='DodajNalogo.php?subject_id=$subjectID'' style='font-size:17px;'>Dodaj Nalogo |</a>
             <a href='#'  style='font-size:17px;' onclick='showClassPopup()'> Dodaj Razred</a>";
     } ?>
@@ -473,6 +573,35 @@ $taskCount = mysqli_num_rows($result);
     </div>
 </div>
 
+<div class="professor-form-container" id="professorFormContainer" style="margin-bottom:20px">
+<form id="professorForm" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?subject_id=" . $subjectID; ?>">
+    <label for="professorSelect">Izberite profesorja:</label>
+    <select id="professorSelect" name="professorSelect">
+      <?php
+        
+        $sql = "
+            SELECT u.UserID, u.ime_uporabnika, u.priimek_uporbnika 
+            FROM smw.users u
+            LEFT JOIN smw.teacher_subjects ts ON u.UserID = ts.UserID AND ts.SubjectID = '$subjectID'
+            WHERE u.UserType = 'ucitelj' AND ts.UserID IS NULL
+        ";
+        
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $profID = $row["UserID"];
+                $professorName = $row["ime_uporabnika"] . " " . $row["priimek_uporbnika"];
+                echo "<option value='$profID'>$professorName</option>";
+            }
+        } else {
+            echo "<option value=''>No available professors</option>";
+        }
+      ?>
+    </select>
+    <br>
+    <input type="submit" value="Dodaj" name="addUcitelj" id="addUcitelj">
+</form>
+</div>
 
 
 <div id="deleteModal" class="modal">
@@ -538,7 +667,7 @@ $taskCount = mysqli_num_rows($result);
 
 
 
- <script>
+<script>
     function setDivData() {
         document.getElementById('divDataInput').value = document.getElementById('addedclasses').innerText ;
     }
@@ -583,15 +712,7 @@ $taskCount = mysqli_num_rows($result);
     }
 
     
-    var coll = document.getElementsByClassName("collapsible");
-    for (var i = 0; i < coll.length; i++) {
-        coll[i].addEventListener("click", function() {
-            this.classList.toggle("active");
-            var content = this.nextElementSibling;
-            content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
-        });
-    }
-
+ 
 
     const allClassesDiv = document.getElementById('allclasess');
         const addedClassesDiv = document.getElementById('addedclasses');
@@ -626,6 +747,52 @@ $taskCount = mysqli_num_rows($result);
                 event.target.remove();
             }
         });
+
+        
+var coll = document.getElementsByClassName("collapsible");
+for (var i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
+    });
+}
+
+function showSubjectDeleteModal(subjectID) {
+    var modal = document.getElementById("deleteSubjectModal");
+    modal.style.display = "block";
+    document.getElementById("confirmDeleteSubject").setAttribute("onclick", "deleteSubject(" + subjectID + ")");
+}
+
+function closeSubjectModal() {
+    var modal = document.getElementById("deleteSubjectModal");
+    modal.style.display = "none";
+}
+
+function deleteSubject(subjectID) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "DeleteSubject.php", true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            window.location.href = "dashboard.php"; 
+        } else {
+            alert("Napaka pri brisanju predmeta.");
+        }
+    };
+
+    xhr.send("subject_id=" + subjectID);
+}
+document.getElementById("toggleForm").onclick = function(event) {
+        event.preventDefault();
+        var form = document.getElementById("professorFormContainer");
+        if (form.style.display === "none" || form.style.display === "") {
+            form.style.display = "block";
+        } else {
+            form.style.display = "none"; 
+        }
+    };
 </script>
 </body>
 </html>

@@ -6,114 +6,95 @@ $dbname = "smw";
 session_start();
 
 $filename = "";
+$filepath = 'uploads/teacher/';
+
 if (!isset($_SESSION["uname"]) || !isset($_SESSION["pass"])) {
     header("location:Registration.php");
     exit();
 }
-if(!isset($_GET['naloga_id'])){
-    $nalogaID = null;
+
+if (!isset($_GET['naloga_id'])) {
     header("location:Dashboard.php");
-}
-else{
+    exit();
+} else {
     $nalogaID = $_GET['naloga_id'];
 }
-$filepath = 'uploads/theacher/';
 
+// Database connection
+$conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
+// Get assignment details
+$sql = "SELECT * FROM smw.assignments WHERE AssignmentID = '$nalogaID'";
+$result = $conn->query($sql);
 
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $imeNaloge = $row['Title'];
+        $opisNaloge = $row['Description'];
+        $datumOddaje = $row['DueDate'];
+    }
+} else {
+    echo "Napaka pri pridobivanju podatkov";
+}
 
-
+$conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oddaja</title>
+    <title>Oddaja naloge</title>
     <link rel="stylesheet" href="stil.css">
+</head>
 <body class="background">
-<div class="navbar">
+    <div class="navbar">
         <a href="Dashboard.php" class="logo">ŠC Celje</a>
         <div class="nav-links">
             <a href="#home">Domov</a>
             <a href="#"><?php echo $_SESSION["uname"] ?></a>
             <img src="Slike/ProfilnaSlika.png" alt="" class="profilnaslika">
         </div> 
-</div>
+    </div>
 
-    <div class ="oddajaMain">
+    <div class="oddajaMain">
         <div class="oddajaNaslov">
-            NASLOV NALOGE
+            <?php echo $imeNaloge; ?>
         </div>
         <hr style="margin-left: 10px;margin-right: 10px;">
         <div class="oddajaNaslovNavodila">
-            Navoldila:
+            Navodila:
         </div>
-        <pre class="OddajaNavodila">
-        Napišite poročilo: 
-        Kakšna je razlika med statičnih in dinamičnim "navideznim diskom" v virtual boxu
-        Na kratko opišite vsa vodila, ki jih lahko uporabite pri navideznem disku
-        Namestite operacijski sistem Raspberry Pi OS Desktop
-        Uporabniško ime in geslo vašega navideznega računalnika 
-        Dodajanje uporabnika s pomočjo "nadzorne plošče" (uporabnik - "Desktop") 
-        Dodajanje uporabnika s pomočjo terminalskega okna (uporabnik - "konzola") 
-        Namestitev multimedijskega predvajalnika VLC s pomočjo terminalskega okna
-        Ustvarite SSH povezavo do vašega računalnika
-        Ustvarite bližnjico za samoedjni zagon vieda po tem ko se operacijski sistem naloži. Video datoteko izberite poljubno ali jo prenesite nekje s spleta. 
-        Ustvarite mapo v skupni rabi z windows računalnikom
-        </pre>
+        <pre class="OddajaNavodila"><?php echo $opisNaloge; ?></pre>
         <hr style="margin-left: 10px;margin-right: 10px;">
-        <div class="OddajaPodatki" style="margin-bottom:10px;">
-            <b>Priloga:</b>
-            <?php
-            $sql = "SELECT id, file_name FROM smw.task_files WHERE task_id = '$nalogaID'";
-            $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
-            $result = mysqli_query($conn, $sql);
-            if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $filename = $row['file_name'];
-                    $uid = $row['id'];
-            
-                    if (is_dir($filepath)) {
-                
-                        $files = scandir($filepath);
-            
-                        foreach ($files as $file) {
-                        
-                            $file_without_extension = pathinfo($file, PATHINFO_FILENAME);
-                            if ($file !== '.' && $file !== '..' && $file_without_extension === $uid) {
-                                $custom_name = $filename; 
-                                echo "<a href='download.php?file=" . urlencode($file) . "&name=" . urlencode($custom_name) . "' target='_blank'>$custom_name</a>";
-                            }
-                            else{
-                                
-                            }
-                        }
-                       
-                    } else {
-                        echo "Directory does not exist.";
-                    }
-                }
-            }
-            else{
-                echo "Ni prilog";
-            }
-             ?>
-        </div>
-        <hr style="margin-left: 10px;margin-right: 10px;">
-        <div class="OddajaPodatki">
-            <div style="margin-top:5px">
+
+        <form method="post" id="fileUploadForm" enctype="multipart/form-data" action="upload_submission.php">
+            <input type="hidden" name="naloga_id" value="<?php echo $nalogaID; ?>">
+            <input type="hidden" name="assignment_title" value="<?php echo htmlspecialchars($imeNaloge); ?>">
+
+            <div class="OddajaPodatki" style="margin-bottom:10px;">
                 <b>Status oddaje: </b>Ni oddano
+                <br>
+                <b>Rok za oddajo: <?php echo $datumOddaje; ?> </b>
             </div>
-            <div style="margin-top:5px">
-                <b>Rok za oddajo: </b>
+            <hr style="margin-left: 10px;margin-right: 10px;margin-top:10px;">
+            
+            <div class="file-upload" style="margin-left:10px;margin-top:10px;">
+                    <label for="DodatnaDat" class="file-upload-label">Izberite datoteko</label>
+                    <input class="file-upload-input" type="file" id="DodatnaDat" name="DodatnaDat" accept=".pdf,.doc,.docx,.txt,.zip,.rar"/>
+                </div>
+            <div class="message" id="message"></div>
+            <hr style="margin-left: 10px;margin-right: 10px;">
+            
+            <div style="margin:20px">
+                <button type="submit" name="submit" class="submitbutton">Oddaj nalogo</button>
             </div>
-            <div style="margin-top:5px">
-                <b>Preostalo: </b>
-            </div>
-        </div>
-      
+        </form>
     </div>
-    </div>
+
 </body>
 </html>

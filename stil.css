@@ -521,7 +521,144 @@
     display: none; 
 }
 
+.upload-area {
+    width: 50%;
+    margin-left: 25%;
+    height: 150px;
+    margin-top: 20px;
+    padding: 20px;
+    border: 2px dashed #ddd;
+    border-radius: 10px;
+    text-align: center;
+    background-color: #fff;
+   
+    align-items: center;
+    justify-content: center;
+    font-family: font2;
 
+}
+
+.upload-area.highlight {
+    border-color: #318CE7;
+}
+
+.upload-area h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.upload-area p {
+    font-size: 14px;
+    color: #666;
+}
+
+.upload-area input[type="file"] {
+    display: none;
+}
+
+.upload-area .browse-button {
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    background-color: #318CE7;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.upload-area .browse-button:hover {
+    background-color: #318CE7;
+}
+
+.upload-area .file-list {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.upload-area .file-list p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.message {
+    margin-top: 20px;
+    font-size: 14px;
+    text-align: center;
+    color: #318CE7;
+    font-family: font2;
+}
+
+ .search-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 80px;
+    font-family: font2;
+  }
+
+  .search-form {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: font2;
+  }
+
+  .search-bar {
+    width: 300px;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    padding-left: 40px; 
+    font-family: font2;
+  }
+
+
+
+
+  .submit-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background-color: #0078d4;
+    color: #fff;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: font2;
+  }
+
+  .submit-btn:hover {
+    background-color: #005a9e;
+  }
+
+  .search-bar:focus {
+    border-color: #0078d4;
+    box-shadow: 0 0 8px rgba(0, 120, 212, 0.4);
+  }
+
+  .search-wrapper {
+    position: relative;
+  }
+
+
+.GridDisplayPredmeta{
+    background-color: white;
+    border: solid #dedfde 1px;
+    border-radius: 5px;
+    width: 90%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    margin: 20px;
+    transition: all 0.2s;
+    
+}
+.GridDisplayPredmeta:hover{
+    cursor: pointer;
+    border-color: rgb(134, 130, 130);
+}
 @media (max-width: 1200px) {
     .DisplayPredmetov {
         grid-template-columns: repeat(3, 1fr);
