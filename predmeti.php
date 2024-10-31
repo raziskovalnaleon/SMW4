@@ -24,10 +24,7 @@ if (!isset($_SESSION["uname"]) || !isset($_SESSION["pass"])) {
         $usertype = $row["UserType"];
     }
 
-    if ($usertype != "admin") {
-        header("location:Registration.php");
-        exit();
-    }
+   
 }
 
 
@@ -56,7 +53,7 @@ if (isset($_POST['logout'])) {
 <div class="navbar">
         <a href="Dashboard.php" class="logo">ŠC Celje</a>
         <div class="nav-links">
-            <a href="#home">Domov</a>
+            <a href="Admin.php">Domov</a>
             <a href="#"><?php echo $_SESSION["uname"] ?></a>
             <img src="Slike/ProfilnaSlika.png" alt="" class="profilnaslika">
         </div> 
@@ -93,13 +90,25 @@ if ($result) {
 
                     if ($result2) {
                         while ($row2 = mysqli_fetch_assoc($result2)) {
-                            echo "<a href='Predmet.php?subject_id=" . htmlspecialchars($subjectID) . "' style='color: black; text-decoration: none;'>
-                                    <div class='GridDisplayPredmeta'>
-                                        <div style='margin-left: 10px;'>
-                                            " . htmlspecialchars($row2["SubjectName"]) . "
-                                        </div>
+                            if($usertype == "admin"){
+                                echo "<a href='Predmet.php?subject_id=" . htmlspecialchars($subjectID) . "' style='color: black; text-decoration: none;'>
+                                <div class='GridDisplayPredmeta'>
+                                    <div style='margin-left: 10px;'>
+                                        " . htmlspecialchars($row2["SubjectName"]) . "
                                     </div>
-                                  </a>";
+                                </div>
+                              </a>";
+                            }
+                            else{
+                                echo "<a href='vpisvpredmet.php?subject_id=$subjectID' style='color: black; text-decoration: none;'>
+                                <div class='GridDisplayPredmeta'>
+                                    <div style='margin-left: 10px;'>
+                                        " . htmlspecialchars($row2["SubjectName"]) . "
+                                    </div>
+                                </div>
+                              </a>";
+                            }
+                          
                         }
                     }
                 }

@@ -88,7 +88,7 @@
 <div class="Predmeti">
     <div class="besedilo">
         <?php
-        if ($userType == "ucitelj") {
+        if ($userType == "ucitelj" || $userType == "admin") {
             echo "Predmeti, ki jih učiš:";
         } else {
             echo "Tvoji Predmeti:";
@@ -97,7 +97,7 @@
     </div>
     <div class="DisplayPredmetov">
         <?php
-        if ($userType != "ucitelj") {
+        if ($userType != "ucitelj" && $userType != "admin") {
             $sql = "SELECT SubjectID FROM smw.student_subjects WHERE UserID = '" . $_SESSION["DbID"] . "'";
         } else {
             $sql = "SELECT SubjectID FROM smw.teacher_subjects WHERE UserID = '" . $_SESSION["DbID"] . "'";
@@ -113,7 +113,6 @@
                     while ($row1 = mysqli_fetch_assoc($result1)) {
                         $subjectName = $row1["SubjectName"];
 
-                        // Fetch all teachers for this subject
                         $sql = "SELECT UserID FROM smw.teacher_subjects WHERE SubjectID = '$id'";
                         $result2 = mysqli_query($conn, $sql);
                         $teachers = [];
@@ -152,7 +151,13 @@
 </div>
 
 </div>
-
+<?php
+    if($userType == "ucenec"){
+        echo "<div class='besedilo' style='margin-left:10%'>
+        <a href='predmeti.php'>Poglej vse predmete</a>
+        </div>";
+    }
+?>
   
 </div>
 
@@ -245,8 +250,10 @@
            
         </div>
     
-     
-    ";  
+        
+    "
+    ;
+
     }
     else{
         echo "
@@ -264,9 +271,27 @@
      
     ";  
     }
+
+   
  ?>
 <?php endif; ?>
 
+
+
+<?php
+if($userType == "admin"){
+    echo "
+<div>
+    <div class='fixed-footer'>
+        <p>Prijavljeni si kot admin. Poglej možnosti admina <a style='color:#7CB9E8;' href='Admin.php'>Tukaj!</a></p>
+       
+    </div>
+</div>";
+    
+}
+
+
+?>
 
 <script>
     function getRandomColor() {

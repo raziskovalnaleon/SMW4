@@ -18,7 +18,8 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['submitclassbttn'])){
         $naslovpredmeta = $_POST["ClassName"];
         $opispredmeta = $_POST["opisPredmeta"];
-        $sql = "INSERT INTO smw.subjects(SubjectName, Description) VALUES ('$naslovpredmeta', '$opispredmeta')";
+        $sifra = $_POST["sifra"];
+        $sql = "INSERT INTO smw.subjects(SubjectName, Description,geslo) VALUES ('$naslovpredmeta', '$opispredmeta','$sifra')";
         if (mysqli_query($conn, $sql)) {
             $last_id = mysqli_insert_id($conn);
             $sql= "INSERT INTO smw.teacher_subjects(UserID,SubjectID) VALUES ('$dbID','$last_id')";
@@ -34,7 +35,8 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $naslovpredmeta = $_POST["ClassName"];
         $opispredmeta = $_POST["opisPredmeta"];
         $subjectID = $_GET['subject_id'];
-        $sql = "UPDATE smw.subjects SET SubjectName = '$naslovpredmeta', Description = '$opispredmeta' WHERE SubjectID = '$subjectID'";
+        $novogeslo = $_POST["changegeslo"];
+        $sql = "UPDATE smw.subjects SET SubjectName = '$naslovpredmeta', Description = '$opispredmeta', geslo = '$novogeslo' WHERE SubjectID = '$subjectID'";
         if (mysqli_query($conn, $sql)) {
           
         } else {
@@ -45,12 +47,13 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 if (isset($_GET['subject_id'])) {
     $subjectID = $_GET['subject_id'];
-    $sql = "SELECT SubjectName, Description FROM smw.subjects WHERE SubjectID = '$subjectID'";
+    $sql = "SELECT SubjectName, Description, geslo FROM smw.subjects WHERE SubjectID = '$subjectID'";
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0){
         while ($row = mysqli_fetch_assoc($result)){
             $titledb = $row["SubjectName"];
             $Descriptiondb = $row["Description"];
+            $geslo = $row["geslo"];
         }
     }
    
@@ -106,6 +109,8 @@ if($userType == "ucenec") {
                 <div class="PrikazPodatkov">Naslov Predmeta: </div><input type="text" required name="ClassName" class="input1" autocomplete="off" style="height:30px;" value ="<?php echo htmlspecialchars($titledb); ?>"><br>
                 <div class="PrikazPodatkov">Opis predmeta: </div> 
                 <textarea type="text" name="opisPredmeta" class="input1" autocomplete="off"  style="height: 230px;font-family:font2;font-size: 15px;"><?php echo htmlspecialchars($Descriptiondb); ?></textarea><br>
+                Šifra: <input class="input1" style="height:30px;width:300px" name="changegeslo" type="password" value="<?php echo $geslo?>" id="myInput">
+                <input type="checkbox" onclick="myFunction()"> Pokaži šifro
                 <div style="font-family:FontBesedilo;"></div>
                 <input type="submit" name="changeclassbttn" class="submitbutton" value="Ustvari predmet">
             </div>
@@ -123,6 +128,8 @@ if($userType == "ucenec") {
                 <div class="PrikazPodatkov">Naslov Predmeta: </div><input type="text" name="ClassName" class="input1" autocomplete="off" style="height:30px;" ><br>
                 <div class="PrikazPodatkov">Opis predmeta: </div> 
                 <textarea type="text" name="opisPredmeta" class="input1" autocomplete="off"  style="height: 230px;font-family:font2;font-size: 15px;"></textarea><br>
+               
+                <div class="PrikazPodatkov">Šifra za predmet: </div><input type="text" name="sifra" class="input1" autocomplete="off" style="height:30px;" ><br>
                 <div style="font-family:FontBesedilo;"></div>
                 <input type="submit" name="submitclassbttn" class="submitbutton" value="Ustvari predmet">
             </div>
@@ -134,6 +141,15 @@ if($userType == "ucenec") {
     </div>
    
     <?php endif; ?>
-
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myInput");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>
 </body>
 </html>

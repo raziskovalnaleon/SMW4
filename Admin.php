@@ -41,34 +41,7 @@ if (isset($_POST['logout'])) {
 }
 
 
-$searchResults = [];
-if (isset($_GET['query'])) {
-    $query = $mysqli->real_escape_string($_GET['query']);
-    
-    $userSearchSQL = "SELECT UserID, ime_uporabnika, priimek_uporbnika,Username UserType FROM users WHERE ime_uporabnika LIKE '%$query%' OR priimek_uporbnika LIKE '%$query%' OR Username LIKE '%$query%'";
-    $userResults = $mysqli->query($userSearchSQL);
-    if ($userResults) {
-        while ($row = $userResults->fetch_assoc()) {
-            $searchResults[] = ['type' => 'user', 'data' => $row];
-        }
-    }
 
-    $subjectSearchSQL = "SELECT SubjectID, SubjectName, Description FROM subjects WHERE SubjectName LIKE '%$query%'";
-    $subjectResults = $mysqli->query($subjectSearchSQL);
-    if ($subjectResults) {
-        while ($row = $subjectResults->fetch_assoc()) {
-            $searchResults[] = ['type' => 'subject', 'data' => $row];
-        }
-    }
-
-    $classSearchSQL = "SELECT UserID, ime_uporabnika, priimek_uporbnika, razred FROM users WHERE razred LIKE '%$query%'";
-    $classResults = $mysqli->query($classSearchSQL);
-    if ($classResults) {
-        while ($row = $classResults->fetch_assoc()) {
-            $searchResults[] = ['type' => 'class', 'data' => $row];
-        }
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -79,7 +52,7 @@ if (isset($_GET['query'])) {
     <title>Admin</title>
     <link rel="stylesheet" href="stil.css">
 </head>
-<body>
+<body class="background">
 <div class="navbar">
         <a href="Dashboard.php" class="logo">ŠC Celje</a>
         <div class="nav-links">
@@ -89,33 +62,48 @@ if (isset($_GET['query'])) {
         </div> 
 </div>
 
-<div class="search-container">
-  <form class="search-form" method="GET">
-    <div class="search-wrapper">
-      <input type="text" class="search-bar" name="query" placeholder="Search..." autocomplete="off">
+
+
+<div class="admin1">
+    <div class="displayImenaAdmin">
+            <?php
+                $sql= "SELECT ime_uporabnika, priimek_uporbnika FROM users WHERE Username = '" . $mysqli->real_escape_string($_SESSION["uname"]) . "'";
+                $result = $mysqli->query($sql);
+                $row = $result->fetch_assoc();
+                echo "Pozdravljen " . $row["ime_uporabnika"] . " " . $row["priimek_uporbnika"]. "!";
+            ?>
+        
     </div>
-    <button type="submit" class="submit-btn">Search</button>
-  </form>
+    <div class="AdminDisplay">
+        <a href="Search.php" style="color:black">
+        <div class="išči">
+            <img src="slike/isci.png" alt="">
+            <div>
+                Išči
+            </div>
+        </div>
+        </a>
+        <a href="predmeti.php" style="color:black">
+            <div class="AdminPredmeti">
+            <img src="slike/class.png" alt="">
+                <div>
+                    Poglej predmete
+                </div>
+            </div>
+        </a>
+      
+       
+        
 </div>
 
-<?php if (!empty($searchResults)): ?>
-    <div class="search-results">
-        <h2>Search Results:</h2>
-        <ul>
-            <?php foreach ($searchResults as $result): ?>
-                <?php if ($result['type'] === 'user'): ?>
-                    <li><strong>User:</strong> <?php echo htmlspecialchars($result['data']['ime_uporabnika'] . " " . $result['data']['priimek_uporbnika']); ?> - Type: <?php echo htmlspecialchars($result['data']['UserType']); ?></li>
-                <?php elseif ($result['type'] === 'subject'): ?>
-                    <li><strong>Subject:</strong> <?php echo htmlspecialchars($result['data']['SubjectName']); ?> - <?php echo htmlspecialchars($result['data']['Description']); ?></li>
-                <?php elseif ($result['type'] === 'class'): ?>
-                    <li><strong>Class:</strong> <?php echo htmlspecialchars($result['data']['razred']); ?> </li>
-                <?php endif; ?>
-            <?php endforeach; ?>
-        </ul>
+</div>
+
+<div>
+    <div class="fixed-footer">
+        <p>Trenutno si Admin, Če želiš funkcionalnosti učitelja klikni <a style="color:#7CB9E8;" href="Dashboard.php">Tukaj!</a></p>
+       
     </div>
-<?php else: ?>
-    <p>No search results found.</p>
-<?php endif; ?>
+</div>
 
 </body>
 </html>

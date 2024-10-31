@@ -140,10 +140,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             }
         }
     }
-    else if( (isset($_POST['addUcitelj']))){ 
-        
+    else if (isset($_POST['addUcitelj']) && !empty($_POST['professorSelect']) && $_POST['professorSelect'] != 0) { 
         $uciteljID = $_POST['professorSelect'];
-        
         $sql = "SELECT * FROM smw.teacher_subjects WHERE UserID='$uciteljID' AND SubjectID='$subjectID'";
         $result = mysqli_query($conn, $sql);
         if (mysqli_num_rows($result) > 0) {
@@ -156,10 +154,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $error = "Error: " . mysqli_error($conn);
             }
         }
-       
-       
+    } else {
+        $error = "Please select a valid teacher.";
     }
-    
 }
 
 
@@ -492,8 +489,7 @@ input[type="submit"]:hover {
 
 <div class="besedilo">
     <?php if(($userType == "ucitelj") || ($userType =="admin")){
-        echo " <a href='DodajNalogo.php?subject_id=$subjectID'' style='font-size:17px;'>Dodaj Nalogo |</a>
-            <a href='#'  style='font-size:17px;' onclick='showClassPopup()'> Dodaj Razred</a>";
+        echo " <a href='DodajNalogo.php?subject_id=$subjectID'' style='font-size:17px;'>Dodaj Nalogo</a>";
     } ?>
 </div>
 

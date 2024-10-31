@@ -26,6 +26,10 @@ if (isset($_POST['subject_id'])) {
             if ($conn->query($sql) !== TRUE) {
                 echo "Error deleting task from student_assignments: " . $conn->error;
             }
+            $sql = "DELETE FROM task_files WHERE task_id = $assignment_id";
+            if ($conn->query($sql) !== TRUE) {
+                echo "Error deleting task from student_assignments: " . $conn->error;
+            }
         }
     }
       

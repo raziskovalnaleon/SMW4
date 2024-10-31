@@ -25,13 +25,6 @@ else{
     $subjectID = $_GET['subject_id'];
 }
 $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
-$sql ="SELECT razredi from smw.subjects WHERE SubjectID='$subjectID'";
-$result = mysqli_query($conn, $sql);
-if (mysqli_num_rows($result) > 0){
-while ($row = mysqli_fetch_assoc($result)){
-    $classes = $row["razredi"];
-}
-}
 
 if (!isset($_SESSION["uname"]) || !isset($_SESSION["pass"])) {
     header("location:Registration.php");
@@ -72,26 +65,20 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 
             }
 
-            $unserialized_array = unserialize($classes); 
-            for($i = 0 ; $i< count($unserialized_array); $i++){
-                if($unserialized_array[$i] != ""){
-                    $uid=$unserialized_array[$i];
-                    $sql = "SELECT UserID FROM smw.users WHERE razred = '$uid'";
-                    $result = mysqli_query($conn, $sql);
-                    if (mysqli_num_rows($result) > 0){
-                        while ($row = mysqli_fetch_assoc($result)){
-                            $userID = $row["UserID"];
-                            $sql1 = "INSERT INTO smw.student_assignments(AssignmentID,UserID) values ('$last_id','$userID')";
-                            if (mysqli_query($conn, $sql1)) {
-                                $loginerror = "User successfully created!";
-                                // header("Location:Predmet.php?subject_id=" . "$subject_id");
-                            } else {
-                                echo "Error: " . $sql1 . "<br>" . mysqli_error($conn);
-                            }
-                        }
+            $sql = "SELECT UserID FROM smw.student_subjects WHERE SubjectID = '$predmetID'";
+            $result = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($result) > 0){
+                while ($row = mysqli_fetch_assoc($result)){
+                    $studentID = $row["UserID"];
+                    $sql = "INSERT INTO smw.student_assignments(UserID,AssignmentID) values ('$studentID','$last_id')";
+                    if (mysqli_query($conn, $sql)) {
+                        $loginerror = "User successfully created!";
+                        // header("Location:Predmet.php?subject_id=" . urlencode($predmetID));
+                    } else {
+                        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+                    }
                 }
-               
-            }
+           
           
         }
         if(isset($_FILES['DodatnaDat']) && $_FILES['DodatnaDat']['error'] == UPLOAD_ERR_OK) {
