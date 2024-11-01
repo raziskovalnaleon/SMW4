@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gostitelj: 127.0.0.1
--- Čas nastanka: 01. nov 2024 ob 14.00
+-- Čas nastanka: 01. nov 2024 ob 21.26
 -- Različica strežnika: 10.4.32-MariaDB
 -- Različica PHP: 8.0.30
 
@@ -282,7 +282,7 @@ ALTER TABLE `assignments`
 -- AUTO_INCREMENT tabele `assignments_submissions`
 --
 ALTER TABLE `assignments_submissions`
-  MODIFY `SubmissionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `SubmissionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT tabele `subjects`

@@ -514,7 +514,7 @@ input[type="submit"]:hover {
                     } else {
                         $daysLeft = "$daysLeft dni";
                     }
-                    if($userType == "ucitelj"){
+                    if($userType == "ucitelj" || $userType == "admin"){
                         echo "<div id='task-$taskID'>
                         <button class='collapsible task-align'>
                             <img src='Slike/TaskIcon.png'  class='TaskSlika'>

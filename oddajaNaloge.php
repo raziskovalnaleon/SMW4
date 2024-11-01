@@ -224,8 +224,13 @@ $conn->close();
             <ul>
                 <?php while ($fileRow = $submittedFilesResult->fetch_assoc()): ?>
                     <li style="text-decoration: none;list-style:none">
-                        <?php echo htmlspecialchars($fileRow['SubmissionContent']); ?> (<?php echo $fileRow['SubmissionDate']; ?>)
+                       
                         <form method="post" style="display:inline;">
+                            <?php
+                            $filename = $fileRow['SubmissionContent'];
+                            $file_path = $filepath . $filename;
+                            ?>
+                            <a href="<?php echo $file_path; ?>" download><?php echo $filename?></a>
                             <input type="hidden" name="delete_file" value="<?php echo htmlspecialchars($fileRow['SubmissionContent']); ?>">
                             <button type="submit" class="submitbutton" style="width:140px">Izbriši datoteko</button>
                         </form>
