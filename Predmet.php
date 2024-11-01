@@ -507,6 +507,13 @@ input[type="submit"]:hover {
                     $currentDate = new DateTime();
                     $interval = $currentDate->diff($targetDate);
                     $daysLeft = $interval->format('%a');
+                    if ($currentDate > $targetDate) {
+                        $daysLate = $interval->format('%R%a');
+                        $daysLate = abs($daysLate); 
+                        $daysLeft = "Zamuda: $daysLate dni";
+                    } else {
+                        $daysLeft = "$daysLeft dni";
+                    }
                     if($userType == "ucitelj"){
                         echo "<div id='task-$taskID'>
                         <button class='collapsible task-align'>
@@ -521,10 +528,10 @@ input[type="submit"]:hover {
                                 </div>
                                 <div class='task-align'>
                                     <img src='Slike/TimeLeftIcon.png' class='TaskSlika'>
-                                    <span style='margin-left: 10px;'>Time left : $daysLeft dni</span>
+                                    <span style='margin-left: 10px;'>Time left : $daysLeft </span>
                                 </div>
                                 <div>
-                                    <a href='oddajaNaloge.php?naloga_id=$taskID'>Več podatkov</a>
+                                    <a href='ogledOddaj.php?naloga_id=$taskID'>Več podatkov</a>
                                 </div>
                                 <div class='naloga'>
                                     <a onclick='showDeleteModal($taskID)'> Izbriši nalogo</a>
@@ -550,7 +557,7 @@ input[type="submit"]:hover {
                                 </div>
                                 <div class='task-align'>
                                     <img src='Slike/TimeLeftIcon.png' class='TaskSlika'>
-                                    <span style='margin-left: 10px;'>Time left : $daysLeft dni</span>
+                                    <span style='margin-left: 10px;'>Time left : $daysLeft </span>
                                 </div>
                                 <div>
                                       <a href='oddajaNaloge.php?naloga_id=$taskID'>Več podatkov</a>

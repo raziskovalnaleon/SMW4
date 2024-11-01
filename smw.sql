@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gostitelj: 127.0.0.1
--- Čas nastanka: 31. okt 2024 ob 23.25
+-- Čas nastanka: 01. nov 2024 ob 14.00
 -- Različica strežnika: 10.4.32-MariaDB
 -- Različica PHP: 8.0.30
 
@@ -40,13 +40,11 @@ CREATE TABLE `assignments` (
 --
 
 INSERT INTO `assignments` (`AssignmentID`, `SubjectID`, `Title`, `Description`, `DueDate`) VALUES
-(95, 16, 'ja je kr ja', 'a', '2222-02-22 22:22:00'),
-(96, 16, 'dodam nalogo', '123', '2222-02-22 22:22:00'),
-(97, 16, 'ja je kr ja', '12212', '2222-02-22 22:22:00'),
-(98, 19, 'nova naloga', '123', '2222-02-22 22:22:00'),
-(99, 16, 'prva naloga', '12', '2222-02-22 22:22:00'),
 (100, 16, 'testiranje slemi', '123', '2222-02-22 22:22:00'),
-(101, 20, 'test', '123', '2222-02-22 22:22:00');
+(101, 20, 'test', '123', '2222-02-22 22:22:00'),
+(103, 16, 'se ena', '123', '2222-02-22 22:22:00'),
+(104, 16, 'nova', '123', '2024-10-23 11:27:00'),
+(105, 16, 'sdad', 'd2', '2024-11-29 11:30:00');
 
 -- --------------------------------------------------------
 
@@ -78,23 +76,19 @@ CREATE TABLE `student_assignments` (
 --
 
 INSERT INTO `student_assignments` (`UserID`, `AssignmentID`) VALUES
-(2, 95),
-(2, 96),
-(2, 97),
-(2, 98),
-(2, 99),
 (2, 100),
 (2, 101),
-(8, 95),
-(8, 96),
-(8, 97),
-(8, 99),
+(2, 103),
+(2, 104),
+(2, 105),
 (8, 100),
-(9, 95),
-(9, 96),
-(9, 97),
-(9, 99),
-(9, 100);
+(8, 103),
+(8, 104),
+(8, 105),
+(9, 100),
+(9, 103),
+(9, 104),
+(9, 105);
 
 -- --------------------------------------------------------
 
@@ -282,13 +276,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT tabele `assignments`
 --
 ALTER TABLE `assignments`
-  MODIFY `AssignmentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
+  MODIFY `AssignmentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
 
 --
 -- AUTO_INCREMENT tabele `assignments_submissions`
 --
 ALTER TABLE `assignments_submissions`
-  MODIFY `SubmissionID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `SubmissionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT tabele `subjects`

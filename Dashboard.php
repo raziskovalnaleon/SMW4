@@ -160,7 +160,6 @@
 ?>
   
 </div>
-
 <?php if ($userType == "ucenec") : ?>
     <div class="naloge">
         <div class="besedilo">
@@ -168,62 +167,59 @@
         </div>
 
         <?php
-        $sql = "SELECT AssignmentID FROM smw.student_assignments WHERE UserID="."'".$_SESSION["DbID"]."'";
+        $sql = "SELECT AssignmentID FROM smw.student_assignments WHERE UserID='" . $_SESSION["DbID"] . "'";
         $result = mysqli_query($conn, $sql);
+        $hasAssignments = false; 
+
         if (mysqli_num_rows($result) > 0) {
-            $sql = "SELECT AssignmentID FROM smw.student_assignments WHERE UserID="."'".$_SESSION["DbID"]."'";
-            $result = mysqli_query($conn, $sql);
-            if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $AssignmentID = $row["AssignmentID"];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $AssignmentID = $row["AssignmentID"];
+
+            
+                $sql = "SELECT * FROM smw.assignments_submissions WHERE AssignmentID = '$AssignmentID' AND UserID = '" . $_SESSION["DbID"] . "'";
+                $submissionResult = mysqli_query($conn, $sql);
+
+                if (mysqli_num_rows($submissionResult) == 0) {
                     
+                    $hasAssignments = true;
+
+                 
                     $sql = "SELECT Title, DueDate, SubjectID FROM smw.assignments WHERE AssignmentID='" . $AssignmentID . "'";
                     $result1 = mysqli_query($conn, $sql);
-                    if (mysqli_num_rows($result1) > 0) {
-                        while ($row1 = mysqli_fetch_assoc($result1)) {
-                            $assTitle = $row1["Title"];
-                            $DueDate = $row1["DueDate"];
-                            $AssSubjectID = $row1["SubjectID"];
-                            $targetDate = new DateTime($DueDate);
-                            $currentDate = new DateTime();
-                            $interval = $currentDate->diff($targetDate);
-                            $daysLeft = $interval->format('%a');
+                    if ($row1 = mysqli_fetch_assoc($result1)) {
+                        $assTitle = $row1["Title"];
+                        $DueDate = $row1["DueDate"];
+                        $AssSubjectID = $row1["SubjectID"];
+                        $targetDate = new DateTime($DueDate);
+                        $currentDate = new DateTime();
+                        $interval = $currentDate->diff($targetDate);
 
-                            $sql="SELECT SubjectName FROM smw.subjects WHERE SubjectID='$AssSubjectID' ";
-                            $result2 = mysqli_query($conn, $sql);
-                            if (mysqli_num_rows($result1) > 0) {
-                                while ($row2 = mysqli_fetch_assoc($result2)) {
-                                    $subjectime = $row2["SubjectName"];
-                                }
-                            }
-
-                            
-                            echo "  
-                            <a href='oddajaNaloge.php?naloga_id=$AssignmentID' style='color:black;text-decoration:none'>
-                                <div class='PrikazNaloge'>
-                                    <div>
-                                        Predmet: $subjectime
-                                    </div>
-                                    <div>
-                                        Naloga: $assTitle
-                                    </div>
-                                    <div>
-                                        Datum: $DueDate
-                                    </div>
-                                    <div>
-                                        Preostalo: $daysLeft dni
-                                    </div>
-                                </div>
-                            </a>";
+                        if ($interval->invert == 1) { 
+                            $daysLeft = "Poteklo pred " . $interval->days . " dnevi";
+                        } else {
+                            $daysLeft = $interval->days . " dni";
                         }
+                        $sql = "SELECT SubjectName FROM smw.subjects WHERE SubjectID='$AssSubjectID'";
+                        $result2 = mysqli_query($conn, $sql);
+                        $subjectime = mysqli_fetch_assoc($result2)["SubjectName"];
+
+                        echo "
+                        <a href='oddajaNaloge.php?naloga_id=$AssignmentID' style='color:black;text-decoration:none'>
+                            <div class='PrikazNaloge'>
+                                <div>Predmet: $subjectime</div>
+                                <div>Naloga: $assTitle</div>
+                                <div>Datum: $DueDate</div>
+                                <div>Preostalo: $daysLeft </div>
+                                <div>Status: Ni Oddana</div>
+                            </div>
+                        </a>";
                     }
-                    
                 }
             }
-                
-            
-        } else {
-            echo "<div style='font-family:font2;'> Trenutno nimas nalog!</div>";
+        }
+
+        if (!$hasAssignments) {
+            echo "<div style='font-family:font2;'>Trenutno nimaš nalog!</div>";
         }
         ?>
     </div>
