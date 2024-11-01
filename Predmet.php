@@ -157,6 +157,43 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     } else {
         $error = "Please select a valid teacher.";
     }
+
+    if(isset($_POST['remove-btn'])){
+        $studentID = $_POST['studentID'];
+        $sql = "DELETE FROM smw.student_subjects WHERE UserID = '$studentID' AND SubjectID = '$subjectID'";
+        if (mysqli_query($conn, $sql)) {
+            $error = "Učenec odstranjen iz predmeta.";
+        } else {
+            $error = "Napaka pri odstranjevanju učenca iz predmeta.";
+        }
+        $sql = "SELECT AssignmentID from smw.assignments WHERE SubjectID='$subjectID'";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)){
+                $nalogaid = $row["AssignmentID"];
+                $sql1 = "DELETE from smw.student_assignments WHERE  AssignmentID ='$nalogaid' AND UserID = '$studentID'";
+                if ($conn->query($sql1) === TRUE) {
+                  
+                  } else {
+              
+                  }
+            }
+            }
+            $sql = "SELECT AssignmentID from smw.assignments WHERE SubjectID='$subjectID'";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)){
+                $nalogaid = $row["AssignmentID"];
+                $sql1 = "DELETE from smw.assignments_submissions WHERE  AssignmentID ='$nalogaid' AND UserID = '$studentID'";
+                if ($conn->query($sql1) === TRUE) {
+                  
+                  } else {
+              
+                  }
+            }
+            }
+    
+    }
 }
 
 
@@ -431,6 +468,8 @@ input[type="submit"] {
 input[type="submit"]:hover {
     background-color: #0056b3; 
 }  
+
+
     </style>
 </head>
 <body class="background">
@@ -475,6 +514,7 @@ input[type="submit"]:hover {
       
         if($userType == "admin"){
             echo "<div style='margin-top:5px;'> <b><a href='#' onclick='showSubjectDeleteModal($subjectID)' style='font-size:17px;'>Izbriši predmet</a></b></div>";
+            echo "<div style='margin-top:5px;'> <b><a href='#'  style='font-size:17px;' id='openPopup'>Preglej učence</a></b></div>";
         }
         
           ?>
@@ -576,35 +616,6 @@ input[type="submit"]:hover {
     </div>
 </div>
 
-<div class="professor-form-container" id="professorFormContainer" style="margin-bottom:20px">
-<form id="professorForm" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?subject_id=" . $subjectID; ?>">
-    <label for="professorSelect">Izberite profesorja:</label>
-    <select id="professorSelect" name="professorSelect">
-      <?php
-        
-        $sql = "
-            SELECT u.UserID, u.ime_uporabnika, u.priimek_uporbnika 
-            FROM smw.users u
-            LEFT JOIN smw.teacher_subjects ts ON u.UserID = ts.UserID AND ts.SubjectID = '$subjectID'
-            WHERE u.UserType = 'ucitelj' AND ts.UserID IS NULL
-        ";
-        
-        $result = mysqli_query($conn, $sql);
-        if (mysqli_num_rows($result) > 0) {
-            while ($row = mysqli_fetch_assoc($result)) {
-                $profID = $row["UserID"];
-                $professorName = $row["ime_uporabnika"] . " " . $row["priimek_uporbnika"];
-                echo "<option value='$profID'>$professorName</option>";
-            }
-        } else {
-            echo "<option value=''>No available professors</option>";
-        }
-      ?>
-    </select>
-    <br>
-    <input type="submit" value="Dodaj" name="addUcitelj" id="addUcitelj">
-</form>
-</div>
 
 
 <div id="deleteModal" class="modal">
@@ -666,8 +677,64 @@ input[type="submit"]:hover {
 
      
     </div>
-</div>
 
+
+
+ 
+ 
+</div>
+<div id="deleteSubjectModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeSubjectModal()">&times;</span>
+        <div class="modal-header">Izbriši predmet</div>
+        <p>Ali ste prepričani, da želite izbrisati ta predmet?</p>
+        <div class="modal-footer">
+            <button class="btn cancel" onclick="closeSubjectModal()">Prekliči</button>
+            <button class="btn" id="confirmDeleteSubject">Izbriši</button>
+        </div>
+    </div>
+</div>
+<div class="popup-background" id="popup">
+    <div class="popup-box">
+        <div style="font-weight:bold; font-size:20px; margin-bottom:10px;">
+            Učenci v predmetu:
+            <hr style="margin-top:10px">
+        </div>
+        <?php
+     
+        $sql = "SELECT * FROM smw.student_subjects WHERE SubjectID = '$subjectID'";
+        $result = mysqli_query($conn, $sql);
+
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $studentID = $row["UserID"];
+                $sql1 = "SELECT ime_uporabnika, priimek_uporbnika, razred FROM smw.users WHERE UserID = '$studentID'";
+                $result1 = mysqli_query($conn, $sql1);
+
+                if (mysqli_num_rows($result1) > 0) {
+                    while ($row1 = mysqli_fetch_assoc($result1)) {
+                        $ime = htmlspecialchars($row1["ime_uporabnika"]);
+                        $priimek = htmlspecialchars($row1["priimek_uporbnika"]);
+
+                        echo "<div class='student-box'>
+                            <div class='student-info'>
+                                <div class='student-name'>$ime $priimek</div>
+                                <form method='post' action='" . htmlspecialchars($_SERVER['PHP_SELF']) . "?subject_id=$subjectID'>
+                                    <input type='hidden' name='studentID' value='$studentID'>
+                                    <button type='submit' name='remove-btn' class='remove-btn'>Remove</button>
+                                </form>
+                            </div>
+                        </div>";
+                    }
+                }
+            }
+        } else {
+            echo "<div>No students found for this subject.</div>";
+        }
+        ?>
+        <button class="close-btn" id="closePopup">Close</button>
+    </div>
+</div>
 
 
 <script>
@@ -796,6 +863,20 @@ document.getElementById("toggleForm").onclick = function(event) {
             form.style.display = "none"; 
         }
     };
+
+    const openPopup = document.getElementById('openPopup');
+    const closePopup = document.getElementById('closePopup');
+    const popup = document.getElementById('popup');
+
+    openPopup.addEventListener('click', function(event) {
+      event.preventDefault(); 
+      popup.style.display = 'flex'; 
+    });
+
+    
+    closePopup.addEventListener('click', function() {
+      popup.style.display = 'none'; 
+    });
 </script>
 </body>
 </html>

@@ -91,7 +91,7 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $newFilePath = $uploadsDir . $newFilename;
             move_uploaded_file($fileTmpPath, $newFilePath);
 
-            $sql = "INSERT INTO smw.task_files(id,file_name,task_id) values ('$uniqueID','$originalFilename','$last_id')";
+            $sql = "INSERT INTO smw.task_files(id,file_name,task_id,type) values ('$newFilename','$originalFilename','$last_id','ucitelj')";
             if(mysqli_query($conn, $sql)){
                 $loginerror = "File successfully uploaded!";
             } 
@@ -132,6 +132,8 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
         }
+
+        
     }
 }
 

@@ -14,12 +14,12 @@ if (isset($_POST['subject_id'])) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    // First, get all assignment IDs for the given subject
+   
     $sql = "SELECT AssignmentID FROM assignments WHERE SubjectID = $subject_id";
     $result = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($result) > 0) {
-        // Loop through each assignment and delete from student_assignments
+       
         while($row = mysqli_fetch_assoc($result)) {
             $assignment_id = $row['AssignmentID'];
             $sql = "DELETE FROM student_assignments WHERE AssignmentID = $assignment_id";
@@ -47,7 +47,7 @@ if (isset($_POST['subject_id'])) {
         }
     
 
-    // Now delete from assignments and subjects
+
     $sql = "DELETE FROM assignments WHERE SubjectID = $subject_id";
     if ($conn->query($sql) === TRUE) {
         echo "Assignments deleted successfully.";

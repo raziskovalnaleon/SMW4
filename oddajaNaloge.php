@@ -150,7 +150,27 @@ $conn->close();
         </div>
         <pre class="OddajaNavodila"><?php echo $opisNaloge; ?></pre>
         <hr style="margin-left: 10px;margin-right: 10px;">
-
+        <div class="oddajaNaslovNavodila">Dodatne datoteke</div>
+        <div class="OddajaPodatki">
+            <?php
+             $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
+            $sql ="SELECT * FROM task_files WHERE task_id = '$nalogaID' AND type = 'ucitelj'";
+            $result = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)){
+                    $filename = $row["file_name"];
+                    $id = $row["id"];
+                    $file_pathTheacer = "uploads/teacher/";
+                    $file_path = $file_pathTheacer . $id;
+                    echo "<a href='$file_path' download>$file_path</a><br>";
+                }
+            }
+            else{
+                echo "Ni dodatnih datotek";
+            }
+            ?>
+        </div>
+        <hr style="margin-left: 10px;margin-right: 10px;">
         <form method="post" id="fileUploadForm" enctype="multipart/form-data">
             <input type="hidden" name="naloga_id" value="<?php echo $nalogaID; ?>">
             <input type="hidden" name="assignment_title" value="<?php echo htmlspecialchars($imeNaloge); ?>">
@@ -224,7 +244,7 @@ $conn->close();
             <ul>
                 <?php while ($fileRow = $submittedFilesResult->fetch_assoc()): ?>
                     <li style="text-decoration: none;list-style:none">
-                       
+                        <?php echo htmlspecialchars($fileRow['SubmissionContent']); ?> (<?php echo $fileRow['SubmissionDate']; ?>)
                         <form method="post" style="display:inline;">
                             <?php
                             $filename = $fileRow['SubmissionContent'];
