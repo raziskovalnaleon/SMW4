@@ -154,10 +154,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $error = "Error: " . mysqli_error($conn);
             }
         }
-    } else {
+        
+    }
+    else {
         $error = "Please select a valid teacher.";
     }
-
     if(isset($_POST['remove-btn'])){
         $studentID = $_POST['studentID'];
         $sql = "DELETE FROM smw.student_subjects WHERE UserID = '$studentID' AND SubjectID = '$subjectID'";
@@ -192,9 +193,74 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                   }
             }
             }
+            $sql = "SELECT AssignmentID from smw.assignments WHERE SubjectID='$subjectID'";
+            $result = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)){
+                    $nalogaid = $row["AssignmentID"];
+                    $sql1 = "DELETE from smw.task_files WHERE  task_id ='$nalogaid' AND UserID = '$studentID'";
+                    if ($conn->query($sql1) === TRUE) {
+                      
+                      } else {
+                  
+                      }
+                }
+                }
+    
+    }
+    if(isset($_POST["izpis"])){
 
-            
+        $sql ="SELECT * FROM assignments WHERE SubjectID = '$subjectID'";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)){
+                $rowID = $row["AssignmentID"];
+                $sql1 = "SELECT * FROM assignments_submissions WHERE AssignmentID ='$rowID' AND UserID = '$dbID' ";
+                $result1 = mysqli_query($conn, $sql1);
+                if (mysqli_num_rows($result1) > 0) {
+                    while ($row1 = mysqli_fetch_assoc($result1)){
+                        $filename= $row1["SubmissionContent"];
+                        $file =  'uploads/user/'.$filename;
+                        if (file_exists($file)) {
+                            if (unlink($file)) {
+                                echo "File deleted successfully.";
+                            } else {
+                                echo "Error deleting the file.";
+                            }
+                        } else {
+                            echo "File does not exist.";
+                        }
+                      
+
+                    }
+                }
+                $sql1 = "DELETE FROM assignments_submissions WHERE AssignmentID = '$rowID' AND UserID ='$dbID'";
+                if ($conn->query($sql1) === TRUE) { }
+
+            }
+        }
        
+
+        $sql ="SELECT * FROM assignments WHERE SubjectID = '$subjectID'";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)){
+                $rowID = $row["AssignmentID"];
+                $sql1 = "DELETE FROM student_assignments WHERE AssignmentID = '$rowID' AND UserID ='$dbID'";
+                if ($conn->query($sql1) === TRUE) {
+                    
+                } else {
+                   
+                }
+            }
+        }
+        $sql = "DELETE FROM smw.student_subjects WHERE UserID = '$dbID' AND SubjectID = '$subjectID'";
+        if ($conn->query($sql) === TRUE) {
+            
+        } else {
+           
+        }
+      
     }
 }
 
@@ -507,6 +573,12 @@ input[type="submit"]:hover {
         <div class="InfoText">
             <b>Število nalog</b> : <?php echo $taskCount ?>
         </div>
+        <?php
+        if($userType == "ucenec"){
+            echo "<div style='margin-top:5px;'> <b><a href='#' onclick='openModal()' style='font-size:17px;'>Izpiši se iz razreda</a></b></div>";
+        }
+        
+        ?>
         <?php if(($userType == "ucitelj")||($userType == "admin")){
         echo " <b><a href='UstvariPredmet.php?subject_id=$subjectID'' style='font-size:17px;'>Uredi podatke o predmetu</a></b><br>";
         echo "<div style='margin-top:5px;'> 
@@ -618,7 +690,35 @@ input[type="submit"]:hover {
     </div>
 </div>
 
-
+<div class="professor-form-container" id="professorFormContainer" style="margin-bottom:20px">
+<form id="professorForm" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?subject_id=" . $subjectID; ?>">
+    <label for="professorSelect">Izberite profesorja:</label>
+    <select id="professorSelect" name="professorSelect">
+      <?php
+        
+        $sql = "
+            SELECT u.UserID, u.ime_uporabnika, u.priimek_uporbnika 
+            FROM smw.users u
+            LEFT JOIN smw.teacher_subjects ts ON u.UserID = ts.UserID AND ts.SubjectID = '$subjectID'
+            WHERE u.UserType = 'ucitelj' AND ts.UserID IS NULL
+        ";
+        
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $profID = $row["UserID"];
+                $professorName = $row["ime_uporabnika"] . " " . $row["priimek_uporbnika"];
+                echo "<option value='$profID'>$professorName</option>";
+            }
+        } else {
+            echo "<option value=''>No available professors</option>";
+        }
+      ?>
+    </select>
+    <br>
+    <input type="submit" value="Dodaj" name="addUcitelj" id="addUcitelj">
+</form>
+</div>
 
 <div id="deleteModal" class="modal">
     <div class="modal-content">
@@ -631,6 +731,7 @@ input[type="submit"]:hover {
         </div>
     </div>
 </div>
+
 <div class="izberirazred" id="classPopup">
     <div class="izberirazred-content">
         <span class="close" onclick="closeClassPopup()">&times;</span>
@@ -696,6 +797,20 @@ input[type="submit"]:hover {
         </div>
     </div>
 </div>
+<div id="modal" class="modal-background">
+    <div class="modal-box">
+      <h2>Izpis</h2>
+      <p>Ali ste prepričani, da se želite izpisati iz tega razreda?</p>
+            <div style="display: grid;grid-template-columns:auto auto;justify-content:space-around">
+            <button class="btn cancel" onclick="closeModal()">Prekliči</button>
+            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?subject_id=" . $subjectID; ?>">
+                  <button type="submit" class="btn" name="izpis">Izpiši</button>
+                  </form>
+            </div>
+           
+        
+    </>
+  </div>
 <div class="popup-background" id="popup">
     <div class="popup-box">
         <div style="font-weight:bold; font-size:20px; margin-bottom:10px;">
@@ -880,5 +995,18 @@ document.getElementById("toggleForm").onclick = function(event) {
       popup.style.display = 'none'; 
     });
 </script>
+
+
+<script>
+    function openModal() {
+      document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+
+   
+  </script>
 </body>
 </html>

@@ -33,7 +33,32 @@ if (isset($_POST['task_id'])) {
           
         }
     }
+
+    $sql ="SELECT * FROM smw.assignments_submissions WHERE AssignmentID = $taskID";
+    $result = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)){
+            $filename= $row["SubmissionContent"];
+            $file =  'uploads/user/'.$filename;
+            if (file_exists($file)) {
+                if (unlink($file)) {
+                    echo "File deleted successfully.";
+                } else {
+                    echo "Error deleting the file.";
+                }
+            } else {
+                echo "File does not exist.";
+            }
+          
+        }
+    }
     $sql ="DELETE FROM smw.task_files WHERE task_id = $taskID";
+    if ($conn->query($sql) === TRUE) {
+        echo "Task deleted successfully";
+    } else {
+        echo "Error deleting task: " . $conn->error;
+    }
+    $sql = "DELETE FROM smw.assignments_submissions WHERE AssignmentID = $taskID";
     if ($conn->query($sql) === TRUE) {
         echo "Task deleted successfully";
     } else {

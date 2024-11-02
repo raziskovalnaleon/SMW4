@@ -36,7 +36,46 @@ if ((isset($_POST['subject_id'])) || (isset($_GET['subject_id']))) {
             if ($conn->query($sql) !== TRUE) {
                 echo "Error deleting task from student_assignments: " . $conn->error;
             }
+            $sql1= "SELECT * from assignments_submissions WHERE AssignmentID = $assignment_id";
+            $result1 = mysqli_query($conn, $sql1);
+            if (mysqli_num_rows($result1) > 0) {
+                while ($row1 = mysqli_fetch_assoc($result1)){
+                    $filename= $row1["SubmissionContent"];
+                    $file =  'uploads/user/'.$filename;
+                    if (file_exists($file)) {
+                        if (unlink($file)) {
+                            echo "File deleted successfully.";
+                        } else {
+                            echo "Error deleting the file.";
+                        }
+                    } else {
+                        echo "File does not exist.";
+                    }
+                }
+            }
+
+            $sql1 ="SELECT * FROM task_files WHERE task_id = $assignment_id";
+            $result1 = mysqli_query($conn, $sql1);
+            if (mysqli_num_rows($result1) > 0) {
+                while ($row1 = mysqli_fetch_assoc($result1)){
+                    $fileID = $row1["id"];
+                    $file =  'uploads/theacher/'.$fileID;
+                    if (file_exists($file)) {
+                        if (unlink($file)) {
+                            echo "File deleted successfully.";
+                        } else {
+                            echo "Error deleting the file.";
+                        }
+                    } else {
+                        echo "File does not exist.";
+                    }
+                }
+            }
             $sql = "DELETE FROM task_files WHERE task_id = $assignment_id";
+            if ($conn->query($sql) !== TRUE) {
+                echo "Error deleting task from student_assignments: " . $conn->error;
+            }
+            $sql = "DELETE FROM assignments_submissions WHERE AssignmentID = $assignment_id";
             if ($conn->query($sql) !== TRUE) {
                 echo "Error deleting task from student_assignments: " . $conn->error;
             }

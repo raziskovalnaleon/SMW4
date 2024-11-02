@@ -170,9 +170,9 @@ $conn->close();
                 while ($row = mysqli_fetch_assoc($result)){
                     $filename = $row["file_name"];
                     $id = $row["id"];
-                    $file_pathTheacer = "uploads/teacher/";
+                    $file_pathTheacer = "uploads/theacher/";
                     $file_path = $file_pathTheacer . $id;
-                    echo "<a href='$file_path' download>$file_path</a><br>";
+                    echo "<a href='$file_path' download>$filename</a><br>";
                 }
             }
             else{

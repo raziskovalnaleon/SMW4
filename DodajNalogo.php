@@ -133,8 +133,30 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
 
+        if (!empty($_FILES['DodatnaDat']['name'][0])) { // Check if files were uploaded
+            foreach ($_FILES['DodatnaDat']['tmp_name'] as $key => $tmp_name) {
+                $originalFilename = $_FILES['DodatnaDat']['name'][$key];
+                $fileTmpPath = $tmp_name;
+                $uniqueID = uniqid();
+                $uploadsDir = 'uploads/theacher/';
+                $fileExtension = pathinfo($originalFilename, PATHINFO_EXTENSION);
+                $newFilename = $uniqueID . '.' . $fileExtension;
+                $newFilePath = $uploadsDir . $newFilename;
+
+                // Move the file to the server
+                if (move_uploaded_file($fileTmpPath, $newFilePath)) {
+                    // Save file info in the database
+                    $sql = "INSERT INTO smw.task_files(id, file_name, task_id, type) values ('$newFilename', '$originalFilename', '$nalogaID', 'ucitelj')";
+                    mysqli_query($conn, $sql);
+                }
+            }
+            $loginerror = "Files successfully uploaded!";
+        }
+
         
     }
+   
+    
 }
 
 
@@ -240,8 +262,9 @@ $formattedDate = $date->format('Y-m-d\H:i');
                 <div class="PrikazPodatkov">Dodatne datoteke: </div> 
                 <div class="file-upload">
                     <label for="DodatnaDat" class="file-upload-label">Izberite datoteko</label>
-                    <input class="file-upload-input" type="file" id="DodatnaDat" name="DodatnaDat" accept=".pdf,.doc,.docx,.txt,.zip,.rar"/>
+                    <input class="file-upload-input" type="file" id="DodatnaDat" name="DodatnaDat" accept=".pdf,.doc,.docx,.txt,.zip,.rar" onchange="displaySelectedFile()"/>
                 </div>
+                <p id="selected-file-name" style="font-size: 14px; color: #0078d4;margin-top:10px"></p>
                 <br>
                 <input type="submit" name="submittaskbttn" class="submitbutton" value="Ustvari nalogo">
                 <?php if (!empty($error)) : ?>
@@ -255,7 +278,7 @@ $formattedDate = $date->format('Y-m-d\H:i');
 <?php else : ?>
     <form method="post" id="registration"  enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?naloga_id=" . $nalogaID; ?>">
         <div class="RegistrationData" style="overflow-y:auto;max-height: 700px;">
-            <div class="createracun">Ustvari nalogo</div>
+            <div class="createracun">Uredi nalogo</div>
             <div style="margin: 20px;">
                 <div class="PrikazPodatkov">Predmet: </div>
                 <select disabled="disabled" class="input1" style="height: 30px;" name="predmet" id="predmet">
@@ -315,6 +338,28 @@ $formattedDate = $date->format('Y-m-d\H:i');
                 <div class="PrikazPodatkov">Datum oddaje: </div>
                 <input required class="input1" style="height: 30px;" type="datetime-local" id="DueDate" name="DueDate" value="<?php echo htmlspecialchars($DueDate); ?>"/><br>                
                 <div class="PrikazPodatkov">Dodatne datoteke: </div> 
+                <div>
+                <?php
+                    $sql = "SELECT * FROM smw.task_files WHERE task_id = '$nalogaID'";
+                    $result = mysqli_query($conn, $sql);
+                    if (mysqli_num_rows($result) > 0) {
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            $filename = $row['file_name'];
+                            $fileID = $row['id'];
+                            echo "<div style='margin-top:10px;'>
+                                <a href='uploads/theacher/$fileID' download>$filename</a>
+                                  <button type='submit' name='delete_file' value='$fileID' class='delete-button'>Delete</button>
+                            </div>";
+                        }
+                    }
+                    else{
+                        echo "<div> Ni dodatnih datotek</div>";
+                    }
+                
+                
+                ?>
+                </div>
+               
                 <input class="input1" style="height: 30px;" type="file" id="DodatnaDat" name="DodatnaDat" accept=".pdf,.doc,.docx,.txt,.zip,.rar"/><br>   
                 <input type="submit" name="updatetask" class="submitbutton" value="Ustvari nalogo">
       
@@ -323,7 +368,18 @@ $formattedDate = $date->format('Y-m-d\H:i');
     </form> 
 <?php endif; ?>
 
+<script>
+function displaySelectedFile() {
+    const fileInput = document.getElementById('DodatnaDat');
+    const fileNameDisplay = document.getElementById('selected-file-name');
 
+    if (fileInput.files.length > 0) {
+        fileNameDisplay.textContent = "Izbrane datoteke: " + fileInput.files[0].name;
+    } else {
+        fileNameDisplay.textContent = "";
+    }
+}
+</script>
 </div>
 </body>
 </html>
