@@ -25,6 +25,7 @@ else{
     }
   
 }
+$id = $_SESSION["DbID"];
 
 function logout() {
     session_destroy();
@@ -54,6 +55,12 @@ else{
     exit();
 }
 
+$sql = "SELECT * FROM smw.student_subjects WHERE UserID = '$id' AND SubjectID = '$subject_id'";
+$result = mysqli_query($conn, $sql);
+if (mysqli_num_rows($result) > 0) {
+    header("location:Predmet.php?subject_id=" . $subject_id);
+    exit();
+}
 
 if(isset($_POST["ClassLogin"])){
     $password = $_POST["password"];

@@ -34,6 +34,16 @@ if ($result->num_rows > 0) {
     $priimek = $row['priimek_uporbnika'];
 }
 
+$sql = "SELECT * FROM smw.student_assignments WHERE AssignmentID = '$nalogaID' AND UserID = '".$_SESSION['DbID'] . "'";
+$result = mysqli_query($conn, $sql);
+if (mysqli_num_rows($result) > 0) {
+   
+}
+else{
+    header("location:Dashboard.php");
+}
+
+
 $sql = "SELECT * FROM smw.assignments WHERE AssignmentID = '$nalogaID'";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {

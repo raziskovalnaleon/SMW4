@@ -1,87 +1,56 @@
-<?php 
-$servername = "localhost";
-$Serverusername = "projekt";
-$Serverpassword = "gesloprojekta";
-$dbname = "smw";
-session_start();
-$dbID = $_SESSION["DbID"];
-$jeVPredmetu = false;
-$error="";
-$dodanirazred = [];
-
-if (!isset($_SESSION["uname"]) || !isset($_SESSION["pass"])) {
-    header("location:Registration.php");
-    exit();
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Popup Example</title>
-  <style>
-    .popup-background {
-      display: none; 
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5); 
-      align-items: center;
-      justify-content: center;
-    }
-
-   
-    .popup-box {
-      background-color: #fff;
-      padding: 20px;
-      width: 300px;
-      border-radius: 8px;
-      text-align: center;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-  
-    .close-btn {
-      margin-top: 10px;
-      padding: 5px 10px;
-      background-color: #333;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Popup Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        /* Style for the custom popup */
+        .custom-popup {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            left: 50%; /* Center the popup */
+            top: 50%; /* Center the popup */
+            transform: translate(-50%, -50%); /* Offset the center */
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000; /* Ensure it's above other elements */
+        }
+        /* Style for the background overlay */
+        .modal-overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            z-index: 999; /* Ensure it's below the popup */
+        }
+        /* Style for the close button */
+        .popup-close {
+            cursor: pointer;
+            color: red;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 
-  <a href="#" id="openPopup">Click me to open popup</a>
+    <a href="#" id="triggerPopup">Click me to open the popup</a>
 
-  <div class="popup-background" id="popup">
-    <div class="popup-box">
-      <p>This is a popup message!</p>
-      <button class="close-btn" id="closePopup">Close</button>
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="custom-popup" id="customPopup">
+        <span class="popup-close" id="closeCustomPopup">&times;</span>
+        <h2>Popup Title</h2>
+        <p>This is a simple popup message!</p>
     </div>
-  </div>
 
-  <script>
 
-    const openPopup = document.getElementById('openPopup');
-    const closePopup = document.getElementById('closePopup');
-    const popup = document.getElementById('popup');
-
-    openPopup.addEventListener('click', function(event) {
-      event.preventDefault(); 
-      popup.style.display = 'flex'; 
-    });
-
-    
-    closePopup.addEventListener('click', function() {
-      popup.style.display = 'none'; 
-    });
-  </script>
 
 </body>
 </html>

@@ -74,6 +74,7 @@ if (isset($_GET['query'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
     <link rel="stylesheet" href="stil.css">
+    <link rel="icon" type="image/x-icon" href="Slike/favicon.png">
 </head>
 <body class="background">
 <div class="navbar">
@@ -101,7 +102,8 @@ if (isset($_GET['query'])) {
         <ul style="list-style:none;">
             <?php foreach ($searchResults as $result): ?>
                 <?php if ($result['type'] === 'user'): ?>
-                    <a href="" class="searchlink">
+                    <?php $sendUserID = $result['data']['UserID'] ?>
+                    <a href="uredipodatke.php?user_id=<?php echo $sendUserID ?>" class="searchlink">
                         <li class="SearchUser">
                             <div style="color:black">
                             <b>Uporabnik:</b> <?php echo htmlspecialchars($result['data']['ime_uporabnika'] . " " . $result['data']['priimek_uporbnika']); ?> | Username:  <?php  echo htmlspecialchars($result['data']['Username'])?> | Tip: <?php echo htmlspecialchars($result['data']['UserType']); ?>

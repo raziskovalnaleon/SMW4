@@ -3,10 +3,20 @@ session_start();
 $servername = "localhost";    
 $username = "projekt";         
 $password = "gesloprojekta";    
-$dbname = "smw";                
+$dbname = "smw";     
 
-if (isset($_POST['subject_id'])) {
+
+if ((isset($_POST['subject_id'])) || (isset($_GET['subject_id']))) {
+   if(isset($_POST['subject_id'])){
     $subject_id = $_POST['subject_id'];
+   }
+   else{
+    $subject_id = $_GET['subject_id'];
+   }
+
+
+   
+   
 
     $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -63,7 +73,12 @@ if (isset($_POST['subject_id'])) {
     }
 
     $conn->close(); 
-} else {
-    // header("location:dashboard.php");
 }
+if(isset($_GET['subject_id'])){
+    header("location:uredipodatke.php");
+}
+else{
+    header("location:dashboard.php");
+}
+
 ?>

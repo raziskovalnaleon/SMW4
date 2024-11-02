@@ -51,6 +51,7 @@ if (isset($_POST['logout'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
     <link rel="stylesheet" href="stil.css">
+    <link rel="icon" type="image/x-icon" href="Slike/favicon.png">
 </head>
 <body class="background">
 <div class="navbar">
