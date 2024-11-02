@@ -545,7 +545,7 @@ input[type="submit"]:hover {
         <a href="Dashboard.php" class="logo">ŠC Celje</a>
         <div class="nav-links">
             <a href="Dashboard.php">Domov</a>
-            <a href="#"><?php echo $_SESSION["uname"] ?></a>
+            <a href="uredipodatke.php"><?php echo $_SESSION["uname"] ?></a>
             <img src="Slike/ProfilnaSlika.png" alt="" class="profilnaslika">
         </div> 
 </div>
@@ -809,8 +809,9 @@ input[type="submit"]:hover {
             </div>
            
         
-    </>
+    
   </div>
+</div>
 <div class="popup-background" id="popup">
     <div class="popup-box">
         <div style="font-weight:bold; font-size:20px; margin-bottom:10px;">
@@ -838,7 +839,7 @@ input[type="submit"]:hover {
                                 <div class='student-name'>$ime $priimek</div>
                                 <form method='post' action='" . htmlspecialchars($_SERVER['PHP_SELF']) . "?subject_id=$subjectID'>
                                     <input type='hidden' name='studentID' value='$studentID'>
-                                    <button type='submit' name='remove-btn' class='remove-btn'>Remove</button>
+                                    <button type='submit' name='remove-btn' class='btn'>Remove</button>
                                 </form>
                             </div>
                         </div>";

@@ -93,8 +93,8 @@ if($userType == "ucenec") {
     <div class="navbar">
         <a href="Dashboard.php" class="logo">ŠC Celje</a>
         <div class="nav-links">
-            <a href="#home">Domov</a>
-            <a href="#"><?php echo $_SESSION["uname"] ?></a>
+            <a href="Dashboard.php">Domov</a>
+            <a href="uredipodatke.php"><?php echo $_SESSION["uname"] ?></a>
             <img src="Slike/ProfilnaSlika.png" alt="" class="profilnaslika">
         </div> 
     </div>
@@ -112,7 +112,8 @@ if($userType == "ucenec") {
                 Šifra: <input class="input1" style="height:30px;width:300px" name="changegeslo" type="password" value="<?php echo $geslo?>" id="myInput">
                 <input type="checkbox" onclick="myFunction()"> Pokaži šifro
                 <div style="font-family:FontBesedilo;"></div>
-                <input type="submit" name="changeclassbttn" class="submitbutton" value="Ustvari predmet">
+                <input type="submit" name="changeclassbttn" class="submitbutton" value="Spremeni predmet">
+                <div style="margin-top: 5px;"><?php echo $error?></div>
             </div>
         </div>
       

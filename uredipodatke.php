@@ -3,151 +3,104 @@ $servername = "localhost";
 $Serverusername = "projekt";
 $Serverpassword = "gesloprojekta";
 $dbname = "smw";
-$error="";
-$title ="";
-$Description="";
-$DueDate="";
+$error = "";
+$success = "";
 session_start();
 
+
 $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
+if ($conn->connect_error) {
+    die("Database connection failed: " . $conn->connect_error);
+}
 
 if (!isset($_SESSION["uname"]) || !isset($_SESSION["pass"])) {
     header("location:Registration.php");
     exit();
 }
+
 $id = $_SESSION["DbID"];
-if(isset($_GET['user_id'])){
+if (isset($_GET['user_id'])) {
     $sql = "SELECT * FROM users WHERE UserID = '$id'";
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0) {
-        while ($row = mysqli_fetch_assoc($result)){
-           $userType = $row['UserType'];
-           if($userType != "admin"){
+        while ($row = mysqli_fetch_assoc($result)) {
+            $userType = $row['UserType'];
+            if ($userType != "admin") {
                 header("location:Dashboard.php");
                 exit();
-           }
-           else{
+            } else {
                 $id = $_GET['user_id'];
-           }
+            }
         }
+    } else {
+        $error = "User not found.";
     }
 }
 
-if(isset($_POST['changeinfo'])){
+if (isset($_POST['changeinfo'])) {
     $Ime = $_POST['Ime'];
     $Priimek = $_POST['Priimek'];
     $username = $_POST['username'];
     $type = $_POST['type'];
-    $sql= "SELECT UserType FROM smw.users WHERE UserID = '$id'";
-    $result = mysqli_query($conn, $sql);
-    if (mysqli_num_rows($result) > 0) {
-        while ($row = mysqli_fetch_assoc($result)){
-            $prevrjanjetip = $row['UserType'];
+    
+   
+    if (empty($Ime) || empty($Priimek) || empty($username)) {
+        $error = "Izpolnite vsa polja!";
+    } else {
+        $sql = "UPDATE users SET ime_uporabnika = '$Ime', priimek_uporbnika = '$Priimek', Username = '$username', UserType = '$type' WHERE UserID = '$id'";
+        if ($conn->query($sql) === TRUE) {
+            $error = "Podatki uspešno spremenjeni!";
+        } else {
+            $error = "Error updating information: " . $conn->error;
         }
     }
-    if($prevrjanjetip == 'ucitelj' && $type == 'ucenec'){
-        $sql = "SELECT SubjectID FROM teacher_subjects WHERE UserID = '$id'";
-        $result = mysqli_query($conn, $sql);
-        if (mysqli_num_rows($result) > 0) {
-            while ($row = mysqli_fetch_assoc($result)){
-                $subject_id = $row['SubjectID'];
-                header("location:DeleteSubject.php?subject_id=$subject_id");
-            }   
-        }
-    }
-
-    $sql = "UPDATE users SET ime_uporabnika = '$Ime', priimek_uporbnika = '$Priimek', Username = '$username', UserType = '$type' WHERE UserID = '$id'";
-    if ($conn->query($sql) === TRUE) {
-    }
-
-  
 }
+
 if (isset($_POST['changepass'])) {
     $FormOldPassword = $_POST['OldPass'];
     $FormNewPassword = $_POST['NewPass'];
     $FormRepeatPassword = $_POST['RNewPass'];
 
-  
     $sql = "SELECT * FROM users WHERE UserID = '$id'";
     $result = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
-        $StaroGeslo = $row['password']; 
-
-      
+        $StaroGeslo = $row['password'];
+        
         if (password_verify($FormOldPassword, $StaroGeslo)) {
-          
             if ($FormNewPassword === $FormRepeatPassword) {
-              
                 $hashedNewPassword = password_hash($FormNewPassword, PASSWORD_DEFAULT);
 
-            
                 $updateQuery = "UPDATE users SET password = '$hashedNewPassword' WHERE UserID = '$id'";
                 if (mysqli_query($conn, $updateQuery)) {
-                    echo "Password changed successfully!";
+                    $error = "Geslo spremenjeno uspešno!";
                 } else {
-                    echo "Error updating password.";
+                    $error = "Error updating password: " . mysqli_error($conn);
                 }
             } else {
-                echo "New passwords do not match.";
+                $error = "Novo geslo se ne ujema!";
             }
         } else {
-            echo "Old password is incorrect.";
+            $error = "Staro geslo se je napačno!";
         }
     } else {
-        echo "User not found.";
+        $error = "User not found.";
     }
 }
-if(isset($_POST['izbrisiuproabnika'])){
-  $sql = "DELETE FROM smw.student_assignments WHERE UserID = '$id'";
-    if ($conn->query($sql) === TRUE) {
-    } else {
-    }
-    $sql = "DELETE FROM smw.student_subjects WHERE UserID = '$id'";
-    if ($conn->query($sql) === TRUE) {
-    } else {
-    }
-    $sql = "DELETE FROM smw.teacher_subjects WHERE UserID = '$id'";
-    if ($conn->query($sql) === TRUE) {
-    } else {
-    }
-    $sql = "DELETE FROM smw.assignments_submissions WHERE UserID = '$id'";
-    if ($conn->query($sql) === TRUE) {
-    } else {
-    }
-    $sql = "DELETE FROM smw.users WHERE UserID = '$id'";
-    if ($conn->query($sql) === TRUE) {
-        header("location:Admin.php");
-        exit();
-    } else {
-    }
 
-} 
-
-  
-
-
-
-
-if(isset($_POST['addtoclass'])){
-    $razred = $_POST['razred'];
-    $sql = "INSERT INTO student_subjects (UserID, SubjectID) VALUES ('$id', '$razred')";
+if (isset($_POST['izbrisiuproabnika'])) {
+    $sql = "DELETE FROM smw.student_assignments WHERE UserID = '$id'";
     if ($conn->query($sql) === TRUE) {
-     
-    } else {
-       
-    }
-    $sql = "SELECT * FROM smw.assignments WHERE SubjectID = '$razred'";
-    $result = mysqli_query($conn, $sql);
-    if (mysqli_num_rows($result) > 0) {
-        while ($row = mysqli_fetch_assoc($result)){
-            $assignment_id = $row['AssignmentID'];
-            $sql = "INSERT INTO student_assignments (UserID, AssignmentID) VALUES ('$id', '$assignment_id')";
-            if ($conn->query($sql) === TRUE) {
-                
-            } 
+        $sql = "DELETE FROM smw.users WHERE UserID = '$id'";
+        if ($conn->query($sql) === TRUE) {
+            header("location:Admin.php");
+            exit();
+        } else {
+            $error = "Error deleting user: " . $conn->error;
         }
+    } else {
+        $error = "Error deleting assignments: " . $conn->error;
     }
 }
 
@@ -288,8 +241,7 @@ if(isset($_POST['addtoclass'])){
                 <div class="PrikazPodatkov">Priimek</div><input type="text"  name="Priimek" class="input1" autocomplete="off" style="height:30px;" value="<?php echo $PriimekUporabnika ?>" ><br>
                 <div class="PrikazPodatkov">Uporabniško ime</div><input type="text"  name="username" class="input1" autocomplete="off" style="height:30px;" value="<?php echo $usernameUporabnika ?>" ><br>
                 <div class="PrikazPodatkov"> <a href="#" id="openPopup" >Spremeni geslo</a></div>
-               
-                <div style="font-family:FontBesedilo;"></div>
+                <div style="margin-top: 5px;"><?php echo $error?></div>
                 <input type="submit" name="changeinfo" class="submitbutton" value="Spremeni podatke">
             </div>
         </div>
@@ -305,7 +257,7 @@ if(isset($_POST['addtoclass'])){
                     <div class="PrikazPodatkov">Staro Geslo</div><input type="password"  name="OldPass" class="input1" autocomplete="off" style="height:30px;width:auto" required="on" ><br>
                     <div class="PrikazPodatkov">Novo  Geslo</div><input type="password"  name="NewPass" class="input1" autocomplete="off" style="height:30px;width:auto" required="on" ><br>
                     <div class="PrikazPodatkov"> Ponovi novo  Geslo</div><input type="password"  name="RNewPass" class="input1" autocomplete="off" style="height:30px;width:auto" required="on" ><br>
-                    
+                    <div style="margin-top: 5px;"><?php echo $error?></div>
                     <input type="submit" name="changepass" class="submitbutton" value="Spremeni geslo" > 
         </form>
       <button class="close-btn" id="closePopup" style=" background-color: #318CE7;">Close</button>
@@ -366,7 +318,7 @@ if(isset($_POST['addtoclass'])){
                 ?>
         
                 
-                <div style="font-family:FontBesedilo;"></div>
+        <div style="margin-top: 5px;"><?php echo $error?></div>
                 <input type="submit" name="changeinfo" class="submitbutton" value="Spremeni podatke">
             </div>
         </div>

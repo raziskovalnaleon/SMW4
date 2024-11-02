@@ -53,8 +53,8 @@ if (isset($_POST['logout'])) {
 <div class="navbar">
         <a href="Dashboard.php" class="logo">ŠC Celje</a>
         <div class="nav-links">
-            <a href="Admin.php">Domov</a>
-            <a href="#"><?php echo $_SESSION["uname"] ?></a>
+            <a href="Dashboard.php">Domov</a>
+            <a href="uredipodatke.php"><?php echo $_SESSION["uname"] ?></a>
             <img src="Slike/ProfilnaSlika.png" alt="" class="profilnaslika">
         </div> 
 </div>

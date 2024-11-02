@@ -93,10 +93,10 @@
                        
                         exit();
                     } else {
-                        $error = "Wrong Username or Password!";
+                        $loginerror = "Wrong Username or Password!";
                     }
                 } else {
-                    $error = "Wrong Username or Password!";
+                    $loginerror = "Wrong Username or Password!";
                 }
             }
         }
@@ -114,10 +114,10 @@
 </head>
 <body class="background">
     <div class="navbar">
-        <a href="#home" class="logo">ŠC Celje</a>
+        <a href="ZacetnaStran.html" class="logo">ŠC Celje</a>
     
         <div class="nav-links">
-            <a href="#home">Domov</a>
+            <a href="ZacetnaStran.html">Domov</a>
         </div> 
         
         
@@ -139,7 +139,9 @@
 
                 </div>
                 <input type="submit" name="RegistrationButton" class="submitbutton" value="REGISTER">
-
+                <div>
+                        <?php echo $loginerror; ?>
+                </div>
                 <div style="margin-top: 10px;"></div>
                     Si že registriran? <br> <a href="#" onclick="Hide()">Klikni tukaj!</a>
                 </div>
@@ -159,7 +161,9 @@
                     <div class="PrikazPodatkov">  Password: </div> <input type="password" name="password"  class="input" autocomplete="off"><br>
                         
                     <input type="submit" name="LoginButton" class="submitbutton" value="LOGIN">
-                    <div ></div>
+                    <div>
+                        <?php echo $loginerror; ?>
+                    </div>
                     <div>
                        Še nimaš računa?<br> <a href="#" onclick="Hide()">Klikni tukaj!</a>
                     </div>  
