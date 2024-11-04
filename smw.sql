@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gostitelj: 127.0.0.1
--- Čas nastanka: 22. sep 2024 ob 18.58
+-- Čas nastanka: 02. nov 2024 ob 21.46
 -- Različica strežnika: 10.4.32-MariaDB
 -- Različica PHP: 8.0.30
 
@@ -32,7 +32,7 @@ CREATE TABLE `assignments` (
   `SubjectID` int(11) DEFAULT NULL,
   `Title` varchar(100) NOT NULL,
   `Description` text DEFAULT NULL,
-  `DueDate` date DEFAULT NULL
+  `DueDate` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -40,7 +40,10 @@ CREATE TABLE `assignments` (
 --
 
 INSERT INTO `assignments` (`AssignmentID`, `SubjectID`, `Title`, `Description`, `DueDate`) VALUES
-(1, 4, 'NASLOV NALOGE VVO', 'OPIS NALOGE VVO', '2024-09-28');
+(129, 25, 'naloga', '122', '2222-02-22 22:22:00'),
+(130, 26, 'prva', '1', '2222-02-22 22:22:00'),
+(132, 29, 'Prva naloga', 'to je opis spremenjen 12345', '2025-02-22 12:12:00'),
+(133, 29, 'Druga naloga', '1', '2222-02-22 22:22:00');
 
 -- --------------------------------------------------------
 
@@ -55,6 +58,13 @@ CREATE TABLE `assignments_submissions` (
   `SubmissionDate` timestamp NOT NULL DEFAULT current_timestamp(),
   `SubmissionContent` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Odloži podatke za tabelo `assignments_submissions`
+--
+
+INSERT INTO `assignments_submissions` (`SubmissionID`, `AssignmentID`, `UserID`, `SubmissionDate`, `SubmissionContent`) VALUES
+(50, 129, 2, '2024-11-02 19:26:33', 'ucenec ucenec - naloga - 129.pdf');
 
 -- --------------------------------------------------------
 
@@ -72,7 +82,8 @@ CREATE TABLE `student_assignments` (
 --
 
 INSERT INTO `student_assignments` (`UserID`, `AssignmentID`) VALUES
-(2, 1);
+(12, 132),
+(12, 133);
 
 -- --------------------------------------------------------
 
@@ -90,9 +101,7 @@ CREATE TABLE `student_subjects` (
 --
 
 INSERT INTO `student_subjects` (`UserID`, `SubjectID`) VALUES
-(2, 1),
-(2, 4),
-(2, 5);
+(12, 29);
 
 -- --------------------------------------------------------
 
@@ -103,17 +112,35 @@ INSERT INTO `student_subjects` (`UserID`, `SubjectID`) VALUES
 CREATE TABLE `subjects` (
   `SubjectID` int(11) NOT NULL,
   `SubjectName` varchar(100) NOT NULL,
-  `Description` text DEFAULT NULL
+  `Description` text DEFAULT NULL,
+  `razredi` varchar(255) DEFAULT NULL,
+  `geslo` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Odloži podatke za tabelo `subjects`
 --
 
-INSERT INTO `subjects` (`SubjectID`, `SubjectName`, `Description`) VALUES
-(1, 'NPP', 'Opis'),
-(4, 'VVO', 'VVO'),
-(5, 'LOTANJE', 'kapibara');
+INSERT INTO `subjects` (`SubjectID`, `SubjectName`, `Description`, `razredi`, `geslo`) VALUES
+(8, 'NRP1', 'objektno programiranje1', 'a:6:{i:0;s:0:\"\";i:1;s:3:\"R4B\";i:2;s:2:\"\r\n\";i:3;s:3:\"R4A\";i:4;s:2:\"\r\n\";i:5;s:3:\"R1B\";}', '0'),
+(9, 'ROB', 'multimedija', 'a:6:{i:0;s:0:\"\";i:1;s:3:\"R4B\";i:2;s:2:\"\r\n\";i:3;s:3:\"R4A\";i:4;s:2:\"\r\n\";i:5;s:3:\"R1B\";}', '0'),
+(25, 'testni predmet', '1', NULL, '1'),
+(26, 'test', 'test', NULL, '1'),
+(29, 'VVO', '12', NULL, '1'),
+(30, 'ustvarim', '1', NULL, '1');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabele `task_files`
+--
+
+CREATE TABLE `task_files` (
+  `id` varchar(255) NOT NULL,
+  `file_name` varchar(255) DEFAULT NULL,
+  `task_id` int(11) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -123,17 +150,19 @@ INSERT INTO `subjects` (`SubjectID`, `SubjectName`, `Description`) VALUES
 
 CREATE TABLE `teacher_subjects` (
   `UserID` int(11) NOT NULL,
-  `SubjectID` int(11) NOT NULL
+  `SubjectID` int(11) NOT NULL,
+  `ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Odloži podatke za tabelo `teacher_subjects`
 --
 
-INSERT INTO `teacher_subjects` (`UserID`, `SubjectID`) VALUES
-(3, 4),
-(6, 1),
-(6, 5);
+INSERT INTO `teacher_subjects` (`UserID`, `SubjectID`, `ID`) VALUES
+(7, 26, 21),
+(1, 29, 24),
+(1, 30, 25),
+(6, 30, 26);
 
 -- --------------------------------------------------------
 
@@ -148,18 +177,23 @@ CREATE TABLE `users` (
   `Username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
   `Email` varchar(100) DEFAULT NULL,
-  `UserType` enum('ucenec','ucitelj','admin') NOT NULL
+  `UserType` enum('ucenec','ucitelj','admin') NOT NULL,
+  `razred` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Odloži podatke za tabelo `users`
 --
 
-INSERT INTO `users` (`UserID`, `ime_uporabnika`, `priimek_uporbnika`, `Username`, `password`, `Email`, `UserType`) VALUES
-(1, 'Nejc', 'Mlakar', 'nejcm', '$2y$10$t9M6cnzy2DzYOQF5I.r.seSwvxe3VcGAWiT9vmFQG5eu9FnUqQEjK', 'nejcmlakar11@gmail.com', 'ucitelj'),
-(2, 'ucenec', 'ucenec', 'ucenec', '$2y$10$D2DYwb0Yb9li5rrSK9JNgeK6wfdTp7D14AywE8q1Nm0JwI0.YC8bO', 'test@gmail.com', 'ucenec'),
-(3, 'Borut', 'Selmi', 'SlemiKralj', '1', '1', 'ucitelj'),
-(6, 'Bostjan', 'Fidler', 'Fidi', '1', 'mail', 'ucitelj');
+INSERT INTO `users` (`UserID`, `ime_uporabnika`, `priimek_uporbnika`, `Username`, `password`, `Email`, `UserType`, `razred`) VALUES
+(1, 'Nejc1', 'Mlakar', 'nejcm', '$2y$10$30mzsWyw5FEjJGHOqsRiJupVXVCGG74aAB/OmvY9dRDMkSxgJTn3C', 'nejcmlakar11@gmail.com', 'ucitelj', NULL),
+(2, 'ucenec11', 'ucenec', 'ucenec', '$2y$10$FT79aFJn2nSoC/JTkVo2y.TAPjUR/9KfxuozrKH2Rfm4q0hCVsoxS', 'test@gmail.com', '', 'R4B'),
+(3, 'Borut1', 'Selmi', 'SlemiKralj', '$2y$10$xvF34DnIzckqqS7yhhZU4eMetKnliofyif3UkRgkpjA2gK9CWjh/m', '1', 'ucenec', NULL),
+(6, 'Bostjan', 'Fidler', 'Fidi', '1', 'mail', 'ucitelj', NULL),
+(7, 'admin', 'admin', 'admin', '$2y$10$B4IcXq6YGlZQyFll2Rwnhee2qSHSQaQy3Csl2Z0ybWJ2ISHYOJ9au', 'admin@gmail.com', 'admin', NULL),
+(10, 'anze', 'znidar', 'znajdar', '$2y$10$BFr7D/6Rml.OUGrlZwgQze4Kqnh/OjmsDgxClnaQlsf7WqQip/752', 'znidar@gmail.com', 'ucenec', NULL),
+(11, 'ucitelj', 'ucitelj', 'ucitelj', '$2y$10$OJYyX9QtIBJ6d3vMS2thau/ZwkARldgB4cC7O8lG/L7lYBVHpb.C2', 'ucitelj@gmail.com', 'ucenec', NULL),
+(12, 'Leon', 'Kotnik', 'KotaKing', '$2y$10$yO4ViK/NHxfJjxrG9RaDJewkI2OPXxhoeVJ9wU6v9y3AHPQ3s7jEG', 'lkotnik@gmail.com', 'ucenec', NULL);
 
 --
 -- Indeksi zavrženih tabel
@@ -201,10 +235,17 @@ ALTER TABLE `subjects`
   ADD PRIMARY KEY (`SubjectID`);
 
 --
+-- Indeksi tabele `task_files`
+--
+ALTER TABLE `task_files`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `task_id` (`task_id`);
+
+--
 -- Indeksi tabele `teacher_subjects`
 --
 ALTER TABLE `teacher_subjects`
-  ADD PRIMARY KEY (`UserID`,`SubjectID`),
+  ADD PRIMARY KEY (`ID`),
   ADD KEY `SubjectID` (`SubjectID`);
 
 --
@@ -223,25 +264,31 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT tabele `assignments`
 --
 ALTER TABLE `assignments`
-  MODIFY `AssignmentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `AssignmentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=135;
 
 --
 -- AUTO_INCREMENT tabele `assignments_submissions`
 --
 ALTER TABLE `assignments_submissions`
-  MODIFY `SubmissionID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `SubmissionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT tabele `subjects`
 --
 ALTER TABLE `subjects`
-  MODIFY `SubjectID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `SubjectID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT tabele `teacher_subjects`
+--
+ALTER TABLE `teacher_subjects`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT tabele `users`
 --
 ALTER TABLE `users`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Omejitve tabel za povzetek stanja
@@ -275,11 +322,10 @@ ALTER TABLE `student_subjects`
   ADD CONSTRAINT `student_subjects_ibfk_2` FOREIGN KEY (`SubjectID`) REFERENCES `subjects` (`SubjectID`);
 
 --
--- Omejitve za tabelo `teacher_subjects`
+-- Omejitve za tabelo `task_files`
 --
-ALTER TABLE `teacher_subjects`
-  ADD CONSTRAINT `teacher_subjects_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`),
-  ADD CONSTRAINT `teacher_subjects_ibfk_2` FOREIGN KEY (`SubjectID`) REFERENCES `subjects` (`SubjectID`);
+ALTER TABLE `task_files`
+  ADD CONSTRAINT `task_files_ibfk_1` FOREIGN KEY (`task_id`) REFERENCES `assignments` (`AssignmentID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -72,7 +72,7 @@
                 echo "Failed to connect to MySQL: " . $conn->connect_error;
                 exit();
             } else {
-                $sql = "SELECT UserID, Username, password FROM smw.users WHERE Username = '" . $conn->real_escape_string($username) . "'";
+                $sql = "SELECT UserID, Username, password , UserType FROM smw.users WHERE Username = '" . $conn->real_escape_string($username) . "'";
                 $result = mysqli_query($conn, $sql);
 
                 if ($result && mysqli_num_rows($result) > 0) {
@@ -83,13 +83,20 @@
                         $_SESSION["uname"] = $username;
                         $_SESSION["pass"] = $password;
                         $_SESSION["DbID"] = $row["UserID"];
-                        header('Location: Dashboard.php');
+                        $_SESSION["usertype"] = $row["UserType"];
+                        if($_SESSION["usertype"] == "admin"){
+                            header('Location: Admin.php');
+                        }
+                        else{
+                            header('Location: dashboard.php');
+                        }
+                       
                         exit();
                     } else {
-                        $error = "Wrong Username or Password!";
+                        $loginerror = "Wrong Username or Password!";
                     }
                 } else {
-                    $error = "Wrong Username or Password!";
+                    $loginerror = "Wrong Username or Password!";
                 }
             }
         }
@@ -102,15 +109,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrarion</title>
+    <title>Registration</title>
     <link rel="stylesheet" href="stil.css">
 </head>
 <body class="background">
     <div class="navbar">
-        <a href="#home" class="logo">ŠC Celje</a>
+        <a href="ZacetnaStran.html" class="logo">ŠC Celje</a>
     
         <div class="nav-links">
-            <a href="#home">Domov</a>
+            <a href="ZacetnaStran.html">Domov</a>
         </div> 
         
         
@@ -132,7 +139,9 @@
 
                 </div>
                 <input type="submit" name="RegistrationButton" class="submitbutton" value="REGISTER">
-
+                <div>
+                        <?php echo $loginerror; ?>
+                </div>
                 <div style="margin-top: 10px;"></div>
                     Si že registriran? <br> <a href="#" onclick="Hide()">Klikni tukaj!</a>
                 </div>
@@ -152,7 +161,9 @@
                     <div class="PrikazPodatkov">  Password: </div> <input type="password" name="password"  class="input" autocomplete="off"><br>
                         
                     <input type="submit" name="LoginButton" class="submitbutton" value="LOGIN">
-                    <div ></div>
+                    <div>
+                        <?php echo $loginerror; ?>
+                    </div>
                     <div>
                        Še nimaš računa?<br> <a href="#" onclick="Hide()">Klikni tukaj!</a>
                     </div>  
