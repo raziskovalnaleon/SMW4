@@ -88,7 +88,7 @@
                             header('Location: Admin.php');
                         }
                         else{
-                            header('Location: dashboard.php');
+                            header('Location: Dashboard.php');
                         }
                        
                         exit();
