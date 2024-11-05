@@ -23,11 +23,7 @@ if ($file) {
         $hashedPassword = password_hash(trim($RegistrationPassword), PASSWORD_DEFAULT);
     
         
-if(password_verify("1", $hashedPassword)){
-            echo 'false test <br>';
-        }
-        else
-        {
+
             $sql = "INSERT INTO smw.users (ime_uporabnika, priimek_uporbnika, Username, password, Email, UserType) VALUES ('" 
             . $conn->real_escape_string($name) . "', '" 
             . $conn->real_escape_string($surname) . "', '" 
@@ -43,7 +39,7 @@ if(password_verify("1", $hashedPassword)){
             }
         } 
     }
-}
+
 $filename = 'test2.txt';
 $file = fopen($filename, 'r'); // Open file in read mode
 
@@ -59,11 +55,7 @@ if ($file) {
         $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
 
         $hashedPassword = password_hash(trim($RegistrationPassword), PASSWORD_DEFAULT);
-      if(password_verify("1", $hashedPassword)){
-            echo 'false test <br>';
-        }
-        else
-        {
+
             $sql = "INSERT INTO smw.users (ime_uporabnika, priimek_uporbnika, Username, password, Email, UserType) VALUES ('" 
             . $conn->real_escape_string($name) . "', '" 
             . $conn->real_escape_string($surname) . "', '" 
@@ -77,7 +69,7 @@ if ($file) {
             } else {
                 echo "Error: " . $sql . "<br>" . $conn->error;
             }
-        }   
+         
             
     }
 
