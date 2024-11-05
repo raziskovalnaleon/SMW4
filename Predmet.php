@@ -22,7 +22,7 @@ if (isset($_GET['subject_id'])) {
     if(isset($_POST['subject_id'])){
         $subjectID = $_POST['subject_id']; 
     } else {
-        header("location:dashboard.php");
+        header("location:Dashboard.php");
         exit();
     }
 }
@@ -306,7 +306,7 @@ if($userType == "admin"){
 }
 
 if($jeVPredmetu == false) {
-    header("location:dashboard.php");
+    header("location:Dashboard.php");
     exit();
 }
 
@@ -964,7 +964,7 @@ function deleteSubject(subjectID) {
 
     xhr.onload = function () {
         if (xhr.status === 200) {
-            window.location.href = "dashboard.php"; 
+            window.location.href = "Dashboard.php"; 
         } else {
             alert("Napaka pri brisanju predmeta.");
         }

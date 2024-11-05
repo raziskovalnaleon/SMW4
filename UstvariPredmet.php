@@ -72,7 +72,7 @@ if (mysqli_num_rows($result) > 0){
 
 
 if($userType == "ucenec") {
-    header("location:dashboard.php");
+    header("location:Dashboard.php");
     exit();
 }
 
