@@ -235,7 +235,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     }
                 }
                 $sql1 = "DELETE FROM assignments_submissions WHERE AssignmentID = '$rowID' AND UserID ='$dbID'";
-                if ($conn->query($sql1) === TRUE) { }
+                if ($conn->query($sql1) === TRUE) { 
+                    header("location:Dashboard.php");
+                }
 
             }
         }
