@@ -6,7 +6,7 @@ $dbname = "smw";
 session_start();
 
 $filename = "";
-$filepath = 'uploads/user';
+$filepath = $_SERVER['DOCUMENT_ROOT'] . '/uploads/user/';
 
 if (!isset($_SESSION["uname"]) || !isset($_SESSION["pass"])) {
     header("location:Registration.php");
@@ -110,7 +110,7 @@ if (isset($_POST['submit']) && isset($_FILES['DodatnaDat'])) {
         $conn->query($sqlSubmit);
         header("location:Dashboard.php");
     } else {
-        echo "Error: " . $_FILES['DodatnaDat']['error'];
+        echo "Error uploading file.";
     }
 }
 
