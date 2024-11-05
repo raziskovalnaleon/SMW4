@@ -16,7 +16,7 @@ if ($file) {
         $surname = $data[1];
         $email = $name.$surname."@gmail.com";
         $RegistrationUsername = $name.$surname;
-        $RegistrationPassword = 1;
+        $RegistrationPassword = "1";
         
         $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
 
@@ -51,7 +51,7 @@ if ($file) {
         $surname = $data[1];
         $email = $name.$surname."@gmail.com";
         $RegistrationUsername = $name.$surname;
-        $RegistrationPassword = 1;
+        $RegistrationPassword = '1';
         
         $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
 
