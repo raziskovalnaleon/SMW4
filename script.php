@@ -21,25 +21,26 @@ if ($file) {
         $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
 
         $hashedPassword = password_hash(trim($RegistrationPassword), PASSWORD_DEFAULT);
-        $sql = "INSERT INTO smw.users (ime_uporabnika, priimek_uporbnika, Username, password, Email, UserType) VALUES ('" 
-        . $conn->real_escape_string($name) . "', '" 
-        . $conn->real_escape_string($surname) . "', '" 
-        . $conn->real_escape_string($RegistrationUsername) . "', '" 
-        . $conn->real_escape_string($hashedPassword) . "', '" 
-        . $conn->real_escape_string($email) . "', 'ucenec')";
- 
-        // Run the query and check for errors
-        if ($conn->query($sql) === TRUE) {
-            echo "New record created successfully";
-        } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+        
+if(password_verify("1", $hashedPassword)){
+            echo 'false test <br>';
         }
-            
-    }
-    fclose($file); // Close the file
-} else {
-    echo "Error opening the file.";
-}
+        else
+        {
+            $sql = "INSERT INTO smw.users (ime_uporabnika, priimek_uporbnika, Username, password, Email, UserType) VALUES ('" 
+            . $conn->real_escape_string($name) . "', '" 
+            . $conn->real_escape_string($surname) . "', '" 
+            . $conn->real_escape_string($RegistrationUsername) . "', '" 
+            . $hashedPassword . "', '" 
+            . $conn->real_escape_string($email) . "', 'ucitelj')";
+                
+            // Run the query and check for errors
+            if ($conn->query($sql) === TRUE) {
+                echo "New record created successfully";
+            } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+        } 
 
 $filename = 'test2.txt';
 $file = fopen($filename, 'r'); // Open file in read mode
@@ -56,21 +57,27 @@ if ($file) {
         $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
 
         $hashedPassword = password_hash(trim($RegistrationPassword), PASSWORD_DEFAULT);
-        $sql = "INSERT INTO smw.users (ime_uporabnika, priimek_uporbnika, Username, password, Email, UserType) VALUES ('" 
-        . $conn->real_escape_string($name) . "', '" 
-        . $conn->real_escape_string($surname) . "', '" 
-        . $conn->real_escape_string($RegistrationUsername) . "', '" 
-        . $conn->real_escape_string($hashedPassword) . "', '" 
-        . $conn->real_escape_string($email) . "', 'ucitelj')";
- 
-        // Run the query and check for errors
-        if ($conn->query($sql) === TRUE) {
-            echo "New record created successfully";
-        } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+      if(password_verify("1", $hashedPassword)){
+            echo 'false test <br>';
         }
+        else
+        {
+            $sql = "INSERT INTO smw.users (ime_uporabnika, priimek_uporbnika, Username, password, Email, UserType) VALUES ('" 
+            . $conn->real_escape_string($name) . "', '" 
+            . $conn->real_escape_string($surname) . "', '" 
+            . $conn->real_escape_string($RegistrationUsername) . "', '" 
+            . $hashedPassword . "', '" 
+            . $conn->real_escape_string($email) . "', 'ucitelj')";
+                
+            // Run the query and check for errors
+            if ($conn->query($sql) === TRUE) {
+                echo "New record created successfully";
+            } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+        }   
             
-    }
+    
     fclose($file); // Close the file
 } else {
     echo "Error opening the file.";
