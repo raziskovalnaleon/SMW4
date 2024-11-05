@@ -104,7 +104,7 @@ if (isset($_POST['submit']) && isset($_FILES['DodatnaDat'])) {
         
         $userID = $_SESSION['DbID'];
         $submissionDate = date("Y-m-d H:i:s");
-        $sqlSubmit = "INSERT INTO assignments_submissions (AssignmentID, UserID, SubmissionDate, SubmissionContent) 
+        $sqlSubmit = "INSERT INTO smw.assignments_submissions (AssignmentID, UserID, SubmissionDate, SubmissionContent) 
                       VALUES ('$nalogaID', '$userID', '$submissionDate', '$customFileName')
                       ON DUPLICATE KEY UPDATE SubmissionDate='$submissionDate', SubmissionContent='$customFileName'";
         $conn->query($sqlSubmit);
