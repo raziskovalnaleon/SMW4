@@ -47,7 +47,14 @@ if (isset($_POST['changeinfo'])) {
     if (empty($Ime) || empty($Priimek) || empty($username)) {
         $error = "Izpolnite vsa polja!";
     } else {
-        $sql = "UPDATE users SET ime_uporabnika = '$Ime', priimek_uporbnika = '$Priimek', Username = '$username', UserType = '$type' WHERE UserID = '$id'";
+
+        if(isset($type)){
+            $sql = "UPDATE users SET ime_uporabnika = '$Ime', priimek_uporbnika = '$Priimek', Username = '$username', UserType = '$type' WHERE UserID = '$id'";
+        }
+        else{
+            $sql = "UPDATE users SET ime_uporabnika = '$Ime', priimek_uporbnika = '$Priimek', Username = '$username' WHERE UserID = '$id'";
+
+        }
         if ($conn->query($sql) === TRUE) {
             $error = "Podatki uspešno spremenjeni!";
         } else {
