@@ -51,7 +51,7 @@ if(isset($_GET["subject_id"])){
     
 }
 else{
-    header("location:dashboard.php");
+    header("location:Dashboard.php");
     exit();
 }
 
@@ -86,7 +86,7 @@ if(isset($_POST["ClassLogin"])){
                 }
             }
         }
-        header("location:dashboard.php");
+        header("location:Dashboard.php");
         exit();
     }
     else{
