@@ -6,7 +6,7 @@ $dbname = "smw";
 session_start();
 
 $filename = "";
-$filepath = 'uploads/user/';
+$filepath = '/var/www/html/SMW4/uploads/users';
 
 if (!isset($_SESSION["uname"]) || !isset($_SESSION["pass"])) {
     header("location:Registration.php");
