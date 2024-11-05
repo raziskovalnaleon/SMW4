@@ -110,7 +110,7 @@ if (isset($_POST['submit']) && isset($_FILES['DodatnaDat'])) {
         $conn->query($sqlSubmit);
         header("location:Dashboard.php");
     } else {
-        echo $file_path;
+        echo $filepath;
     }
 }
 
