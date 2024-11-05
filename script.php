@@ -21,6 +21,7 @@ if ($file) {
         $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
 
         $hashedPassword = password_hash(trim($RegistrationPassword), PASSWORD_DEFAULT);
+    
         
 if(password_verify("1", $hashedPassword)){
             echo 'false test <br>';
@@ -41,7 +42,8 @@ if(password_verify("1", $hashedPassword)){
                 echo "Error: " . $sql . "<br>" . $conn->error;
             }
         } 
-
+    }
+}
 $filename = 'test2.txt';
 $file = fopen($filename, 'r'); // Open file in read mode
 
@@ -77,7 +79,8 @@ if ($file) {
             }
         }   
             
-    
+    }
+
     fclose($file); // Close the file
 } else {
     echo "Error opening the file.";
