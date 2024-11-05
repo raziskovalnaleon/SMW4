@@ -77,6 +77,6 @@ if (isset($_POST['task_id'])) {
 
     $conn->close(); 
 } else {
-    header("location:dashboard.php");
+    header("location:Dashboard.php");
 }
 ?>

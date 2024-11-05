@@ -117,7 +117,7 @@ if(isset($_GET['subject_id'])){
     header("location:uredipodatke.php");
 }
 else{
-    header("location:dashboard.php");
+    header("location:Dashboard.php");
 }
 
 ?>
