@@ -85,7 +85,7 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $originalFilename = $_FILES['DodatnaDat']['name'];
             $fileTmpPath = $_FILES['DodatnaDat']['tmp_name'];
             $uniqueID = uniqid();
-            $uploadsDir = '/uploads/theacher/';
+            $uploadsDir = '';
             $fileExtension = pathinfo($originalFilename, PATHINFO_EXTENSION);
             $newFilename = $uniqueID . '.' . $fileExtension;
             $newFilePath = $uploadsDir . $newFilename;
