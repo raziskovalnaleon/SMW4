@@ -22,3 +22,23 @@
 127.0.0.1       localhost
 127.0.1.1       leon-VirtualBox
 
+
+if(password_verify("1", $hashedPassword)){
+            echo 'false test <br>';
+        }
+        else
+        {
+            $sql = "INSERT INTO smw.users (ime_uporabnika, priimek_uporbnika, Username, password, Email, UserType) VALUES ('" 
+            . $conn->real_escape_string($name) . "', '" 
+            . $conn->real_escape_string($surname) . "', '" 
+            . $conn->real_escape_string($RegistrationUsername) . "', '" 
+            . $hashedPassword . "', '" 
+            . $conn->real_escape_string($email) . "', 'ucitelj')";
+                
+            // Run the query and check for errors
+            if ($conn->query($sql) === TRUE) {
+                echo "New record created successfully";
+            } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+        } 
