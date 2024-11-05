@@ -141,14 +141,14 @@ $conn->close();
 
 </head>
 <body class="background">
-    <div class="navbar">
+    <!-- <div class="navbar">
         <a href="Dashboard.php" class="logo">ŠC Celje</a>
         <div class="nav-links">
             <a href="Dashboard.php">Domov</a>
             <a href="uredipodatke.php"><?php echo $_SESSION["uname"] ?></a>
             <img src="Slike/ProfilnaSlika.png" alt="" class="profilnaslika">
         </div> 
-    </div>
+    </div> -->
 
     <div class="oddajaMain">
         <div class="oddajaNaslov">
