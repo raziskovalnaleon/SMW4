@@ -20,7 +20,7 @@ if ($file) {
         
         $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
 
-        $hashedPassword = password_hash($RegistrationPassword, PASSWORD_DEFAULT);
+        $hashedPassword = password_hash(trim($RegistrationPassword), PASSWORD_DEFAULT);
         $sql = "INSERT INTO smw.users (ime_uporabnika, priimek_uporbnika, Username, password, Email, UserType) VALUES ('" 
         . $conn->real_escape_string($name) . "', '" 
         . $conn->real_escape_string($surname) . "', '" 
@@ -55,7 +55,7 @@ if ($file) {
         
         $conn = new mysqli($servername, $Serverusername, $Serverpassword, $dbname);
 
-        $hashedPassword = password_hash($RegistrationPassword, PASSWORD_DEFAULT);
+        $hashedPassword = password_hash(trim($RegistrationPassword), PASSWORD_DEFAULT);
         $sql = "INSERT INTO smw.users (ime_uporabnika, priimek_uporbnika, Username, password, Email, UserType) VALUES ('" 
         . $conn->real_escape_string($name) . "', '" 
         . $conn->real_escape_string($surname) . "', '" 
