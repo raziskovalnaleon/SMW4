@@ -6,7 +6,7 @@ $dbname = "smw";
 session_start();
 
 $filename = "";
-$filepath = '/uploads/user/';
+$filepath = $_SERVER['DOCUMENT_ROOT'] . '/uploads/user/';
 
 if (!isset($_SESSION["uname"]) || !isset($_SESSION["pass"])) {
     header("location:Registration.php");
@@ -101,16 +101,52 @@ if (isset($_POST['submit']) && isset($_FILES['DodatnaDat'])) {
 
     if (move_uploaded_file($_FILES['DodatnaDat']['tmp_name'], $targetFilePath)) {
         echo "File uploaded successfully as: $customFileName";
-        
+    
+        // Get user session details
         $userID = $_SESSION['DbID'];
         $submissionDate = date("Y-m-d H:i:s");
+    
+        // Prepare the SQL query
         $sqlSubmit = "INSERT INTO smw.assignments_submissions (AssignmentID, UserID, SubmissionDate, SubmissionContent) 
                       VALUES ('$nalogaID', '$userID', '$submissionDate', '$customFileName')
                       ON DUPLICATE KEY UPDATE SubmissionDate='$submissionDate', SubmissionContent='$customFileName'";
-        $conn->query($sqlSubmit);
-        header("location:Dashboard.php");
+    
+        // Execute the query and check for errors
+        if ($conn->query($sqlSubmit) === TRUE) {
+            header("Location: Dashboard.php");
+            exit();
+        } else {
+            // Error with SQL query execution
+            echo "Error executing query: " . $conn->error;
+        }
     } else {
-        echo $filepath;
+        // Error with file upload
+        $uploadError = $_FILES['DodatnaDat']['error'];
+        
+        switch ($uploadError) {
+            case UPLOAD_ERR_INI_SIZE:
+            case UPLOAD_ERR_FORM_SIZE:
+                echo "Error: The uploaded file exceeds the allowed size.";
+                break;
+            case UPLOAD_ERR_PARTIAL:
+                echo "Error: The file was only partially uploaded.";
+                break;
+            case UPLOAD_ERR_NO_FILE:
+                echo "Error: No file was uploaded.";
+                break;
+            case UPLOAD_ERR_NO_TMP_DIR:
+                echo "Error: Missing temporary folder.";
+                break;
+            case UPLOAD_ERR_CANT_WRITE:
+                echo "Error: Failed to write file to disk.";
+                break;
+            case UPLOAD_ERR_EXTENSION:
+                echo "Error: A PHP extension stopped the file upload.";
+                break;
+            default:
+                echo "Error uploading file.";
+                break;
+        }
     }
 }
 
