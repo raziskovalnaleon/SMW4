@@ -123,30 +123,8 @@ if (isset($_POST['submit']) && isset($_FILES['DodatnaDat'])) {
         // Error with file upload
         $uploadError = $_FILES['DodatnaDat']['error'];
         
-        switch ($uploadError) {
-            case UPLOAD_ERR_INI_SIZE:
-            case UPLOAD_ERR_FORM_SIZE:
-                echo "Error: The uploaded file exceeds the allowed size.";
-                break;
-            case UPLOAD_ERR_PARTIAL:
-                echo "Error: The file was only partially uploaded.";
-                break;
-            case UPLOAD_ERR_NO_FILE:
-                echo "Error: No file was uploaded.";
-                break;
-            case UPLOAD_ERR_NO_TMP_DIR:
-                echo "Error: Missing temporary folder.";
-                break;
-            case UPLOAD_ERR_CANT_WRITE:
-                echo "Error: Failed to write file to disk.";
-                break;
-            case UPLOAD_ERR_EXTENSION:
-                echo "Error: A PHP extension stopped the file upload.";
-                break;
-            default:
-                echo "Error uploading file.";
-                break;
-        }
+        echo $uploadError;
+       
     }
 }
 
